@@ -266,8 +266,10 @@ int main(int argc, char *argv[])
 		}
 	}
 
-	if (optind < argc)
+	if (optind < argc) {
+		free(config.slices_path);
 		config.slices_path = strdup(argv[optind]);
+	}
 
 	preset = preset_find(config.preset_name);
 	if (preset == NULL) {
