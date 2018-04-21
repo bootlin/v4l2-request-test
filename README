@@ -1,0 +1,12 @@
+# cedrus-frame-test
+
+This standalone tool is designed to help with development and testing of the
+Sunxi-Cedrus VPU driver, that supports the Video Engine found on most Allwinner
+SoCs.
+
+It currently supports decoding MPEG2 frames from their slice data (stored as
+files) and associated metadata, as well as displaying the decoded frames through
+a dedicated DRM plane, using the sun4i-drm display driver.
+
+The behavior of the tool can be configured through command line arguments, that
+are precised by its usage help.
