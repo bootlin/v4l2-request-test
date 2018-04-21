@@ -364,8 +364,8 @@ int video_engine_stop(int video_fd, struct video_buffer *buffers, unsigned int b
 
 int video_engine_decode(int video_fd, unsigned int index, struct v4l2_ctrl_mpeg2_frame_hdr *header, void *source_data, unsigned int source_size, struct video_buffer *buffers)
 {
-	int request_fd = -1;
 	struct timeval tv = {0, 300000};
+	int request_fd = -1;
         fd_set except_fds;
 	int rc;
 
