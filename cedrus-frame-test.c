@@ -350,8 +350,8 @@ int main(int argc, char *argv[])
 		frame_header_fill(&header, preset, index, slice_size);
 
 		v4l2_index = index % buffers_count;
-		header.forward_index %= buffers_count;
-		header.backward_index %= buffers_count;
+		header.forward_ref_index %= buffers_count;
+		header.backward_ref_index %= buffers_count;
 
 		clock_gettime(CLOCK_MONOTONIC, &video_before);
 
