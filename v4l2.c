@@ -151,6 +151,8 @@ static int queue_buffer(int video_fd, int request_fd, unsigned int type, unsigne
 		fprintf(stderr, "Unable to queue buffer: %s\n", strerror(errno));
 		return -1;
 	}
+
+	return 0;
 }
 
 static int dequeue_buffer(int video_fd, int request_fd, unsigned int type, unsigned int index)
@@ -178,6 +180,8 @@ static int dequeue_buffer(int video_fd, int request_fd, unsigned int type, unsig
 		fprintf(stderr, "Unable to dequeue buffer: %s\n", strerror(errno));
 		return -1;
 	}
+
+	return 0;
 }
 
 static int set_control(int video_fd, int request_fd, unsigned int id, void *data, unsigned int size)
