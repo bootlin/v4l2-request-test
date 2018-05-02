@@ -192,11 +192,14 @@ int main(int argc, char *argv[])
 	char *slice_filename = NULL;
 	char *slice_path = NULL;
 	unsigned int slice_size;
-	unsigned int buffers_count = 3;
+	unsigned int buffers_count = 6; // TODO: Estimate from largest gap between associated frames.
 	unsigned int width;
 	unsigned int height;
 	unsigned int v4l2_index;
 	unsigned int index;
+	unsigned int index_origin;
+	unsigned int display_index;
+	unsigned int display_count;
 	long frame_time;
 	long frame_diff;
 	int video_fd = -1;
@@ -323,9 +326,33 @@ int main(int argc, char *argv[])
 	if (config.fps > 0)
 		frame_time = 1000000 / config.fps;
 
-	do for (index = 0; index < preset->frames_count; index++) {
+	display_count = 0;
+	display_index = 0;
+	index_origin = index = 0;
+
+	while (display_count < preset->frames_count) {
 		if (!config.quiet)
 			printf("\nProcessing frame %d/%d\n", index + 1, preset->frames_count);
+
+		if ((index_origin != index && index < preset->frames_count) || (index == 0 && index == index_origin)) {
+			rc = frame_gop_schedule(preset, index);
+			if (rc < 0) {
+				fprintf(stderr, "Unable to schedule GOP frames order\n");
+				goto error;
+			}
+		}
+
+		index_origin = index;
+
+		rc = frame_gop_next(&display_index);
+		if (rc < 0) {
+			fprintf(stderr, "Unable to get next GOP frame index for display\n");
+			goto error;
+		}
+
+		/* Catch-up with already rendered frames. */
+		if (display_index < index)
+			goto frame_display;
 
 		clock_gettime(CLOCK_MONOTONIC, &before);
 
@@ -371,6 +398,21 @@ int main(int argc, char *argv[])
 			print_time_diff(&video_before, &video_after, "Frame decode");
 		}
 
+		/* Keep decoding until we can display a frame. */
+		if (display_index > index) {
+			index++;
+			continue;
+		}
+
+frame_display:
+		rc = frame_gop_dequeue();
+		if (rc < 0) {
+			fprintf(stderr, "Unable to dequeue next GOP frame index for display\n");
+			goto error;
+		}
+
+		v4l2_index = display_index % buffers_count;
+
 		clock_gettime(CLOCK_MONOTONIC, &display_before);
 
 		rc = display_engine_show(drm_fd, v4l2_index, video_buffers, gem_buffers, &setup);
@@ -388,6 +430,8 @@ int main(int argc, char *argv[])
 
 		clock_gettime(CLOCK_MONOTONIC, &after);
 
+		display_count++;
+
 		if (config.interactive) {
 			getchar();
 		} else if (config.fps > 0) {
@@ -397,7 +441,16 @@ int main(int argc, char *argv[])
 			else
 				usleep(frame_time - frame_diff);
 		}
-	} while (config.loop);
+
+		if (display_index >= index)
+			index++;
+
+		if (config.loop && display_count == preset->frames_count) {
+			display_count = 0;
+			display_index = 0;
+			index_origin = index = 0;
+		}
+	}
 
 	rc = video_engine_stop(video_fd, video_buffers, buffers_count);
 	if (rc < 0) {
