@@ -187,6 +187,7 @@ int main(int argc, char *argv[])
 	struct timespec before, after;
 	struct timespec video_before, video_after;
 	struct timespec display_before, display_after;
+	bool before_taken = false;
 	void *destination_data[2] = { NULL };
 	void *slice_data = NULL;
 	char *slice_filename = NULL;
@@ -350,11 +351,14 @@ int main(int argc, char *argv[])
 			goto error;
 		}
 
+		if (!before_taken)
+			clock_gettime(CLOCK_MONOTONIC, &before);
+		else
+			before_taken = false;
+
 		/* Catch-up with already rendered frames. */
 		if (display_index < index)
 			goto frame_display;
-
-		clock_gettime(CLOCK_MONOTONIC, &before);
 
 		asprintf(&slice_filename, config.slices_filename_format, index);
 		asprintf(&slice_path, "%s/%s", config.slices_path, slice_filename);
@@ -400,6 +404,8 @@ int main(int argc, char *argv[])
 
 		/* Keep decoding until we can display a frame. */
 		if (display_index > index) {
+			fprintf(stderr, "keep decoding\n");
+			before_taken = true;
 			index++;
 			continue;
 		}
