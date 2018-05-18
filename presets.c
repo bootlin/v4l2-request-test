@@ -86,7 +86,7 @@ int frame_header_fill(struct v4l2_ctrl_mpeg2_slice_header *header, struct preset
 		return -1;
 	}
 
-	memcpy(header, &preset->frames[index].header, sizeof(*header));
+	memcpy(header, &preset->frames[index].frame.mpeg2.header, sizeof(*header));
 
 	header->slice_pos = 0;
 	header->slice_len = slice_size * 8;

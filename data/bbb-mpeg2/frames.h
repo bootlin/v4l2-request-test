@@ -1,11 +1,9 @@
 	{
 		.index = 0,
-		.header = {
+		.type = DUMP_FRAME_MPEG2,
+		.frame.mpeg2.header = {
 			.picture_coding_type = V4L2_SLICE_PCT_I,
-			.f_code[0][0] = 15,
-			.f_code[0][1] = 15,
-			.f_code[1][0] = 15,
-			.f_code[1][1] = 15,
+			.f_code = { 15, 15, 15, 15 },
 			.intra_dc_precision = 0,
 			.picture_structure = 3,
 			.top_field_first = 0,
@@ -20,12 +18,10 @@
 	},
 	{
 		.index = 1,
-		.header = {
+		.type = DUMP_FRAME_MPEG2,
+		.frame.mpeg2.header = {
 			.picture_coding_type = V4L2_SLICE_PCT_P,
-			.f_code[0][0] = 1,
-			.f_code[0][1] = 1,
-			.f_code[1][0] = 15,
-			.f_code[1][1] = 15,
+			.f_code = { 1, 1, 15, 15 },
 			.intra_dc_precision = 0,
 			.picture_structure = 3,
 			.top_field_first = 0,
@@ -40,12 +36,10 @@
 	},
 	{
 		.index = 2,
-		.header = {
+		.type = DUMP_FRAME_MPEG2,
+		.frame.mpeg2.header = {
 			.picture_coding_type = V4L2_SLICE_PCT_P,
-			.f_code[0][0] = 1,
-			.f_code[0][1] = 1,
-			.f_code[1][0] = 15,
-			.f_code[1][1] = 15,
+			.f_code = { 1, 1, 15, 15 },
 			.intra_dc_precision = 0,
 			.picture_structure = 3,
 			.top_field_first = 0,
@@ -60,12 +54,10 @@
 	},
 	{
 		.index = 3,
-		.header = {
+		.type = DUMP_FRAME_MPEG2,
+		.frame.mpeg2.header = {
 			.picture_coding_type = V4L2_SLICE_PCT_P,
-			.f_code[0][0] = 1,
-			.f_code[0][1] = 1,
-			.f_code[1][0] = 15,
-			.f_code[1][1] = 15,
+			.f_code = { 1, 1, 15, 15 },
 			.intra_dc_precision = 0,
 			.picture_structure = 3,
 			.top_field_first = 0,
@@ -80,12 +72,10 @@
 	},
 	{
 		.index = 4,
-		.header = {
+		.type = DUMP_FRAME_MPEG2,
+		.frame.mpeg2.header = {
 			.picture_coding_type = V4L2_SLICE_PCT_P,
-			.f_code[0][0] = 1,
-			.f_code[0][1] = 1,
-			.f_code[1][0] = 15,
-			.f_code[1][1] = 15,
+			.f_code = { 1, 1, 15, 15 },
 			.intra_dc_precision = 0,
 			.picture_structure = 3,
 			.top_field_first = 0,
@@ -100,12 +90,10 @@
 	},
 	{
 		.index = 5,
-		.header = {
+		.type = DUMP_FRAME_MPEG2,
+		.frame.mpeg2.header = {
 			.picture_coding_type = V4L2_SLICE_PCT_P,
-			.f_code[0][0] = 1,
-			.f_code[0][1] = 1,
-			.f_code[1][0] = 15,
-			.f_code[1][1] = 15,
+			.f_code = { 1, 1, 15, 15 },
 			.intra_dc_precision = 0,
 			.picture_structure = 3,
 			.top_field_first = 0,
@@ -120,12 +108,10 @@
 	},
 	{
 		.index = 6,
-		.header = {
+		.type = DUMP_FRAME_MPEG2,
+		.frame.mpeg2.header = {
 			.picture_coding_type = V4L2_SLICE_PCT_P,
-			.f_code[0][0] = 1,
-			.f_code[0][1] = 1,
-			.f_code[1][0] = 15,
-			.f_code[1][1] = 15,
+			.f_code = { 1, 1, 15, 15 },
 			.intra_dc_precision = 0,
 			.picture_structure = 3,
 			.top_field_first = 0,
@@ -140,12 +126,10 @@
 	},
 	{
 		.index = 7,
-		.header = {
+		.type = DUMP_FRAME_MPEG2,
+		.frame.mpeg2.header = {
 			.picture_coding_type = V4L2_SLICE_PCT_P,
-			.f_code[0][0] = 1,
-			.f_code[0][1] = 1,
-			.f_code[1][0] = 15,
-			.f_code[1][1] = 15,
+			.f_code = { 1, 1, 15, 15 },
 			.intra_dc_precision = 0,
 			.picture_structure = 3,
 			.top_field_first = 0,
@@ -160,12 +144,10 @@
 	},
 	{
 		.index = 8,
-		.header = {
+		.type = DUMP_FRAME_MPEG2,
+		.frame.mpeg2.header = {
 			.picture_coding_type = V4L2_SLICE_PCT_P,
-			.f_code[0][0] = 1,
-			.f_code[0][1] = 1,
-			.f_code[1][0] = 15,
-			.f_code[1][1] = 15,
+			.f_code = { 1, 1, 15, 15 },
 			.intra_dc_precision = 0,
 			.picture_structure = 3,
 			.top_field_first = 0,
@@ -180,12 +162,10 @@
 	},
 	{
 		.index = 9,
-		.header = {
+		.type = DUMP_FRAME_MPEG2,
+		.frame.mpeg2.header = {
 			.picture_coding_type = V4L2_SLICE_PCT_P,
-			.f_code[0][0] = 1,
-			.f_code[0][1] = 1,
-			.f_code[1][0] = 15,
-			.f_code[1][1] = 15,
+			.f_code = { 1, 1, 15, 15 },
 			.intra_dc_precision = 0,
 			.picture_structure = 3,
 			.top_field_first = 0,
@@ -200,12 +180,10 @@
 	},
 	{
 		.index = 10,
-		.header = {
+		.type = DUMP_FRAME_MPEG2,
+		.frame.mpeg2.header = {
 			.picture_coding_type = V4L2_SLICE_PCT_P,
-			.f_code[0][0] = 1,
-			.f_code[0][1] = 1,
-			.f_code[1][0] = 15,
-			.f_code[1][1] = 15,
+			.f_code = { 1, 1, 15, 15 },
 			.intra_dc_precision = 0,
 			.picture_structure = 3,
 			.top_field_first = 0,
@@ -220,12 +198,10 @@
 	},
 	{
 		.index = 11,
-		.header = {
+		.type = DUMP_FRAME_MPEG2,
+		.frame.mpeg2.header = {
 			.picture_coding_type = V4L2_SLICE_PCT_P,
-			.f_code[0][0] = 1,
-			.f_code[0][1] = 1,
-			.f_code[1][0] = 15,
-			.f_code[1][1] = 15,
+			.f_code = { 1, 1, 15, 15 },
 			.intra_dc_precision = 0,
 			.picture_structure = 3,
 			.top_field_first = 0,
@@ -240,12 +216,10 @@
 	},
 	{
 		.index = 12,
-		.header = {
+		.type = DUMP_FRAME_MPEG2,
+		.frame.mpeg2.header = {
 			.picture_coding_type = V4L2_SLICE_PCT_P,
-			.f_code[0][0] = 1,
-			.f_code[0][1] = 1,
-			.f_code[1][0] = 15,
-			.f_code[1][1] = 15,
+			.f_code = { 1, 1, 15, 15 },
 			.intra_dc_precision = 0,
 			.picture_structure = 3,
 			.top_field_first = 0,
@@ -260,12 +234,10 @@
 	},
 	{
 		.index = 13,
-		.header = {
+		.type = DUMP_FRAME_MPEG2,
+		.frame.mpeg2.header = {
 			.picture_coding_type = V4L2_SLICE_PCT_P,
-			.f_code[0][0] = 1,
-			.f_code[0][1] = 1,
-			.f_code[1][0] = 15,
-			.f_code[1][1] = 15,
+			.f_code = { 1, 1, 15, 15 },
 			.intra_dc_precision = 0,
 			.picture_structure = 3,
 			.top_field_first = 0,
@@ -280,12 +252,10 @@
 	},
 	{
 		.index = 14,
-		.header = {
+		.type = DUMP_FRAME_MPEG2,
+		.frame.mpeg2.header = {
 			.picture_coding_type = V4L2_SLICE_PCT_P,
-			.f_code[0][0] = 7,
-			.f_code[0][1] = 7,
-			.f_code[1][0] = 15,
-			.f_code[1][1] = 15,
+			.f_code = { 7, 7, 15, 15 },
 			.intra_dc_precision = 0,
 			.picture_structure = 3,
 			.top_field_first = 0,
@@ -300,12 +270,10 @@
 	},
 	{
 		.index = 15,
-		.header = {
+		.type = DUMP_FRAME_MPEG2,
+		.frame.mpeg2.header = {
 			.picture_coding_type = V4L2_SLICE_PCT_I,
-			.f_code[0][0] = 15,
-			.f_code[0][1] = 15,
-			.f_code[1][0] = 15,
-			.f_code[1][1] = 15,
+			.f_code = { 15, 15, 15, 15 },
 			.intra_dc_precision = 0,
 			.picture_structure = 3,
 			.top_field_first = 0,
@@ -320,12 +288,10 @@
 	},
 	{
 		.index = 16,
-		.header = {
+		.type = DUMP_FRAME_MPEG2,
+		.frame.mpeg2.header = {
 			.picture_coding_type = V4L2_SLICE_PCT_P,
-			.f_code[0][0] = 1,
-			.f_code[0][1] = 1,
-			.f_code[1][0] = 15,
-			.f_code[1][1] = 15,
+			.f_code = { 1, 1, 15, 15 },
 			.intra_dc_precision = 0,
 			.picture_structure = 3,
 			.top_field_first = 0,
@@ -340,12 +306,10 @@
 	},
 	{
 		.index = 17,
-		.header = {
+		.type = DUMP_FRAME_MPEG2,
+		.frame.mpeg2.header = {
 			.picture_coding_type = V4L2_SLICE_PCT_P,
-			.f_code[0][0] = 1,
-			.f_code[0][1] = 1,
-			.f_code[1][0] = 15,
-			.f_code[1][1] = 15,
+			.f_code = { 1, 1, 15, 15 },
 			.intra_dc_precision = 0,
 			.picture_structure = 3,
 			.top_field_first = 0,
@@ -360,12 +324,10 @@
 	},
 	{
 		.index = 18,
-		.header = {
+		.type = DUMP_FRAME_MPEG2,
+		.frame.mpeg2.header = {
 			.picture_coding_type = V4L2_SLICE_PCT_P,
-			.f_code[0][0] = 1,
-			.f_code[0][1] = 1,
-			.f_code[1][0] = 15,
-			.f_code[1][1] = 15,
+			.f_code = { 1, 1, 15, 15 },
 			.intra_dc_precision = 0,
 			.picture_structure = 3,
 			.top_field_first = 0,
@@ -380,12 +342,10 @@
 	},
 	{
 		.index = 19,
-		.header = {
+		.type = DUMP_FRAME_MPEG2,
+		.frame.mpeg2.header = {
 			.picture_coding_type = V4L2_SLICE_PCT_P,
-			.f_code[0][0] = 1,
-			.f_code[0][1] = 1,
-			.f_code[1][0] = 15,
-			.f_code[1][1] = 15,
+			.f_code = { 1, 1, 15, 15 },
 			.intra_dc_precision = 0,
 			.picture_structure = 3,
 			.top_field_first = 0,
@@ -400,12 +360,10 @@
 	},
 	{
 		.index = 20,
-		.header = {
+		.type = DUMP_FRAME_MPEG2,
+		.frame.mpeg2.header = {
 			.picture_coding_type = V4L2_SLICE_PCT_P,
-			.f_code[0][0] = 1,
-			.f_code[0][1] = 1,
-			.f_code[1][0] = 15,
-			.f_code[1][1] = 15,
+			.f_code = { 1, 1, 15, 15 },
 			.intra_dc_precision = 0,
 			.picture_structure = 3,
 			.top_field_first = 0,
@@ -420,12 +378,10 @@
 	},
 	{
 		.index = 21,
-		.header = {
+		.type = DUMP_FRAME_MPEG2,
+		.frame.mpeg2.header = {
 			.picture_coding_type = V4L2_SLICE_PCT_P,
-			.f_code[0][0] = 1,
-			.f_code[0][1] = 1,
-			.f_code[1][0] = 15,
-			.f_code[1][1] = 15,
+			.f_code = { 1, 1, 15, 15 },
 			.intra_dc_precision = 0,
 			.picture_structure = 3,
 			.top_field_first = 0,
@@ -440,12 +396,10 @@
 	},
 	{
 		.index = 22,
-		.header = {
+		.type = DUMP_FRAME_MPEG2,
+		.frame.mpeg2.header = {
 			.picture_coding_type = V4L2_SLICE_PCT_P,
-			.f_code[0][0] = 1,
-			.f_code[0][1] = 1,
-			.f_code[1][0] = 15,
-			.f_code[1][1] = 15,
+			.f_code = { 1, 1, 15, 15 },
 			.intra_dc_precision = 0,
 			.picture_structure = 3,
 			.top_field_first = 0,
@@ -460,12 +414,10 @@
 	},
 	{
 		.index = 23,
-		.header = {
+		.type = DUMP_FRAME_MPEG2,
+		.frame.mpeg2.header = {
 			.picture_coding_type = V4L2_SLICE_PCT_P,
-			.f_code[0][0] = 1,
-			.f_code[0][1] = 1,
-			.f_code[1][0] = 15,
-			.f_code[1][1] = 15,
+			.f_code = { 1, 1, 15, 15 },
 			.intra_dc_precision = 0,
 			.picture_structure = 3,
 			.top_field_first = 0,
@@ -480,12 +432,10 @@
 	},
 	{
 		.index = 24,
-		.header = {
+		.type = DUMP_FRAME_MPEG2,
+		.frame.mpeg2.header = {
 			.picture_coding_type = V4L2_SLICE_PCT_P,
-			.f_code[0][0] = 1,
-			.f_code[0][1] = 1,
-			.f_code[1][0] = 15,
-			.f_code[1][1] = 15,
+			.f_code = { 1, 1, 15, 15 },
 			.intra_dc_precision = 0,
 			.picture_structure = 3,
 			.top_field_first = 0,

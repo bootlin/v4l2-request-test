@@ -55,9 +55,20 @@ struct config {
 
 /* Presets */
 
+enum frame_type {
+	DUMP_FRAME_MPEG2,
+};
+
+union controls {
+	struct {
+		struct v4l2_ctrl_mpeg2_slice_header header;
+	} mpeg2;
+};
+
 struct frame {
 	unsigned int index;
-	struct v4l2_ctrl_mpeg2_slice_header header;
+	enum frame_type type;
+	union controls frame;
 };
 
 struct preset {
