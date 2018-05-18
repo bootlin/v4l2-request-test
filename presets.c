@@ -25,7 +25,7 @@
 
 #include "cedrus-frame-test.h"
 
-static struct frame bbb_frames[] = {
+static struct frame bbb_mpeg2_frames[] = {
 #include "data/bbb-mpeg2/frames.h"
 };
 
@@ -37,8 +37,8 @@ static struct preset presets[] = {
 		.attribution = "Blender Foundation | www.blender.org",
 		.width = 854,
 		.height = 480,
-		.frames = bbb_frames,
-		.frames_count = sizeof(bbb_frames) / sizeof(bbb_frames[0]),
+		.frames = bbb_mpeg2_frames,
+		.frames_count = sizeof(bbb_mpeg2_frames) / sizeof(bbb_mpeg2_frames[0]),
 	},
 };
 
