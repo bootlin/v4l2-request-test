@@ -47,6 +47,7 @@ struct config {
 	char *slices_path;
 	char *slices_filename_format;
 
+	unsigned int buffers_count;
 	unsigned int fps;
 	bool quiet;
 	bool interactive;

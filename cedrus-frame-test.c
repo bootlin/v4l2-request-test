@@ -161,6 +161,7 @@ static void setup_config(struct config *config)
 	config->quiet = false;
 	config->interactive = false;
 	config->loop = false;
+	config->buffers_count = 6; // TODO: Estimate from largest gap between associated frames.
 }
 
 static void cleanup_config(struct config *config)
@@ -192,7 +193,6 @@ int main(int argc, char *argv[])
 	char *slice_filename = NULL;
 	char *slice_path = NULL;
 	unsigned int slice_size;
-	unsigned int buffers_count = 6; // TODO: Estimate from largest gap between associated frames.
 	unsigned int width;
 	unsigned int height;
 	unsigned int v4l2_index;
@@ -311,13 +311,13 @@ int main(int argc, char *argv[])
 		goto error;
 	}
 
-	rc = video_engine_start(video_fd, media_fd, width, height, &video_buffers, buffers_count);
+	rc = video_engine_start(video_fd, media_fd, width, height, &video_buffers, config.buffers_count);
 	if (rc < 0) {
 		fprintf(stderr, "Unable to start video engine\n");
 		goto error;
 	}
 
-	rc = display_engine_start(drm_fd, width, height, video_buffers, buffers_count, &gem_buffers, &setup);
+	rc = display_engine_start(drm_fd, width, height, video_buffers, config.buffers_count, &gem_buffers, &setup);
 	if (rc < 0) {
 		fprintf(stderr, "Unable to start display engine\n");
 		goto error;
@@ -379,9 +379,9 @@ int main(int argc, char *argv[])
 
 		frame_header_fill(&header, preset, index, slice_size);
 
-		v4l2_index = index % buffers_count;
-		header.forward_ref_index %= buffers_count;
-		header.backward_ref_index %= buffers_count;
+		v4l2_index = index % config.buffers_count;
+		header.forward_ref_index %= config.buffers_count;
+		header.backward_ref_index %= config.buffers_count;
 
 		clock_gettime(CLOCK_MONOTONIC, &video_before);
 
@@ -416,7 +416,7 @@ frame_display:
 			goto error;
 		}
 
-		v4l2_index = display_index % buffers_count;
+		v4l2_index = display_index % config.buffers_count;
 
 		clock_gettime(CLOCK_MONOTONIC, &display_before);
 
@@ -457,7 +457,7 @@ frame_display:
 		}
 	}
 
-	rc = video_engine_stop(video_fd, video_buffers, buffers_count);
+	rc = video_engine_stop(video_fd, video_buffers, config.buffers_count);
 	if (rc < 0) {
 		fprintf(stderr, "Unable to start video engine\n");
 		goto error;
