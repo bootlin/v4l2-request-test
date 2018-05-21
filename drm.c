@@ -161,8 +161,6 @@ static int map_buffer(int drm_fd, struct gem_buffer *buffer)
 
 static int unmap_buffer(int drm_fd, struct gem_buffer *buffer)
 {
-	int rc;
-
 	if (buffer == NULL)
 		return -1;
 

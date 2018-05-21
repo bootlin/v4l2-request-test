@@ -188,7 +188,6 @@ int main(int argc, char *argv[])
 	struct timespec video_before, video_after;
 	struct timespec display_before, display_after;
 	bool before_taken = false;
-	void *destination_data[2] = { NULL };
 	void *slice_data = NULL;
 	char *slice_filename = NULL;
 	char *slice_path = NULL;
