@@ -35,7 +35,7 @@ DEPS = $(SOURCES:.c=.d)
 
 # Compiler
 
-CFLAGS = $(shell pkg-config --cflags libdrm)
+CFLAGS += $(shell pkg-config --cflags libdrm)
 LDFLAGS = $(shell pkg-config --libs libdrm)
 
 # Produced files
