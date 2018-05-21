@@ -35,6 +35,7 @@ DEPS = $(SOURCES:.c=.d)
 
 # Compiler
 
+CFLAGS += -Wunused-variable
 CFLAGS += $(shell pkg-config --cflags libdrm)
 LDFLAGS = $(shell pkg-config --libs libdrm)
 
