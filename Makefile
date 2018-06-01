@@ -29,7 +29,7 @@ OUTPUT = .
 
 # Sources
 
-SOURCES = cedrus-frame-test.c v4l2.c drm.c presets.c
+SOURCES = cedrus-frame-test.c v4l2.c drm.c presets.c mb32.c
 OBJECTS = $(SOURCES:.c=.o)
 DEPS = $(SOURCES:.c=.d)
 

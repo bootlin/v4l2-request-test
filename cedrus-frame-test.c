@@ -331,6 +331,9 @@ int main(int argc, char *argv[])
 	display_index = 0;
 	index_origin = index = 0;
 
+	unsigned char *y_buffer = malloc(864 * 480);
+	unsigned char *uv_buffer = malloc(864 * 480 / 2);
+
 	while (display_count < preset->frames_count) {
 		if (!config.quiet)
 			printf("\nProcessing frame %d/%d\n", index + 1, preset->frames_count);
@@ -418,6 +421,18 @@ frame_display:
 		}
 
 		v4l2_index = display_index % buffers_count;
+
+		clock_gettime(CLOCK_MONOTONIC, &display_before);
+
+		mb32_untile_y(video_buffers[v4l2_index].destination_data[0], y_buffer, setup.width, setup.height);
+		mb32_untile_uv(video_buffers[v4l2_index].destination_data[1], uv_buffer, setup.width, setup.height);
+
+		clock_gettime(CLOCK_MONOTONIC, &display_after);
+
+		if (!config.quiet) {
+			printf("Untiled video frame!\n");
+			print_time_diff(&display_before, &display_after, "Untiling");
+		}
 
 		clock_gettime(CLOCK_MONOTONIC, &display_before);
 

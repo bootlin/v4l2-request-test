@@ -138,4 +138,9 @@ int display_engine_start(int drm_fd, unsigned int crtc_id, unsigned int plane_id
 int display_engine_stop(int drm_fd, struct gem_buffer *buffers, struct display_setup *setup);
 int display_engine_show(int drm_fd, unsigned int index, struct video_buffer *video_buffers, struct gem_buffer *buffers, struct display_setup *setup);
 
+/* MB32 */
+
+void mb32_untile_y(unsigned char *src, unsigned char *dst, unsigned int width, unsigned int height);
+void mb32_untile_uv(unsigned char *src, unsigned char *dst, unsigned int width, unsigned int height);
+
 #endif
