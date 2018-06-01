@@ -29,8 +29,10 @@ OUTPUT = .
 
 # Sources
 
-SOURCES = cedrus-frame-test.c v4l2.c drm.c presets.c mb32.c
+SOURCES = cedrus-frame-test.c v4l2.c drm.c presets.c 
+SOURCES_ASM = tiled_yuv.S
 OBJECTS = $(SOURCES:.c=.o)
+OBJECTS_ASM = $(SOURCES_ASM:.S=.o)
 DEPS = $(SOURCES:.c=.d)
 
 # Compiler
@@ -41,6 +43,7 @@ LDFLAGS = $(shell pkg-config --libs libdrm)
 # Produced files
 
 BUILD_OBJECTS = $(addprefix $(BUILD)/,$(OBJECTS))
+BUILD_OBJECTS_ASM = $(addprefix $(BUILD)/,$(OBJECTS_ASM))
 BUILD_DEPS = $(addprefix $(BUILD)/,$(DEPS))
 BUILD_BINARY = $(BUILD)/$(NAME)
 BUILD_DIRS = $(sort $(dir $(BUILD_BINARY) $(BUILD_OBJECTS)))
@@ -57,9 +60,13 @@ $(BUILD_OBJECTS): $(BUILD)/%.o: %.c | $(BUILD_DIRS)
 	@echo " CC     $<"
 	@$(CC) $(CFLAGS) -MMD -MF $(BUILD)/$*.d -c $< -o $@
 
-$(BUILD_BINARY): $(BUILD_OBJECTS)
+$(BUILD_OBJECTS_ASM): $(BUILD)/%.o: %.S | $(BUILD_DIRS)
+	@echo " AS     $<"
+	@$(CC) $(CFLAGS) -c $< -o $@
+
+$(BUILD_BINARY): $(BUILD_OBJECTS) $(BUILD_OBJECTS_ASM)
 	@echo " LINK   $@"
-	@$(CC) $(CFLAGS) -o $@ $(BUILD_OBJECTS) $(LDFLAGS)
+	@$(CC) $(CFLAGS) -o $@ $(BUILD_OBJECTS) $(BUILD_OBJECTS_ASM) $(LDFLAGS)
 
 $(OUTPUT_DIRS):
 	@mkdir -p $@

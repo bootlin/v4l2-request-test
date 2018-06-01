@@ -175,6 +175,13 @@ static void cleanup_config(struct config *config)
 	free(config->slices_filename_format);
 }
 
+void tiled_to_planar(void *src, void *dst, unsigned int dst_pitch,
+                     unsigned int width, unsigned int height);
+
+void tiled_deinterleave_to_planar(void *src, void *dst1, void *dst2,
+                                  unsigned int dst_pitch,
+                                  unsigned int width, unsigned int height);
+
 int main(int argc, char *argv[])
 {
 	struct preset *preset;
@@ -424,8 +431,11 @@ frame_display:
 
 		clock_gettime(CLOCK_MONOTONIC, &display_before);
 
-		mb32_untile_y(video_buffers[v4l2_index].destination_data[0], y_buffer, setup.width, setup.height);
-		mb32_untile_uv(video_buffers[v4l2_index].destination_data[1], uv_buffer, setup.width, setup.height);
+		tiled_to_planar(video_buffers[v4l2_index].destination_data[0], y_buffer, setup.width, setup.width, setup.height);
+		tiled_to_planar(video_buffers[v4l2_index].destination_data[1], uv_buffer,  setup.width, setup.width / 2, setup.height / 2);
+
+//		mb32_untile_y(video_buffers[v4l2_index].destination_data[0], y_buffer, setup.width, setup.height);
+//		mb32_untile_uv(video_buffers[v4l2_index].destination_data[1], uv_buffer, setup.width, setup.height);
 
 		clock_gettime(CLOCK_MONOTONIC, &display_after);
 
