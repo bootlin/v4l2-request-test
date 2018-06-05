@@ -154,7 +154,6 @@ static void setup_config(struct config *config)
 	config->plane_id = 34;
 
 	config->preset_name = strdup("bbb-mpeg2");
-	config->slices_path = strdup("data/bbb-mpeg2");
 	config->slices_filename_format = strdup("slice-%d.dump");
 
 	config->fps = 0;
@@ -269,11 +268,6 @@ int main(int argc, char *argv[])
 		}
 	}
 
-	if (optind < argc) {
-		free(config.slices_path);
-		config.slices_path = strdup(argv[optind]);
-	}
-
 	preset = preset_find(config.preset_name);
 	if (preset == NULL) {
 		fprintf(stderr, "Unable to find preset for name: %s\n", config.preset_name);
@@ -282,6 +276,10 @@ int main(int argc, char *argv[])
 
 	width = preset->width;
 	height = preset->height;
+	if (optind < argc)
+		config.slices_path = strdup(argv[optind]);
+	else
+		asprintf(&config.slices_path, "data/%s", config.preset_name);
 
 	print_summary(&config, preset);
 
