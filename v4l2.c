@@ -278,20 +278,33 @@ static int set_stream(int video_fd, unsigned int type, bool enable)
 
 static int set_format_controls(int video_fd, int request_fd, enum format_type type, union controls *frame)
 {
+	struct {
+		enum format_type type;
+		char *description;
+		unsigned int id;
+		void *data;
+		unsigned int size;
+	} glue[] = {
+		{ FORMAT_TYPE_MPEG2, "slice header", V4L2_CID_MPEG_VIDEO_MPEG2_SLICE_HEADER, &frame->mpeg2.header, sizeof(frame->mpeg2.header) },
+		{ FORMAT_TYPE_H264, "decode parameters", V4L2_CID_MPEG_VIDEO_H264_DECODE_PARAM, &frame->h264.decode, sizeof(frame->h264.decode) },
+		{ FORMAT_TYPE_H264, "picture parameter set", V4L2_CID_MPEG_VIDEO_H264_PPS, &frame->h264.pps, sizeof(frame->h264.pps) },
+		{ FORMAT_TYPE_H264, "sequence parameter set", V4L2_CID_MPEG_VIDEO_H264_SPS, &frame->h264.sps, sizeof(frame->h264.sps) },
+		{ FORMAT_TYPE_H264, "scaling matrix", V4L2_CID_MPEG_VIDEO_H264_SCALING_MATRIX, &frame->h264.scaling_matrix, sizeof(frame->h264.scaling_matrix) },
+		{ FORMAT_TYPE_H264, "scaling matrix", V4L2_CID_MPEG_VIDEO_H264_SLICE_PARAM, &frame->h264.slice, sizeof(frame->h264.slice) },
+	};
+	unsigned int glue_count = sizeof(glue) / sizeof(glue[0]);
+	unsigned int i;
 	int rc;
 
-	switch (type) {
-	case FORMAT_TYPE_MPEG2:
-		rc = set_control(video_fd, request_fd, V4L2_CID_MPEG_VIDEO_MPEG2_SLICE_HEADER, &frame->mpeg2.header, sizeof(frame->mpeg2.header));
+	for (i = 0; i < glue_count; i++) {
+		if (glue[i].type != type)
+			continue;
+
+		rc = set_control(video_fd, request_fd, glue[i].id, glue[i].data, glue[i].size);
 		if (rc < 0) {
-			fprintf(stderr, "Unable to set mpeg2 frame header control\n");
+			fprintf(stderr, "Unable to set %s control\n", glue[i].description);
 			return -1;
 		}
-
-		break;
-	default:
-		fprintf(stderr, "Invalid format type\n");
-		return -1;
 	}
 
 	return 0;
@@ -302,6 +315,8 @@ static int source_pixel_format(enum format_type type)
 	switch (type) {
 	case FORMAT_TYPE_MPEG2:
 		return V4L2_PIX_FMT_MPEG2_SLICE;
+	case FORMAT_TYPE_H264:
+		return V4L2_PIX_FMT_H264_SLICE;
 	default:
 		fprintf(stderr, "Invalid format type\n");
 		return -1;

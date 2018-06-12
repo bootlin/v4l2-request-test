@@ -64,6 +64,7 @@ struct format_description {
 
 enum format_type {
 	FORMAT_TYPE_MPEG2,
+	FORMAT_TYPE_H264,
 };
 
 enum pct {
@@ -78,6 +79,14 @@ union controls {
 	struct {
 		struct v4l2_ctrl_mpeg2_slice_header header;
 	} mpeg2;
+	struct {
+		struct v4l2_ctrl_h264_decode_param decode;
+		struct v4l2_ctrl_h264_pps pps;
+		struct v4l2_h264_pred_weight_table pred_weight;
+		struct v4l2_ctrl_h264_scaling_matrix scaling_matrix;
+		struct v4l2_ctrl_h264_slice_param slice;
+		struct v4l2_ctrl_h264_sps sps;
+	} h264;
 };
 
 struct frame {
