@@ -160,7 +160,6 @@ static void setup_config(struct config *config)
 	config->quiet = false;
 	config->interactive = false;
 	config->loop = false;
-	config->buffers_count = 6; // TODO: Estimate from largest gap between associated frames.
 }
 
 static void cleanup_config(struct config *config)
@@ -273,6 +272,8 @@ int main(int argc, char *argv[])
 		fprintf(stderr, "Unable to find preset for name: %s\n", config.preset_name);
 		goto error;
 	}
+
+	config.buffers_count = preset->buffers_count;
 
 	width = preset->width;
 	height = preset->height;

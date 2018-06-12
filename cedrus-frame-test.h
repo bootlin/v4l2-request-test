@@ -79,6 +79,7 @@ struct preset {
 
 	unsigned int width;
 	unsigned int height;
+	unsigned int buffers_count;
 
 	enum format_type type;
 	struct frame *frames;

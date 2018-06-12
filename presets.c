@@ -38,6 +38,7 @@ static struct preset presets[] = {
 		.width = 854,
 		.height = 480,
 		.type = FORMAT_TYPE_MPEG2,
+		.buffers_count = 6,
 		.frames = bbb_mpeg2_frames,
 		.frames_count = sizeof(bbb_mpeg2_frames) / sizeof(bbb_mpeg2_frames[0]),
 	},
