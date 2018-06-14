@@ -183,7 +183,7 @@ int main(int argc, char *argv[])
 	struct gem_buffer *gem_buffers;
 	struct display_setup setup;
 	struct media_device_info device_info;
-	struct v4l2_ctrl_mpeg2_frame_hdr header;
+	struct v4l2_ctrl_mpeg2_slice_header header;
 	struct timespec before, after;
 	struct timespec video_before, video_after;
 	struct timespec display_before, display_after;

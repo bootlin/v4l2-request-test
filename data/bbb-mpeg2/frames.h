@@ -1,7 +1,7 @@
 	{
 		.index = 0,
 		.header = {
-			.picture_coding_type = PCT_I,
+			.picture_coding_type = V4L2_SLICE_PCT_I,
 			.f_code[0][0] = 15,
 			.f_code[0][1] = 15,
 			.f_code[1][0] = 15,
@@ -21,7 +21,7 @@
 	{
 		.index = 1,
 		.header = {
-			.picture_coding_type = PCT_P,
+			.picture_coding_type = V4L2_SLICE_PCT_P,
 			.f_code[0][0] = 1,
 			.f_code[0][1] = 1,
 			.f_code[1][0] = 15,
@@ -41,7 +41,7 @@
 	{
 		.index = 2,
 		.header = {
-			.picture_coding_type = PCT_P,
+			.picture_coding_type = V4L2_SLICE_PCT_P,
 			.f_code[0][0] = 1,
 			.f_code[0][1] = 1,
 			.f_code[1][0] = 15,
@@ -61,7 +61,7 @@
 	{
 		.index = 3,
 		.header = {
-			.picture_coding_type = PCT_P,
+			.picture_coding_type = V4L2_SLICE_PCT_P,
 			.f_code[0][0] = 1,
 			.f_code[0][1] = 1,
 			.f_code[1][0] = 15,
@@ -81,7 +81,7 @@
 	{
 		.index = 4,
 		.header = {
-			.picture_coding_type = PCT_P,
+			.picture_coding_type = V4L2_SLICE_PCT_P,
 			.f_code[0][0] = 1,
 			.f_code[0][1] = 1,
 			.f_code[1][0] = 15,
@@ -101,7 +101,7 @@
 	{
 		.index = 5,
 		.header = {
-			.picture_coding_type = PCT_P,
+			.picture_coding_type = V4L2_SLICE_PCT_P,
 			.f_code[0][0] = 1,
 			.f_code[0][1] = 1,
 			.f_code[1][0] = 15,
@@ -121,7 +121,7 @@
 	{
 		.index = 6,
 		.header = {
-			.picture_coding_type = PCT_P,
+			.picture_coding_type = V4L2_SLICE_PCT_P,
 			.f_code[0][0] = 1,
 			.f_code[0][1] = 1,
 			.f_code[1][0] = 15,
@@ -141,7 +141,7 @@
 	{
 		.index = 7,
 		.header = {
-			.picture_coding_type = PCT_P,
+			.picture_coding_type = V4L2_SLICE_PCT_P,
 			.f_code[0][0] = 1,
 			.f_code[0][1] = 1,
 			.f_code[1][0] = 15,
@@ -161,7 +161,7 @@
 	{
 		.index = 8,
 		.header = {
-			.picture_coding_type = PCT_P,
+			.picture_coding_type = V4L2_SLICE_PCT_P,
 			.f_code[0][0] = 1,
 			.f_code[0][1] = 1,
 			.f_code[1][0] = 15,
@@ -181,7 +181,7 @@
 	{
 		.index = 9,
 		.header = {
-			.picture_coding_type = PCT_P,
+			.picture_coding_type = V4L2_SLICE_PCT_P,
 			.f_code[0][0] = 1,
 			.f_code[0][1] = 1,
 			.f_code[1][0] = 15,
@@ -201,7 +201,7 @@
 	{
 		.index = 10,
 		.header = {
-			.picture_coding_type = PCT_P,
+			.picture_coding_type = V4L2_SLICE_PCT_P,
 			.f_code[0][0] = 1,
 			.f_code[0][1] = 1,
 			.f_code[1][0] = 15,
@@ -221,7 +221,7 @@
 	{
 		.index = 11,
 		.header = {
-			.picture_coding_type = PCT_P,
+			.picture_coding_type = V4L2_SLICE_PCT_P,
 			.f_code[0][0] = 1,
 			.f_code[0][1] = 1,
 			.f_code[1][0] = 15,
@@ -241,7 +241,7 @@
 	{
 		.index = 12,
 		.header = {
-			.picture_coding_type = PCT_P,
+			.picture_coding_type = V4L2_SLICE_PCT_P,
 			.f_code[0][0] = 1,
 			.f_code[0][1] = 1,
 			.f_code[1][0] = 15,
@@ -261,7 +261,7 @@
 	{
 		.index = 13,
 		.header = {
-			.picture_coding_type = PCT_P,
+			.picture_coding_type = V4L2_SLICE_PCT_P,
 			.f_code[0][0] = 1,
 			.f_code[0][1] = 1,
 			.f_code[1][0] = 15,
@@ -281,7 +281,7 @@
 	{
 		.index = 14,
 		.header = {
-			.picture_coding_type = PCT_P,
+			.picture_coding_type = V4L2_SLICE_PCT_P,
 			.f_code[0][0] = 7,
 			.f_code[0][1] = 7,
 			.f_code[1][0] = 15,
@@ -301,7 +301,7 @@
 	{
 		.index = 15,
 		.header = {
-			.picture_coding_type = PCT_I,
+			.picture_coding_type = V4L2_SLICE_PCT_I,
 			.f_code[0][0] = 15,
 			.f_code[0][1] = 15,
 			.f_code[1][0] = 15,
@@ -321,7 +321,7 @@
 	{
 		.index = 16,
 		.header = {
-			.picture_coding_type = PCT_P,
+			.picture_coding_type = V4L2_SLICE_PCT_P,
 			.f_code[0][0] = 1,
 			.f_code[0][1] = 1,
 			.f_code[1][0] = 15,
@@ -341,7 +341,7 @@
 	{
 		.index = 17,
 		.header = {
-			.picture_coding_type = PCT_P,
+			.picture_coding_type = V4L2_SLICE_PCT_P,
 			.f_code[0][0] = 1,
 			.f_code[0][1] = 1,
 			.f_code[1][0] = 15,
@@ -361,7 +361,7 @@
 	{
 		.index = 18,
 		.header = {
-			.picture_coding_type = PCT_P,
+			.picture_coding_type = V4L2_SLICE_PCT_P,
 			.f_code[0][0] = 1,
 			.f_code[0][1] = 1,
 			.f_code[1][0] = 15,
@@ -381,7 +381,7 @@
 	{
 		.index = 19,
 		.header = {
-			.picture_coding_type = PCT_P,
+			.picture_coding_type = V4L2_SLICE_PCT_P,
 			.f_code[0][0] = 1,
 			.f_code[0][1] = 1,
 			.f_code[1][0] = 15,
@@ -401,7 +401,7 @@
 	{
 		.index = 20,
 		.header = {
-			.picture_coding_type = PCT_P,
+			.picture_coding_type = V4L2_SLICE_PCT_P,
 			.f_code[0][0] = 1,
 			.f_code[0][1] = 1,
 			.f_code[1][0] = 15,
@@ -421,7 +421,7 @@
 	{
 		.index = 21,
 		.header = {
-			.picture_coding_type = PCT_P,
+			.picture_coding_type = V4L2_SLICE_PCT_P,
 			.f_code[0][0] = 1,
 			.f_code[0][1] = 1,
 			.f_code[1][0] = 15,
@@ -441,7 +441,7 @@
 	{
 		.index = 22,
 		.header = {
-			.picture_coding_type = PCT_P,
+			.picture_coding_type = V4L2_SLICE_PCT_P,
 			.f_code[0][0] = 1,
 			.f_code[0][1] = 1,
 			.f_code[1][0] = 15,
@@ -461,7 +461,7 @@
 	{
 		.index = 23,
 		.header = {
-			.picture_coding_type = PCT_P,
+			.picture_coding_type = V4L2_SLICE_PCT_P,
 			.f_code[0][0] = 1,
 			.f_code[0][1] = 1,
 			.f_code[1][0] = 15,
@@ -481,7 +481,7 @@
 	{
 		.index = 24,
 		.header = {
-			.picture_coding_type = PCT_P,
+			.picture_coding_type = V4L2_SLICE_PCT_P,
 			.f_code[0][0] = 1,
 			.f_code[0][1] = 1,
 			.f_code[1][0] = 15,

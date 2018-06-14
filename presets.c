@@ -76,7 +76,7 @@ struct preset *preset_find(char *name)
 	return NULL;
 }
 
-int frame_header_fill(struct v4l2_ctrl_mpeg2_frame_hdr *header, struct preset *preset, unsigned int index, unsigned int slice_size)
+int frame_header_fill(struct v4l2_ctrl_mpeg2_slice_header *header, struct preset *preset, unsigned int index, unsigned int slice_size)
 {
 	if (header == NULL || preset == NULL)
 		return -1;
@@ -90,7 +90,6 @@ int frame_header_fill(struct v4l2_ctrl_mpeg2_frame_hdr *header, struct preset *p
 
 	header->slice_pos = 0;
 	header->slice_len = slice_size * 8;
-	header->type = MPEG2;
 	header->width = preset->width;
 	header->height = preset->height;
 
@@ -136,8 +135,8 @@ int frame_gop_queue(unsigned int index)
 
 int frame_gop_schedule(struct preset *preset, unsigned int index)
 {
-	struct v4l2_ctrl_mpeg2_frame_hdr *header;
-	struct v4l2_ctrl_mpeg2_frame_hdr *header_next;
+	struct v4l2_ctrl_mpeg2_slice_header *header;
+	struct v4l2_ctrl_mpeg2_slice_header *header_next;
 	unsigned int gop_start_index;
 	unsigned int i;
 	bool gop_start = false;
@@ -154,7 +153,7 @@ int frame_gop_schedule(struct preset *preset, unsigned int index)
 	header = &preset->frames[index].header;
 
 	/* Only perform scheduling at GOP start. */
-	if (header->picture_coding_type != PCT_I)
+	if (header->picture_coding_type != V4L2_SLICE_PCT_I)
 		return 0;
 
 	rc = 0;
@@ -163,9 +162,9 @@ int frame_gop_schedule(struct preset *preset, unsigned int index)
 		header = &preset->frames[index].header;
 
 		/* I frames mark GOP end. */
-		if (header->picture_coding_type == PCT_I && index > gop_start_index) {
+		if (header->picture_coding_type == V4L2_SLICE_PCT_I && index > gop_start_index) {
 			break;
-		} else if (header->picture_coding_type == PCT_B) {
+		} else if (header->picture_coding_type == V4L2_SLICE_PCT_B) {
 			/* The required backward reference frame is already available, queue now. */
 			if (header->backward_ref_index >= index)
 				rc |= frame_gop_queue(index);
@@ -178,7 +177,7 @@ int frame_gop_schedule(struct preset *preset, unsigned int index)
 		for (i = (index + 1); i < preset->frames_count; i++) {
 			header_next = &preset->frames[i].header;
 
-			if (header_next->picture_coding_type != PCT_B)
+			if (header_next->picture_coding_type != V4L2_SLICE_PCT_B)
 				continue;
 
 			if (header_next->backward_ref_index == index)

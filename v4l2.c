@@ -242,7 +242,7 @@ int video_engine_start(int video_fd, int media_fd, unsigned int width, unsigned 
 	*buffers = malloc(buffers_count * sizeof(**buffers));
 	memset(*buffers, 0, buffers_count * sizeof(**buffers));
 
-	rc = set_format(video_fd, V4L2_BUF_TYPE_VIDEO_OUTPUT_MPLANE, V4L2_PIX_FMT_MPEG2_FRAME, width, height);
+	rc = set_format(video_fd, V4L2_BUF_TYPE_VIDEO_OUTPUT_MPLANE, V4L2_PIX_FMT_MPEG2_SLICE, width, height);
 	if (rc < 0) {
 		fprintf(stderr, "Unable to set source format\n");
 		goto error;
@@ -366,7 +366,7 @@ int video_engine_stop(int video_fd, struct video_buffer *buffers, unsigned int b
 	return 0;
 }
 
-int video_engine_decode(int video_fd, unsigned int index, struct v4l2_ctrl_mpeg2_frame_hdr *header, void *source_data, unsigned int source_size, struct video_buffer *buffers)
+int video_engine_decode(int video_fd, unsigned int index, struct v4l2_ctrl_mpeg2_slice_header *header, void *source_data, unsigned int source_size, struct video_buffer *buffers)
 {
 	struct timeval tv = { 0, 300000 };
 	int request_fd = -1;
@@ -377,7 +377,7 @@ int video_engine_decode(int video_fd, unsigned int index, struct v4l2_ctrl_mpeg2
 
 	memcpy(buffers[index].source_data, source_data, source_size);
 
-	rc = set_control(video_fd, request_fd, V4L2_CID_MPEG_VIDEO_MPEG2_FRAME_HDR, header, sizeof(*header));
+	rc = set_control(video_fd, request_fd, V4L2_CID_MPEG_VIDEO_MPEG2_SLICE_HEADER, header, sizeof(*header));
 	if (rc < 0) {
 		fprintf(stderr, "Unable to set frame header control\n");
 		return -1;
