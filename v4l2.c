@@ -389,7 +389,7 @@ int video_engine_decode(int video_fd, unsigned int index, struct v4l2_ctrl_mpeg2
 		return -1;
 	}
 
-	rc = queue_buffer(video_fd, request_fd, V4L2_BUF_TYPE_VIDEO_CAPTURE_MPLANE, index, 0);
+	rc = queue_buffer(video_fd, -1, V4L2_BUF_TYPE_VIDEO_CAPTURE_MPLANE, index, 0);
 	if (rc < 0) {
 		fprintf(stderr, "Unable to queue destination buffer\n");
 		return -1;
@@ -413,13 +413,13 @@ int video_engine_decode(int video_fd, unsigned int index, struct v4l2_ctrl_mpeg2
 		return -1;
 	}
 
-	rc = dequeue_buffer(video_fd, request_fd, V4L2_BUF_TYPE_VIDEO_OUTPUT_MPLANE, index);
+	rc = dequeue_buffer(video_fd, -1, V4L2_BUF_TYPE_VIDEO_OUTPUT_MPLANE, index);
 	if (rc < 0) {
 		fprintf(stderr, "Unable to dequeue source buffer\n");
 		return -1;
 	}
 
-	rc = dequeue_buffer(video_fd, request_fd, V4L2_BUF_TYPE_VIDEO_CAPTURE_MPLANE, index);
+	rc = dequeue_buffer(video_fd, -1, V4L2_BUF_TYPE_VIDEO_CAPTURE_MPLANE, index);
 	if (rc < 0) {
 		fprintf(stderr, "Unable to dequeue destination buffer\n");
 		return -1;
