@@ -69,30 +69,6 @@ static int create_tiled_buffer(int drm_fd, unsigned int width, unsigned int heig
 	return 0;
 }
 
-static int create_imported_buffer(int drm_fd, int *import_fds, unsigned int import_fds_count, unsigned int width, unsigned int height, struct gem_buffer *buffer)
-{
-	uint32_t handle;
-	unsigned int i;
-	int rc;
-
-	memset(buffer->handles, 0, sizeof(buffer->handles));
-	memset(buffer->pitches, 0, sizeof(buffer->pitches));
-	memset(buffer->offsets, 0, sizeof(buffer->offsets));
-
-	for (i = 0; i < import_fds_count; i++) {
-		rc = drmPrimeFDToHandle(drm_fd, import_fds[i], &handle);
-		if (rc < 0) {
-			fprintf(stderr, "Unable to create imported buffer: %s\n", strerror(errno));
-			return -1;
-		}
-
-		buffer->handles[i] = handle;
-		buffer->pitches[i] = ALIGN(width, 32);
-	}
-
-	return 0;
-}
-
 static int destroy_buffer(int drm_fd, struct gem_buffer *buffer)
 {
 	struct drm_mode_destroy_dumb destroy_dumb;
@@ -107,23 +83,6 @@ static int destroy_buffer(int drm_fd, struct gem_buffer *buffer)
 	rc = drmIoctl(drm_fd, DRM_IOCTL_MODE_DESTROY_DUMB, &destroy_dumb);
 	if (rc < 0) {
 		fprintf(stderr, "Unable to destroy buffer: %s\n", strerror(errno));
-		return -1;
-	}
-
-	return 0;
-}
-
-static int close_buffer(int drm_fd, struct gem_buffer *buffer)
-{
-	struct drm_gem_close gem_close;
-	int rc;
-
-	memset(&gem_close, 0, sizeof(gem_close));
-	gem_close.handle = buffer->handles[0];
-
-	rc = drmIoctl(drm_fd, DRM_IOCTL_GEM_CLOSE, &gem_close);
-	if (rc < 0) {
-		fprintf(stderr, "Unable to close buffer: %s\n", strerror(errno));
 		return -1;
 	}
 
@@ -235,51 +194,22 @@ static int page_flip(int drm_fd, unsigned int crtc_id, unsigned int framebuffer_
 	return 0;
 }
 
-int display_engine_start(int drm_fd, unsigned int crtc_id, unsigned int plane_id, unsigned int width, unsigned int height, struct video_buffer *video_buffers, unsigned int count, struct gem_buffer **buffers, struct display_setup *setup)
+int display_engine_start(int drm_fd, unsigned int crtc_id, unsigned int plane_id, unsigned int width, unsigned int height, struct gem_buffer **buffers, struct display_setup *setup)
 {
-	struct video_buffer *video_buffer;
 	struct gem_buffer *buffer;
 	unsigned int crtc_width, crtc_height;
 	unsigned int scaled_width, scaled_height;
 	unsigned int x, y;
-	unsigned int i, j;
-	unsigned int export_fds_count;
-	bool use_dmabuf = true;
+	unsigned int i;
 	int rc;
 
-	/*
-	 * Check for DMABUF support first and use as many (imported) gem buffers
-	 * as video buffers. Otherwise, fallback to 2 dedicated GEM buffers.
-	 */
+	*buffers = malloc(2 * sizeof(**buffers));
+	memset(*buffers, 0, 2 * sizeof(**buffers));
 
-	for (i = 0; i < count; i++) {
-		video_buffer = &video_buffers[i];
-		export_fds_count = sizeof(video_buffer->export_fds) / sizeof(*video_buffer->export_fds);
-
-		for (j = 0; j < export_fds_count; j++) {
-			if (video_buffer->export_fds[j] < 0) {
-				use_dmabuf = false;
-				break;
-			}
-		}
-	}
-
-	if (!use_dmabuf)
-		count = 2;
-
-	*buffers = malloc(count * sizeof(**buffers));
-	memset(*buffers, 0, count * sizeof(**buffers));
-
-	for (i = 0; i < count; i++) {
+	for (i = 0; i < 2; i++) {
 		buffer = &((*buffers)[i]);
-		video_buffer = &video_buffers[i];
-		export_fds_count = sizeof(video_buffer->export_fds) / sizeof(*video_buffer->export_fds);
 
-		if (use_dmabuf)
-			rc = create_imported_buffer(drm_fd, video_buffer->export_fds, export_fds_count, width, height, buffer);
-		else
-			rc = create_tiled_buffer(drm_fd, width, height, DRM_FORMAT_NV12, buffer);
-
+		rc = create_tiled_buffer(drm_fd, width, height, DRM_FORMAT_NV12, buffer);
 		if (rc < 0)
 			return -1;
 
@@ -287,11 +217,9 @@ int display_engine_start(int drm_fd, unsigned int crtc_id, unsigned int plane_id
 		if (rc < 0)
 			return -1;
 
-		if (!use_dmabuf) {
-			rc = map_buffer(drm_fd, buffer);
-			if (rc < 0)
-				return -1;
-		}
+		rc = map_buffer(drm_fd, buffer);
+		if (rc < 0)
+			return -1;
 	}
 
 	rc = get_crtc_size(drm_fd, crtc_id, &crtc_width, &crtc_height);
@@ -326,8 +254,6 @@ int display_engine_start(int drm_fd, unsigned int crtc_id, unsigned int plane_id
 	setup->scaled_height = scaled_height;
 	setup->x = x;
 	setup->y = y;
-	setup->buffers_count = count;
-	setup->use_dmabuf = use_dmabuf;
 
 	buffer = &((*buffers)[0]);
 
@@ -340,36 +266,28 @@ int display_engine_start(int drm_fd, unsigned int crtc_id, unsigned int plane_id
 	return 0;
 }
 
-int display_engine_stop(int drm_fd, struct gem_buffer *buffers, struct display_setup *setup)
+int display_engine_stop(int drm_fd, struct gem_buffer *buffers)
 {
 	struct gem_buffer *buffer;
 	unsigned int i;
 	int rc;
 
-	if (buffers == NULL || setup == NULL)
+	if (buffers == NULL)
 		return -1;
 
-	for (i = 0; i < setup->buffers_count; i++) {
+	for (i = 0; i < 2; i++) {
 		buffer = &buffers[i];
 
-		if (setup->use_dmabuf) {
-			rc = close_buffer(drm_fd, buffer);
-			if (rc < 0) {
-				fprintf(stderr, "Unable to close buffer %d\n", i);
-				return -1;
-			}
-		} else {
-			rc = unmap_buffer(drm_fd, buffer);
-			if (rc < 0) {
-				fprintf(stderr, "Unable to unmap buffer %d\n", i);
-				return -1;
-			}
+		rc = unmap_buffer(drm_fd, buffer);
+		if (rc < 0) {
+			fprintf(stderr, "Unable to unmap buffer %d\n", i);
+			return -1;
+		}
 
-			rc = destroy_buffer(drm_fd, buffer);
-			if (rc < 0) {
-				fprintf(stderr, "Unable to destroy buffer %d\n", i);
-				return -1;
-			}
+		rc = destroy_buffer(drm_fd, buffer);
+		if (rc < 0) {
+			fprintf(stderr, "Unable to destroy buffer %d\n", i);
+			return -1;
 		}
 	}
 
@@ -387,10 +305,6 @@ int display_engine_show(int drm_fd, unsigned int index, struct video_buffer *vid
 
 	if (buffers == NULL || setup == NULL)
 		return -1;
-
-	// FIXME: Page flip GEM buffers
-	if (setup->use_dmabuf)
-		return 0;
 
 	video_buffer = &video_buffers[index];
 	buffer = index % 2 == 0 ? &buffers[0] : &buffers[1];

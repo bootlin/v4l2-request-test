@@ -184,31 +184,6 @@ static int dequeue_buffer(int video_fd, int request_fd, unsigned int type, unsig
 	return 0;
 }
 
-static int export_buffer(int video_fd, unsigned int type, unsigned int index, unsigned int flags, int *export_fds, unsigned int export_fds_count)
-{
-	struct v4l2_exportbuffer exportbuffer;
-	unsigned int i;
-	int rc;
-
-	for (i = 0; i < export_fds_count; i++) {
-		memset(&exportbuffer, 0, sizeof(exportbuffer));
-		exportbuffer.type = type;
-		exportbuffer.index = index;
-		exportbuffer.plane = i;
-		exportbuffer.flags = flags;
-
-		rc = ioctl(video_fd, VIDIOC_EXPBUF, &exportbuffer);
-		if (rc < 0) {
-			fprintf(stderr, "Unable to export buffer: %s\n", strerror(errno));
-			return -1;
-		}
-
-		export_fds[i] = exportbuffer.fd;
-	}
-
-	return 0;
-}
-
 static int set_control(int video_fd, int request_fd, unsigned int id, void *data, unsigned int size)
 {
 	struct v4l2_ext_control control;
@@ -261,7 +236,6 @@ int video_engine_start(int video_fd, int media_fd, unsigned int width, unsigned 
 	unsigned int source_offset;
 	unsigned int destination_length[2];
 	unsigned int destination_offset[2];
-	unsigned int export_fds_count;
 	unsigned int i, j;
 	int rc;
 
@@ -327,15 +301,6 @@ int video_engine_start(int video_fd, int media_fd, unsigned int width, unsigned 
 			}
 
 			buffer->destination_size[j] = destination_length[j];
-			buffer->export_fds[j] = -1;
-		}
-
-		export_fds_count = 2;
-
-		rc = export_buffer(video_fd, V4L2_BUF_TYPE_VIDEO_CAPTURE_MPLANE, i, O_RDONLY, buffer->export_fds, export_fds_count);
-		if (rc < 0) {
-			fprintf(stderr, "Unable to export destination buffer\n");
-			goto error;
 		}
 
 		rc = ioctl(media_fd, MEDIA_IOC_REQUEST_ALLOC, &request_alloc);
