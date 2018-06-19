@@ -151,7 +151,6 @@ int frame_gop_schedule(struct preset *preset, unsigned int index)
 	struct v4l2_ctrl_mpeg2_slice_header *header_next;
 	unsigned int gop_start_index;
 	unsigned int i;
-	bool gop_start = false;
 	int rc;
 
 	if (preset == NULL)
