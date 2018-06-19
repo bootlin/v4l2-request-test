@@ -431,7 +431,6 @@ static int get_plane_id(int drm_fd, unsigned int crtc_id, unsigned int *plane_id
 {
 	drmModeResPtr ressources = NULL;
 	drmModePlaneResPtr plane_ressources = NULL;
-	drmModeCrtcPtr crtc = NULL;
 	drmModePlanePtr plane = NULL;
 	drmModeObjectPropertiesPtr properties = NULL;
 	drmModePropertyPtr property = NULL;
