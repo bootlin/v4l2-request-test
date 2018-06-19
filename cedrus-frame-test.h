@@ -152,7 +152,7 @@ struct display_setup {
 
 void presets_usage(void);
 struct preset *preset_find(char *name);
-int frame_header_fill(struct v4l2_ctrl_mpeg2_slice_header *header, struct preset *preset, unsigned int index, unsigned int slice_size);
+int frame_header_fill(struct config *config, union controls *frame_header, struct preset *preset, unsigned int index, unsigned int slice_size);
 int frame_gop_next(unsigned int *index);
 int frame_gop_dequeue(void);
 int frame_gop_queue(unsigned int index);

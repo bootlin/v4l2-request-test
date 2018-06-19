@@ -184,7 +184,7 @@ int main(int argc, char *argv[])
 	struct gem_buffer *gem_buffers;
 	struct display_setup setup;
 	struct media_device_info device_info;
-	struct v4l2_ctrl_mpeg2_slice_header header;
+	union controls frame_header;
 	struct timespec before, after;
 	struct timespec video_before, video_after;
 	struct timespec display_before, display_after;
@@ -377,15 +377,17 @@ int main(int argc, char *argv[])
 		if (!config.quiet)
 			printf("Loaded %d bytes of video slice data\n", slice_size);
 
-		frame_header_fill(&header, preset, index, slice_size);
+		rc = frame_header_fill(&config, &frame_header, preset, index, slice_size);
+		if (rc < 0) {
+			fprintf(stderr, "Unable to fill frame header\n");
+			goto error;
+		}
 
 		v4l2_index = index % config.buffers_count;
-		header.forward_ref_index %= config.buffers_count;
-		header.backward_ref_index %= config.buffers_count;
 
 		clock_gettime(CLOCK_MONOTONIC, &video_before);
 
-		rc = video_engine_decode(video_fd, v4l2_index, &header, slice_data, slice_size, video_buffers);
+		rc = video_engine_decode(video_fd, v4l2_index, &frame_header, slice_data, slice_size, video_buffers);
 		if (rc < 0) {
 			fprintf(stderr, "Unable to decode video frame\n");
 			goto error;

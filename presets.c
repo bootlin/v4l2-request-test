@@ -77,7 +77,7 @@ struct preset *preset_find(char *name)
 	return NULL;
 }
 
-int frame_header_fill(struct v4l2_ctrl_mpeg2_slice_header *header, struct preset *preset, unsigned int index, unsigned int slice_size)
+int frame_header_fill(struct config *config, union controls *frame_header, struct preset *preset, unsigned int index, unsigned int slice_size)
 {
 	if (header == NULL || preset == NULL)
 		return -1;
@@ -87,12 +87,23 @@ int frame_header_fill(struct v4l2_ctrl_mpeg2_slice_header *header, struct preset
 		return -1;
 	}
 
-	memcpy(header, &preset->frames[index].frame.mpeg2.header, sizeof(*header));
+	memcpy(frame_header, &preset->frames[index].frame, sizeof(*frame_header));
 
-	header->slice_pos = 0;
-	header->slice_len = slice_size * 8;
-	header->width = preset->width;
-	header->height = preset->height;
+	switch (preset->type) {
+	case FORMAT_TYPE_MPEG2:
+		frame_header->mpeg2.header.slice_pos = 0;
+		frame_header->mpeg2.header.slice_len = slice_size * 8;
+
+		frame_header->mpeg2.header.width = preset->width;
+		frame_header->mpeg2.header.height = preset->height;
+
+		frame_header->mpeg2.header.forward_ref_index %= config->buffers_count;
+		frame_header->mpeg2.header.backward_ref_index %= config->buffers_count;
+		break;
+	default:
+		return -1;
+	}
+
 
 	return 0;
 }
