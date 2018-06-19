@@ -184,7 +184,7 @@ int main(int argc, char *argv[])
 	struct gem_buffer *gem_buffers;
 	struct display_setup setup;
 	struct media_device_info device_info;
-	union controls frame_header;
+	union controls frame;
 	struct timespec before, after;
 	struct timespec video_before, video_after;
 	struct timespec display_before, display_after;
@@ -311,7 +311,7 @@ int main(int argc, char *argv[])
 		goto error;
 	}
 
-	rc = video_engine_start(video_fd, media_fd, width, height, &video_buffers, config.buffers_count);
+	rc = video_engine_start(video_fd, media_fd, width, height, preset->type, &video_buffers, config.buffers_count);
 	if (rc < 0) {
 		fprintf(stderr, "Unable to start video engine\n");
 		goto error;
@@ -377,7 +377,7 @@ int main(int argc, char *argv[])
 		if (!config.quiet)
 			printf("Loaded %d bytes of video slice data\n", slice_size);
 
-		rc = frame_header_fill(&config, &frame_header, preset, index, slice_size);
+		rc = frame_controls_fill(&config, &frame, preset, index, slice_size);
 		if (rc < 0) {
 			fprintf(stderr, "Unable to fill frame header\n");
 			goto error;
@@ -387,7 +387,7 @@ int main(int argc, char *argv[])
 
 		clock_gettime(CLOCK_MONOTONIC, &video_before);
 
-		rc = video_engine_decode(video_fd, v4l2_index, &frame_header, slice_data, slice_size, video_buffers);
+		rc = video_engine_decode(video_fd, v4l2_index, &frame, preset->type, slice_data, slice_size, video_buffers);
 		if (rc < 0) {
 			fprintf(stderr, "Unable to decode video frame\n");
 			goto error;

@@ -253,7 +253,7 @@ static int set_stream(int video_fd, unsigned int type, bool enable)
 	return 0;
 }
 
-int video_engine_start(int video_fd, int media_fd, unsigned int width, unsigned int height, struct video_buffer **buffers, unsigned int buffers_count)
+int video_engine_start(int video_fd, int media_fd, unsigned int width, unsigned int height, enum format_type type, struct video_buffer **buffers, unsigned int buffers_count)
 {
 	struct media_request_alloc request_alloc;
 	struct video_buffer *buffer;
@@ -262,13 +262,24 @@ int video_engine_start(int video_fd, int media_fd, unsigned int width, unsigned 
 	unsigned int destination_length[2];
 	unsigned int destination_offset[2];
 	unsigned int export_fds_count;
+	unsigned int format;
 	unsigned int i, j;
 	int rc;
 
 	*buffers = malloc(buffers_count * sizeof(**buffers));
 	memset(*buffers, 0, buffers_count * sizeof(**buffers));
 
-	rc = set_format(video_fd, V4L2_BUF_TYPE_VIDEO_OUTPUT_MPLANE, V4L2_PIX_FMT_MPEG2_SLICE, width, height);
+	switch (type) {
+	case FORMAT_TYPE_MPEG2:
+		format = V4L2_PIX_FMT_MPEG2_SLICE;
+		break;
+
+	default:
+		fprintf(stderr, "Invalid format type\n");
+		goto error;
+	}
+
+	rc = set_format(video_fd, V4L2_BUF_TYPE_VIDEO_OUTPUT_MPLANE, format, width, height);
 	if (rc < 0) {
 		fprintf(stderr, "Unable to set source format\n");
 		goto error;
@@ -401,7 +412,7 @@ int video_engine_stop(int video_fd, struct video_buffer *buffers, unsigned int b
 	return 0;
 }
 
-int video_engine_decode(int video_fd, unsigned int index, struct v4l2_ctrl_mpeg2_slice_header *header, void *source_data, unsigned int source_size, struct video_buffer *buffers)
+int video_engine_decode(int video_fd, unsigned int index, union controls *frame, enum format_type type, void *source_data, unsigned int source_size, struct video_buffer *buffers)
 {
 	struct timeval tv = { 0, 300000 };
 	int request_fd = -1;
@@ -412,9 +423,17 @@ int video_engine_decode(int video_fd, unsigned int index, struct v4l2_ctrl_mpeg2
 
 	memcpy(buffers[index].source_data, source_data, source_size);
 
-	rc = set_control(video_fd, request_fd, V4L2_CID_MPEG_VIDEO_MPEG2_SLICE_HEADER, header, sizeof(*header));
-	if (rc < 0) {
-		fprintf(stderr, "Unable to set frame header control\n");
+	switch (type) {
+	case FORMAT_TYPE_MPEG2:
+		rc = set_control(video_fd, request_fd, V4L2_CID_MPEG_VIDEO_MPEG2_SLICE_HEADER, &frame->mpeg2.header, sizeof(frame->mpeg2.header));
+		if (rc < 0) {
+			fprintf(stderr, "Unable to set mpeg2 frame header control\n");
+			return -1;
+		}
+
+		break;
+	default:
+		fprintf(stderr, "Invalid format type\n");
 		return -1;
 	}
 

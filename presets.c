@@ -77,9 +77,9 @@ struct preset *preset_find(char *name)
 	return NULL;
 }
 
-int frame_header_fill(struct config *config, union controls *frame_header, struct preset *preset, unsigned int index, unsigned int slice_size)
+int frame_controls_fill(struct config *config, union controls *frame, struct preset *preset, unsigned int index, unsigned int slice_size)
 {
-	if (header == NULL || preset == NULL)
+	if (frame == NULL || preset == NULL)
 		return -1;
 
 	if (index >= preset->frames_count) {
@@ -87,18 +87,18 @@ int frame_header_fill(struct config *config, union controls *frame_header, struc
 		return -1;
 	}
 
-	memcpy(frame_header, &preset->frames[index].frame, sizeof(*frame_header));
+	memcpy(frame, &preset->frames[index].frame, sizeof(*frame));
 
 	switch (preset->type) {
 	case FORMAT_TYPE_MPEG2:
-		frame_header->mpeg2.header.slice_pos = 0;
-		frame_header->mpeg2.header.slice_len = slice_size * 8;
+		frame->mpeg2.header.slice_pos = 0;
+		frame->mpeg2.header.slice_len = slice_size * 8;
 
-		frame_header->mpeg2.header.width = preset->width;
-		frame_header->mpeg2.header.height = preset->height;
+		frame->mpeg2.header.width = preset->width;
+		frame->mpeg2.header.height = preset->height;
 
-		frame_header->mpeg2.header.forward_ref_index %= config->buffers_count;
-		frame_header->mpeg2.header.backward_ref_index %= config->buffers_count;
+		frame->mpeg2.header.forward_ref_index %= config->buffers_count;
+		frame->mpeg2.header.backward_ref_index %= config->buffers_count;
 		break;
 	default:
 		return -1;
@@ -106,6 +106,32 @@ int frame_header_fill(struct config *config, union controls *frame_header, struc
 
 
 	return 0;
+}
+
+unsigned int frame_pct(struct preset *preset, unsigned int index)
+{
+	if (preset == NULL)
+		return V4L2_SLICE_PCT_I;
+
+	switch (preset->type) {
+	case FORMAT_TYPE_MPEG2:
+		return preset->frames[index].frame.mpeg2.header.picture_coding_type;
+	default:
+		return V4L2_SLICE_PCT_I;
+	}
+}
+
+unsigned int frame_backward_ref_index(struct preset *preset, unsigned int index)
+{
+	if (preset == NULL)
+		return V4L2_SLICE_PCT_I;
+
+	switch (preset->type) {
+	case FORMAT_TYPE_MPEG2:
+		return preset->frames[index].frame.mpeg2.header.backward_ref_index;
+	default:
+		return V4L2_SLICE_PCT_I;
+	}
 }
 
 int frame_gop_next(unsigned int *index)
@@ -147,9 +173,9 @@ int frame_gop_queue(unsigned int index)
 
 int frame_gop_schedule(struct preset *preset, unsigned int index)
 {
-	struct v4l2_ctrl_mpeg2_slice_header *header;
-	struct v4l2_ctrl_mpeg2_slice_header *header_next;
 	unsigned int gop_start_index;
+	unsigned int pct, pct_next;
+	unsigned int backward_ref_index, backward_ref_index_next;
 	unsigned int i;
 	int rc;
 
@@ -161,23 +187,24 @@ int frame_gop_schedule(struct preset *preset, unsigned int index)
 		return -1;
 	}
 
-	header = &preset->frames[index].header;
+	pct = frame_pct(preset, index);
 
 	/* Only perform scheduling at GOP start. */
-	if (header->picture_coding_type != V4L2_SLICE_PCT_I)
+	if (pct != V4L2_SLICE_PCT_I)
 		return 0;
 
 	rc = 0;
 
 	for (gop_start_index = index; index < preset->frames_count; index++) {
-		header = &preset->frames[index].header;
+		pct = frame_pct(preset, index);
+		backward_ref_index = frame_backward_ref_index(preset, index);
 
 		/* I frames mark GOP end. */
-		if (header->picture_coding_type == V4L2_SLICE_PCT_I && index > gop_start_index) {
+		if (pct == V4L2_SLICE_PCT_I && index > gop_start_index) {
 			break;
-		} else if (header->picture_coding_type == V4L2_SLICE_PCT_B) {
+		} else if (pct == V4L2_SLICE_PCT_B) {
 			/* The required backward reference frame is already available, queue now. */
-			if (header->backward_ref_index >= index)
+			if (backward_ref_index >= index)
 				rc |= frame_gop_queue(index);
 
 			/* The B frame was already queued before the associated backward reference frame. */
@@ -186,12 +213,13 @@ int frame_gop_schedule(struct preset *preset, unsigned int index)
 
 		/* Queue B frames before their associated backward reference frames. */
 		for (i = (index + 1); i < preset->frames_count; i++) {
-			header_next = &preset->frames[i].header;
+			pct_next = frame_pct(preset, i);
+			backward_ref_index_next = frame_backward_ref_index(preset, i);
 
-			if (header_next->picture_coding_type != V4L2_SLICE_PCT_B)
+			if (pct_next != V4L2_SLICE_PCT_B)
 				continue;
 
-			if (header_next->backward_ref_index == index)
+			if (backward_ref_index_next == index)
 				rc |= frame_gop_queue(i);
 		}
 

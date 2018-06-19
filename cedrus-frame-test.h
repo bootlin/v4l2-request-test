@@ -152,7 +152,9 @@ struct display_setup {
 
 void presets_usage(void);
 struct preset *preset_find(char *name);
-int frame_header_fill(struct config *config, union controls *frame_header, struct preset *preset, unsigned int index, unsigned int slice_size);
+int frame_controls_fill(struct config *config, union controls *frame, struct preset *preset, unsigned int index, unsigned int slice_size);
+unsigned int frame_pct(struct preset *preset, unsigned int index);
+unsigned int frame_backward_ref_index(struct preset *preset, unsigned int index);
 int frame_gop_next(unsigned int *index);
 int frame_gop_dequeue(void);
 int frame_gop_queue(unsigned int index);
@@ -160,9 +162,9 @@ int frame_gop_schedule(struct preset *preset, unsigned int index);
 
 /* V4L2 */
 
-int video_engine_start(int video_fd, int media_fd, unsigned int width, unsigned int height, struct video_buffer **buffers, unsigned int buffers_count);
+int video_engine_start(int video_fd, int media_fd, unsigned int width, unsigned int height, enum format_type type, struct video_buffer **buffers, unsigned int buffers_count);
 int video_engine_stop(int video_fd, struct video_buffer *buffers, unsigned int buffers_count);
-int video_engine_decode(int video_fd, unsigned int index, struct v4l2_ctrl_mpeg2_slice_header *header, void *source_data, unsigned int source_size, struct video_buffer *buffers);
+int video_engine_decode(int video_fd, unsigned int index, union controls *frame, enum format_type type, void *source_data, unsigned int source_size, struct video_buffer *buffers);
 
 /* DRM */
 
