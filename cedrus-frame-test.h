@@ -97,7 +97,25 @@ struct gem_buffer {
 	unsigned int framebuffer_id;
 };
 
+struct display_properties_ids {
+	uint32_t connector_crtc_id;
+	uint32_t crtc_mode_id;
+	uint32_t crtc_active;
+	uint32_t plane_fb_id;
+	uint32_t plane_crtc_id;
+	uint32_t plane_src_x;
+	uint32_t plane_src_y;
+	uint32_t plane_src_w;
+	uint32_t plane_src_h;
+	uint32_t plane_crtc_x;
+	uint32_t plane_crtc_y;
+	uint32_t plane_crtc_w;
+	uint32_t plane_crtc_h;
+};
+
 struct display_setup {
+	unsigned int connector_id;
+	unsigned int encoder_id;
 	unsigned int crtc_id;
 	unsigned int plane_id;
 
@@ -110,6 +128,8 @@ struct display_setup {
 
 	unsigned int buffers_count;
 	bool use_dmabuf;
+
+	struct display_properties_ids properties_ids;
 };
 
 /*
@@ -134,7 +154,7 @@ int video_engine_decode(int video_fd, unsigned int index, struct v4l2_ctrl_mpeg2
 
 /* DRM */
 
-int display_engine_start(int drm_fd, unsigned int crtc_id, unsigned int plane_id, unsigned int width, unsigned int height, struct video_buffer *video_buffers, unsigned int count, struct gem_buffer **buffers, struct display_setup *setup);
+int display_engine_start(int drm_fd, unsigned int width, unsigned int height, struct video_buffer *video_buffers, unsigned int count, struct gem_buffer **buffers, struct display_setup *setup);
 int display_engine_stop(int drm_fd, struct gem_buffer *buffers, struct display_setup *setup);
 int display_engine_show(int drm_fd, unsigned int index, struct video_buffer *video_buffers, struct gem_buffer *buffers, struct display_setup *setup);
 

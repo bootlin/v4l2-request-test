@@ -318,7 +318,7 @@ int main(int argc, char *argv[])
 		goto error;
 	}
 
-	rc = display_engine_start(drm_fd, config.crtc_id, config.plane_id, width, height, video_buffers, buffers_count, &gem_buffers, &setup);
+	rc = display_engine_start(drm_fd, width, height, video_buffers, buffers_count, &gem_buffers, &setup);
 	if (rc < 0) {
 		fprintf(stderr, "Unable to start display engine\n");
 		goto error;
