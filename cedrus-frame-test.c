@@ -216,56 +216,56 @@ int main(int argc, char *argv[])
 			break;
 
 		switch (opt) {
-			case 'v':
-				free(config.video_path);
-				config.video_path = strdup(optarg);
-				break;
-			case 'm':
-				free(config.media_path);
-				config.media_path = strdup(optarg);
-				break;
-			case 'd':
-				free(config.drm_path);
-				config.drm_path = strdup(optarg);
-				break;
-			case 'D':
-				free(config.drm_driver);
-				config.drm_driver = strdup(optarg);
-				break;
-			case 'c':
-				config.crtc_id = atoi(optarg);
-				break;
-			case 'p':
-				config.plane_id = atoi(optarg);
-				break;
-			case 's':
-				free(config.slices_filename_format);
-				config.slices_filename_format = strdup(optarg);
-				break;
-			case 'f':
-				config.fps = atoi(optarg);
-				break;
-			case 'P':
-				free(config.preset_name);
-				config.preset_name = strdup(optarg);
-				break;
-			case 'i':
-				config.interactive = true;
-				break;
-			case 'l':
-				config.loop = true;
-				break;
-			case 'q':
-				config.quiet = true;
-				break;
-			case 'h':
-				print_help();
+		case 'v':
+			free(config.video_path);
+			config.video_path = strdup(optarg);
+			break;
+		case 'm':
+			free(config.media_path);
+			config.media_path = strdup(optarg);
+			break;
+		case 'd':
+			free(config.drm_path);
+			config.drm_path = strdup(optarg);
+			break;
+		case 'D':
+			free(config.drm_driver);
+			config.drm_driver = strdup(optarg);
+			break;
+		case 'c':
+			config.crtc_id = atoi(optarg);
+			break;
+		case 'p':
+			config.plane_id = atoi(optarg);
+			break;
+		case 's':
+			free(config.slices_filename_format);
+			config.slices_filename_format = strdup(optarg);
+			break;
+		case 'f':
+			config.fps = atoi(optarg);
+			break;
+		case 'P':
+			free(config.preset_name);
+			config.preset_name = strdup(optarg);
+			break;
+		case 'i':
+			config.interactive = true;
+			break;
+		case 'l':
+			config.loop = true;
+			break;
+		case 'q':
+			config.quiet = true;
+			break;
+		case 'h':
+			print_help();
 
-				rc = 0;
-				goto complete;
-			case '?':
-				print_help();
-				goto error;
+			rc = 0;
+			goto complete;
+		case '?':
+			print_help();
+			goto error;
 		}
 	}
 
