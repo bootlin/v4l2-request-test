@@ -37,6 +37,7 @@ static struct preset presets[] = {
 		.attribution = "Blender Foundation | www.blender.org",
 		.width = 854,
 		.height = 480,
+		.type = DUMP_FRAME_MPEG2,
 		.frames = bbb_mpeg2_frames,
 		.frames_count = sizeof(bbb_mpeg2_frames) / sizeof(bbb_mpeg2_frames[0]),
 	},

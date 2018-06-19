@@ -1,6 +1,5 @@
 	{
 		.index = 0,
-		.type = DUMP_FRAME_MPEG2,
 		.frame.mpeg2.header = {
 			.picture_coding_type = V4L2_SLICE_PCT_I,
 			.f_code = { 15, 15, 15, 15 },
@@ -18,7 +17,6 @@
 	},
 	{
 		.index = 1,
-		.type = DUMP_FRAME_MPEG2,
 		.frame.mpeg2.header = {
 			.picture_coding_type = V4L2_SLICE_PCT_P,
 			.f_code = { 1, 1, 15, 15 },
@@ -36,7 +34,6 @@
 	},
 	{
 		.index = 2,
-		.type = DUMP_FRAME_MPEG2,
 		.frame.mpeg2.header = {
 			.picture_coding_type = V4L2_SLICE_PCT_P,
 			.f_code = { 1, 1, 15, 15 },
@@ -54,7 +51,6 @@
 	},
 	{
 		.index = 3,
-		.type = DUMP_FRAME_MPEG2,
 		.frame.mpeg2.header = {
 			.picture_coding_type = V4L2_SLICE_PCT_P,
 			.f_code = { 1, 1, 15, 15 },
@@ -72,7 +68,6 @@
 	},
 	{
 		.index = 4,
-		.type = DUMP_FRAME_MPEG2,
 		.frame.mpeg2.header = {
 			.picture_coding_type = V4L2_SLICE_PCT_P,
 			.f_code = { 1, 1, 15, 15 },
@@ -90,7 +85,6 @@
 	},
 	{
 		.index = 5,
-		.type = DUMP_FRAME_MPEG2,
 		.frame.mpeg2.header = {
 			.picture_coding_type = V4L2_SLICE_PCT_P,
 			.f_code = { 1, 1, 15, 15 },
@@ -108,7 +102,6 @@
 	},
 	{
 		.index = 6,
-		.type = DUMP_FRAME_MPEG2,
 		.frame.mpeg2.header = {
 			.picture_coding_type = V4L2_SLICE_PCT_P,
 			.f_code = { 1, 1, 15, 15 },
@@ -126,7 +119,6 @@
 	},
 	{
 		.index = 7,
-		.type = DUMP_FRAME_MPEG2,
 		.frame.mpeg2.header = {
 			.picture_coding_type = V4L2_SLICE_PCT_P,
 			.f_code = { 1, 1, 15, 15 },
@@ -144,7 +136,6 @@
 	},
 	{
 		.index = 8,
-		.type = DUMP_FRAME_MPEG2,
 		.frame.mpeg2.header = {
 			.picture_coding_type = V4L2_SLICE_PCT_P,
 			.f_code = { 1, 1, 15, 15 },
@@ -162,7 +153,6 @@
 	},
 	{
 		.index = 9,
-		.type = DUMP_FRAME_MPEG2,
 		.frame.mpeg2.header = {
 			.picture_coding_type = V4L2_SLICE_PCT_P,
 			.f_code = { 1, 1, 15, 15 },
@@ -180,7 +170,6 @@
 	},
 	{
 		.index = 10,
-		.type = DUMP_FRAME_MPEG2,
 		.frame.mpeg2.header = {
 			.picture_coding_type = V4L2_SLICE_PCT_P,
 			.f_code = { 1, 1, 15, 15 },
@@ -198,7 +187,6 @@
 	},
 	{
 		.index = 11,
-		.type = DUMP_FRAME_MPEG2,
 		.frame.mpeg2.header = {
 			.picture_coding_type = V4L2_SLICE_PCT_P,
 			.f_code = { 1, 1, 15, 15 },
@@ -216,7 +204,6 @@
 	},
 	{
 		.index = 12,
-		.type = DUMP_FRAME_MPEG2,
 		.frame.mpeg2.header = {
 			.picture_coding_type = V4L2_SLICE_PCT_P,
 			.f_code = { 1, 1, 15, 15 },
@@ -234,7 +221,6 @@
 	},
 	{
 		.index = 13,
-		.type = DUMP_FRAME_MPEG2,
 		.frame.mpeg2.header = {
 			.picture_coding_type = V4L2_SLICE_PCT_P,
 			.f_code = { 1, 1, 15, 15 },
@@ -252,7 +238,6 @@
 	},
 	{
 		.index = 14,
-		.type = DUMP_FRAME_MPEG2,
 		.frame.mpeg2.header = {
 			.picture_coding_type = V4L2_SLICE_PCT_P,
 			.f_code = { 7, 7, 15, 15 },
@@ -270,7 +255,6 @@
 	},
 	{
 		.index = 15,
-		.type = DUMP_FRAME_MPEG2,
 		.frame.mpeg2.header = {
 			.picture_coding_type = V4L2_SLICE_PCT_I,
 			.f_code = { 15, 15, 15, 15 },
@@ -288,7 +272,6 @@
 	},
 	{
 		.index = 16,
-		.type = DUMP_FRAME_MPEG2,
 		.frame.mpeg2.header = {
 			.picture_coding_type = V4L2_SLICE_PCT_P,
 			.f_code = { 1, 1, 15, 15 },
@@ -306,7 +289,6 @@
 	},
 	{
 		.index = 17,
-		.type = DUMP_FRAME_MPEG2,
 		.frame.mpeg2.header = {
 			.picture_coding_type = V4L2_SLICE_PCT_P,
 			.f_code = { 1, 1, 15, 15 },
@@ -324,7 +306,6 @@
 	},
 	{
 		.index = 18,
-		.type = DUMP_FRAME_MPEG2,
 		.frame.mpeg2.header = {
 			.picture_coding_type = V4L2_SLICE_PCT_P,
 			.f_code = { 1, 1, 15, 15 },
@@ -342,7 +323,6 @@
 	},
 	{
 		.index = 19,
-		.type = DUMP_FRAME_MPEG2,
 		.frame.mpeg2.header = {
 			.picture_coding_type = V4L2_SLICE_PCT_P,
 			.f_code = { 1, 1, 15, 15 },
@@ -360,7 +340,6 @@
 	},
 	{
 		.index = 20,
-		.type = DUMP_FRAME_MPEG2,
 		.frame.mpeg2.header = {
 			.picture_coding_type = V4L2_SLICE_PCT_P,
 			.f_code = { 1, 1, 15, 15 },
@@ -378,7 +357,6 @@
 	},
 	{
 		.index = 21,
-		.type = DUMP_FRAME_MPEG2,
 		.frame.mpeg2.header = {
 			.picture_coding_type = V4L2_SLICE_PCT_P,
 			.f_code = { 1, 1, 15, 15 },
@@ -396,7 +374,6 @@
 	},
 	{
 		.index = 22,
-		.type = DUMP_FRAME_MPEG2,
 		.frame.mpeg2.header = {
 			.picture_coding_type = V4L2_SLICE_PCT_P,
 			.f_code = { 1, 1, 15, 15 },
@@ -414,7 +391,6 @@
 	},
 	{
 		.index = 23,
-		.type = DUMP_FRAME_MPEG2,
 		.frame.mpeg2.header = {
 			.picture_coding_type = V4L2_SLICE_PCT_P,
 			.f_code = { 1, 1, 15, 15 },
@@ -432,7 +408,6 @@
 	},
 	{
 		.index = 24,
-		.type = DUMP_FRAME_MPEG2,
 		.frame.mpeg2.header = {
 			.picture_coding_type = V4L2_SLICE_PCT_P,
 			.f_code = { 1, 1, 15, 15 },

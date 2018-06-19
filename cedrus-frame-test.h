@@ -68,7 +68,6 @@ union controls {
 
 struct frame {
 	unsigned int index;
-	enum frame_type type;
 	union controls frame;
 };
 
@@ -81,6 +80,7 @@ struct preset {
 	unsigned int width;
 	unsigned int height;
 
+	enum frame_type type;
 	struct frame *frames;
 	unsigned int frames_count;
 };
