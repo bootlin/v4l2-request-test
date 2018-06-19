@@ -56,8 +56,8 @@ struct config {
 
 /* Presets */
 
-enum frame_type {
-	DUMP_FRAME_MPEG2,
+enum format_type {
+	FORMAT_TYPE_MPEG2,
 };
 
 union controls {
@@ -80,7 +80,7 @@ struct preset {
 	unsigned int width;
 	unsigned int height;
 
-	enum frame_type type;
+	enum format_type type;
 	struct frame *frames;
 	unsigned int frames_count;
 };
