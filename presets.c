@@ -78,7 +78,7 @@ struct preset *preset_find(char *name)
 	return NULL;
 }
 
-int frame_controls_fill(struct config *config, union controls *frame, struct preset *preset, unsigned int index, unsigned int slice_size)
+int frame_controls_fill(union controls *frame, struct preset *preset, unsigned int buffers_count, unsigned int index, unsigned int slice_size)
 {
 	if (frame == NULL || preset == NULL)
 		return -1;
@@ -98,8 +98,8 @@ int frame_controls_fill(struct config *config, union controls *frame, struct pre
 		frame->mpeg2.header.width = preset->width;
 		frame->mpeg2.header.height = preset->height;
 
-		frame->mpeg2.header.forward_ref_index %= config->buffers_count;
-		frame->mpeg2.header.backward_ref_index %= config->buffers_count;
+		frame->mpeg2.header.forward_ref_index %= buffers_count;
+		frame->mpeg2.header.backward_ref_index %= buffers_count;
 		break;
 	default:
 		return -1;

@@ -364,7 +364,7 @@ int main(int argc, char *argv[])
 		if (!config.quiet)
 			printf("Loaded %d bytes of video slice data\n", slice_size);
 
-		rc = frame_controls_fill(&config, &frame, preset, index, slice_size);
+		rc = frame_controls_fill(&frame, preset, config.buffers_count, index, slice_size);
 		if (rc < 0) {
 			fprintf(stderr, "Unable to fill frame header\n");
 			goto error;
