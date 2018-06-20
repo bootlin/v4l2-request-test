@@ -125,13 +125,13 @@ unsigned int frame_pct(struct preset *preset, unsigned int index)
 unsigned int frame_backward_ref_index(struct preset *preset, unsigned int index)
 {
 	if (preset == NULL)
-		return V4L2_SLICE_PCT_I;
+		return 0;
 
 	switch (preset->type) {
 	case FORMAT_TYPE_MPEG2:
 		return preset->frames[index].frame.mpeg2.header.backward_ref_index;
 	default:
-		return V4L2_SLICE_PCT_I;
+		return 0;
 	}
 }
 
