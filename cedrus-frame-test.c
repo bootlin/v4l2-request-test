@@ -81,7 +81,17 @@ static void print_summary(struct config *config, struct preset *preset)
 	printf(" Attribution: %s\n", preset->attribution);
 	printf(" Width: %d\n", preset->width);
 	printf(" Height: %d\n", preset->height);
-	printf(" Frames count: %d\n\n", preset->frames_count);
+	printf(" Frames count: %d\n", preset->frames_count);
+
+	printf(" Format: ");
+
+	switch (preset->type) {
+	case FORMAT_TYPE_MPEG2: printf("MPEG2"); break;
+	case FORMAT_TYPE_H264: printf("H264"); break;
+	default: printf("Invalid"); break;
+	}
+
+	printf("\n\n");
 }
 
 static long time_diff(struct timespec *before, struct timespec *after)
