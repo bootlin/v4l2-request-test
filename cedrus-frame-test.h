@@ -40,8 +40,6 @@ struct config {
 	char *media_path;
 	char *drm_path;
 	char *drm_driver;
-	unsigned int crtc_id;
-	unsigned int plane_id;
 
 	char *preset_name;
 	char *slices_path;

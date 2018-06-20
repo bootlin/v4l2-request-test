@@ -43,8 +43,6 @@ static void print_help(void)
 		" -m [media path]                path for the media node\n"
 		" -d [DRM path]                  path for the DRM node\n"
 		" -D [DRM driver]                DRM driver to use\n"
-		" -c [CRTC ID]                   DRM CRTC to use\n"
-		" -p [Plane ID]                  DRM plane to use\n"
 		" -s [slices filename format]    format for filenames in the slices path\n"
 		" -f [fps]                       number of frames to display per second\n"
 		" -P [video preset]              video preset to use\n"
@@ -64,8 +62,6 @@ static void print_summary(struct config *config, struct preset *preset)
 	printf(" Media path: %s\n", config->media_path);
 	printf(" DRM path: %s\n", config->drm_path);
 	printf(" DRM driver: %s\n", config->drm_driver);
-	printf(" DRM CRTC ID: %d\n", config->crtc_id);
-	printf(" DRM plane ID: %d\n", config->plane_id);
 	printf(" Slices path: %s\n", config->slices_path);
 	printf(" Slices filename format: %s\n", config->slices_filename_format);
 	printf(" FPS: %d\n\n", config->fps);
@@ -150,8 +146,6 @@ static void setup_config(struct config *config)
 	config->media_path = strdup("/dev/media0");
 	config->drm_path = strdup("/dev/dri/card0");
 	config->drm_driver = strdup("sun4i-drm");
-	config->crtc_id = 40;
-	config->plane_id = 34;
 
 	config->preset_name = strdup("bbb-mpeg2");
 	config->slices_filename_format = strdup("slice-%d.dump");
@@ -209,7 +203,7 @@ int main(int argc, char *argv[])
 	setup_config(&config);
 
 	while (1) {
-		opt = getopt(argc, argv, "v:m:d:D:c:p:s:f:P:ilqh");
+		opt = getopt(argc, argv, "v:m:d:D:s:f:P:ilqh");
 		if (opt == -1)
 			break;
 
@@ -229,12 +223,6 @@ int main(int argc, char *argv[])
 		case 'D':
 			free(config.drm_driver);
 			config.drm_driver = strdup(optarg);
-			break;
-		case 'c':
-			config.crtc_id = atoi(optarg);
-			break;
-		case 'p':
-			config.plane_id = atoi(optarg);
 			break;
 		case 's':
 			free(config.slices_filename_format);
