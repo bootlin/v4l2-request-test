@@ -58,6 +58,14 @@ enum format_type {
 	FORMAT_TYPE_MPEG2,
 };
 
+enum pct {
+	PCT_I,
+	PCT_P,
+	PCT_B,
+	PCT_SI,
+	PCT_SP
+};
+
 union controls {
 	struct {
 		struct v4l2_ctrl_mpeg2_slice_header header;

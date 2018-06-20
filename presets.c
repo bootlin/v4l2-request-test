@@ -112,13 +112,18 @@ int frame_controls_fill(union controls *frame, struct preset *preset, unsigned i
 unsigned int frame_pct(struct preset *preset, unsigned int index)
 {
 	if (preset == NULL)
-		return V4L2_SLICE_PCT_I;
+		return PCT_I;
 
 	switch (preset->type) {
 	case FORMAT_TYPE_MPEG2:
-		return preset->frames[index].frame.mpeg2.header.picture_coding_type;
+		switch (preset->frames[index].frame.mpeg2.header.picture_coding_type) {
+		case V4L2_SLICE_PCT_I: return PCT_I;
+		case V4L2_SLICE_PCT_P: return PCT_P;
+		case V4L2_SLICE_PCT_B: return PCT_B;
+		default: return PCT_I;
+		}
 	default:
-		return V4L2_SLICE_PCT_I;
+		return PCT_I;
 	}
 }
 
@@ -191,7 +196,7 @@ int frame_gop_schedule(struct preset *preset, unsigned int index)
 	pct = frame_pct(preset, index);
 
 	/* Only perform scheduling at GOP start. */
-	if (pct != V4L2_SLICE_PCT_I)
+	if (pct != PCT_I)
 		return 0;
 
 	rc = 0;
@@ -201,9 +206,9 @@ int frame_gop_schedule(struct preset *preset, unsigned int index)
 		backward_ref_index = frame_backward_ref_index(preset, index);
 
 		/* I frames mark GOP end. */
-		if (pct == V4L2_SLICE_PCT_I && index > gop_start_index) {
+		if (pct == PCT_I && index > gop_start_index) {
 			break;
-		} else if (pct == V4L2_SLICE_PCT_B) {
+		} else if (pct == PCT_B) {
 			/* The required backward reference frame is already available, queue now. */
 			if (backward_ref_index >= index)
 				rc |= frame_gop_queue(index);
@@ -217,7 +222,7 @@ int frame_gop_schedule(struct preset *preset, unsigned int index)
 			pct_next = frame_pct(preset, i);
 			backward_ref_index_next = frame_backward_ref_index(preset, i);
 
-			if (pct_next != V4L2_SLICE_PCT_B)
+			if (pct_next != PCT_B)
 				continue;
 
 			if (backward_ref_index_next == index)
