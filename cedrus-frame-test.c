@@ -392,7 +392,6 @@ int main(int argc, char *argv[])
 
 		/* Keep decoding until we can display a frame. */
 		if (display_index > index) {
-			fprintf(stderr, "keep decoding\n");
 			before_taken = true;
 			index++;
 			continue;
