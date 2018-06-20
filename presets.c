@@ -29,6 +29,10 @@ static struct frame bbb_mpeg2_frames[] = {
 #include "data/bbb-mpeg2/frames.h"
 };
 
+static struct frame ed_mpeg2_frames[] = {
+#include "data/ed-mpeg2/frames.h"
+};
+
 static struct frame bbb_h264_all_i_32_frames[] = {
 #include "data/bbb-h264-all-i-32/frames.h"
 };
@@ -49,6 +53,18 @@ static struct preset presets[] = {
 		.buffers_count = 6,
 		.frames = bbb_mpeg2_frames,
 		.frames_count = sizeof(bbb_mpeg2_frames) / sizeof(bbb_mpeg2_frames[0]),
+	},
+	{
+		.name = "ed-mpeg2",
+		.description = "Elephants Dream",
+		.license = "Creative Commons Attribution 3.0",
+		.attribution = "Blender Foundation | www.blender.org",
+		.width = 1280,
+		.height = 720,
+		.type = FORMAT_TYPE_MPEG2,
+		.buffers_count = 6,
+		.frames = ed_mpeg2_frames,
+		.frames_count = sizeof(ed_mpeg2_frames) / sizeof(ed_mpeg2_frames[0]),
 	},
 	{
 		.name = "bbb-h264-all-i-32",
