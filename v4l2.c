@@ -253,6 +253,38 @@ static int set_stream(int video_fd, unsigned int type, bool enable)
 	return 0;
 }
 
+static int source_pixel_format(enum format_type type)
+{
+	switch (type) {
+	case FORMAT_TYPE_MPEG2:
+		return V4L2_PIX_FMT_MPEG2_SLICE;
+	default:
+		fprintf(stderr, "Invalid format type\n");
+		return -1;
+	}
+}
+
+static int set_format_controls(int video_fd, int request_fd, enum format_type type, union controls *frame)
+{
+	int rc;
+
+	switch (type) {
+	case FORMAT_TYPE_MPEG2:
+		rc = set_control(video_fd, request_fd, V4L2_CID_MPEG_VIDEO_MPEG2_SLICE_HEADER, &frame->mpeg2.header, sizeof(frame->mpeg2.header));
+		if (rc < 0) {
+			fprintf(stderr, "Unable to set mpeg2 frame header control\n");
+			return -1;
+		}
+
+		break;
+	default:
+		fprintf(stderr, "Invalid format type\n");
+		return -1;
+	}
+
+	return 0;
+}
+
 int video_engine_start(int video_fd, int media_fd, unsigned int width, unsigned int height, enum format_type type, struct video_buffer **buffers, unsigned int buffers_count)
 {
 	struct media_request_alloc request_alloc;
@@ -269,15 +301,7 @@ int video_engine_start(int video_fd, int media_fd, unsigned int width, unsigned 
 	*buffers = malloc(buffers_count * sizeof(**buffers));
 	memset(*buffers, 0, buffers_count * sizeof(**buffers));
 
-	switch (type) {
-	case FORMAT_TYPE_MPEG2:
-		format = V4L2_PIX_FMT_MPEG2_SLICE;
-		break;
-
-	default:
-		fprintf(stderr, "Invalid format type\n");
-		goto error;
-	}
+	format = source_pixel_format(type);
 
 	rc = set_format(video_fd, V4L2_BUF_TYPE_VIDEO_OUTPUT_MPLANE, format, width, height);
 	if (rc < 0) {
@@ -423,17 +447,9 @@ int video_engine_decode(int video_fd, unsigned int index, union controls *frame,
 
 	memcpy(buffers[index].source_data, source_data, source_size);
 
-	switch (type) {
-	case FORMAT_TYPE_MPEG2:
-		rc = set_control(video_fd, request_fd, V4L2_CID_MPEG_VIDEO_MPEG2_SLICE_HEADER, &frame->mpeg2.header, sizeof(frame->mpeg2.header));
-		if (rc < 0) {
-			fprintf(stderr, "Unable to set mpeg2 frame header control\n");
-			return -1;
-		}
-
-		break;
-	default:
-		fprintf(stderr, "Invalid format type\n");
+	rc = set_format_controls(video_fd, request_fd, type, frame);
+	if (rc < 0) {
+		fprintf(stderr, "Unable to set format controls\n");
 		return -1;
 	}
 
