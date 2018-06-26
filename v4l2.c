@@ -425,8 +425,12 @@ int video_engine_stop(int video_fd, struct video_buffer *buffers, unsigned int b
 	for (i = 0; i < buffers_count; i++) {
 		munmap(buffers[i].source_data, buffers[i].source_size);
 
-		for (j = 0; j < 2; j++)
+		for (j = 0; j < 2; j++) {
 			munmap(buffers[i].destination_data[j], buffers[i].destination_size[j]);
+
+			if (buffers[i].export_fds[j] >= 0)
+				close(buffers[i].export_fds[j]);
+		}
 
 		close(buffers[i].request_fd);
 	}
