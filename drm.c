@@ -31,10 +31,34 @@
 
 #include <xf86drm.h>
 #include <xf86drmMode.h>
-#include <drm_fourcc.h>
 #include <sun4i_drm.h>
+#include <drm_fourcc.h>
 
 #include "cedrus-frame-test.h"
+
+static int create_dumb_buffer(int drm_fd, unsigned int width, unsigned int height, unsigned int bpp, struct gem_buffer *buffer)
+{
+	struct drm_mode_create_dumb create_dumb;
+	int rc;
+
+	memset(&create_dumb, 0, sizeof(create_dumb));
+	create_dumb.width = width;
+	create_dumb.height = height;
+	create_dumb.bpp = bpp;
+
+	rc = drmIoctl(drm_fd, DRM_IOCTL_MODE_CREATE_DUMB, &create_dumb);
+	if (rc < 0) {
+		fprintf(stderr, "Unable to create dumb buffer: %s\n", strerror(errno));
+		return -1;
+	}
+
+	buffer->size = create_dumb.size;
+	buffer->pitches[0] = create_dumb.pitch;
+	buffer->offsets[0] = 0;
+	buffer->handles[0] = create_dumb.handle;
+
+	return 0;
+}
 
 static int create_tiled_buffer(int drm_fd, unsigned int width, unsigned int height, unsigned int format, struct gem_buffer *buffer)
 {
@@ -192,13 +216,20 @@ static int get_crtc_mode(int drm_fd, unsigned int crtc_id, drmModeModeInfoPtr mo
 	return 0;
 }
 
-static int add_framebuffer(int drm_fd, struct gem_buffer *buffer, unsigned int width, unsigned int height, unsigned int format)
+static int add_framebuffer(int drm_fd, struct gem_buffer *buffer, unsigned int width, unsigned int height, unsigned int format, uint64_t modifier)
 {
-	uint64_t modifiers[4] = { DRM_FORMAT_MOD_ALLWINNER_MB32_TILED, DRM_FORMAT_MOD_ALLWINNER_MB32_TILED, 0, 0 };
-	uint32_t flags = DRM_MODE_FB_MODIFIERS;
+	uint64_t modifiers[4] = { 0, 0, 0, 0 };
+	uint32_t flags = 0;
 	unsigned int id;
+	unsigned int i;
 	int rc;
 
+	for (i = 0; i < 4; i++) {
+		if (buffer->handles[i] != 0) {
+			flags |= DRM_MODE_FB_MODIFIERS;
+			modifiers[i] = modifier;
+		}
+	}
 	rc = drmModeAddFB2WithModifiers(drm_fd, width, height, format, buffer->handles, buffer->pitches, buffer->offsets, modifiers, &id, flags);
 	if (rc < 0) {
 		fprintf(stderr, "Unable to add framebuffer for plane: %s\n", strerror(errno));
@@ -548,7 +579,7 @@ complete:
 	return rc;
 }
 
-int display_engine_start(int drm_fd, unsigned int width, unsigned int height, struct video_buffer *video_buffers, unsigned int count, struct gem_buffer **buffers, struct display_setup *setup)
+int display_engine_start(int drm_fd, unsigned int width, unsigned int height, unsigned int format, uint64_t modifier, unsigned int bpp, struct video_buffer *video_buffers, unsigned int count, struct gem_buffer **buffers, struct display_setup *setup)
 {
 	struct video_buffer *video_buffer;
 	struct gem_buffer *buffer;
@@ -642,13 +673,15 @@ int display_engine_start(int drm_fd, unsigned int width, unsigned int height, st
 
 		if (use_dmabuf)
 			rc = create_imported_buffer(drm_fd, video_buffer->export_fds, export_fds_count, width, height, buffer);
+		else if (modifier == DRM_FORMAT_MOD_ALLWINNER_MB32_TILED)
+			rc = create_tiled_buffer(drm_fd, width, height, format, buffer);
 		else
-			rc = create_tiled_buffer(drm_fd, width, height, DRM_FORMAT_NV12, buffer);
+			rc = create_dumb_buffer(drm_fd, width, height, bpp, buffer);
 
 		if (rc < 0)
 			return -1;
 
-		rc = add_framebuffer(drm_fd, buffer, width, height, DRM_FORMAT_NV12);
+		rc = add_framebuffer(drm_fd, buffer, width, height, format, modifier);
 		if (rc < 0)
 			return -1;
 

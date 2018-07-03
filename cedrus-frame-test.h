@@ -52,6 +52,14 @@ struct config {
 	bool loop;
 };
 
+struct format_description {
+	char *description;
+	unsigned int v4l2_format;
+	unsigned int drm_format;
+	uint64_t drm_modifier;
+	unsigned int bpp;
+};
+
 /* Presets */
 
 enum format_type {
@@ -169,13 +177,14 @@ int frame_gop_schedule(struct preset *preset, unsigned int index);
 
 /* V4L2 */
 
-int video_engine_start(int video_fd, int media_fd, unsigned int width, unsigned int height, enum format_type type, struct video_buffer **buffers, unsigned int buffers_count);
+bool video_engine_format_test(int video_fd, unsigned int width, unsigned int height, unsigned int format);
+int video_engine_start(int video_fd, int media_fd, unsigned int width, unsigned int height, unsigned int format, enum format_type type, struct video_buffer **buffers, unsigned int buffers_count);
 int video_engine_stop(int video_fd, struct video_buffer *buffers, unsigned int buffers_count);
 int video_engine_decode(int video_fd, unsigned int index, union controls *frame, enum format_type type, void *source_data, unsigned int source_size, struct video_buffer *buffers);
 
 /* DRM */
 
-int display_engine_start(int drm_fd, unsigned int width, unsigned int height, struct video_buffer *video_buffers, unsigned int count, struct gem_buffer **buffers, struct display_setup *setup);
+int display_engine_start(int drm_fd, unsigned int width, unsigned int height, unsigned int format, uint64_t modifier, unsigned int bpp, struct video_buffer *video_buffers, unsigned int count, struct gem_buffer **buffers, struct display_setup *setup);
 int display_engine_stop(int drm_fd, struct gem_buffer *buffers, struct display_setup *setup);
 int display_engine_show(int drm_fd, unsigned int index, struct video_buffer *video_buffers, struct gem_buffer *buffers, struct display_setup *setup);
 

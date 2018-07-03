@@ -34,7 +34,30 @@
 
 #define DESTINATION_SIZE_MAX					(1024 * 1024)
 
-static int set_format(int video_fd, unsigned int type, unsigned int pixelformat, unsigned int width, unsigned int height)
+static int try_format(int video_fd, unsigned int type, unsigned int width, unsigned int height, unsigned int pixelformat)
+{
+	struct v4l2_format format;
+	int rc;
+
+	memset(&format, 0, sizeof(format));
+	format.type = type;
+	format.fmt.pix_mp.width = width;
+	format.fmt.pix_mp.height = height;
+	format.fmt.pix_mp.plane_fmt[0].sizeimage = type == V4L2_BUF_TYPE_VIDEO_OUTPUT_MPLANE ? DESTINATION_SIZE_MAX : 0;
+	format.fmt.pix_mp.pixelformat = pixelformat;
+	format.fmt.pix_mp.field = V4L2_FIELD_ANY;
+	format.fmt.pix_mp.num_planes = type == V4L2_BUF_TYPE_VIDEO_CAPTURE_MPLANE ? 2 : 1;
+
+	rc = ioctl(video_fd, VIDIOC_S_FMT, &format);
+	if (rc < 0) {
+		fprintf(stderr, "Unable to set format for type %d: %s\n", type, strerror(errno));
+		return -1;
+	}
+
+	return 0;
+}
+
+static int set_format(int video_fd, unsigned int type, unsigned int width, unsigned int height, unsigned int pixelformat)
 {
 	struct v4l2_format format;
 	int rc;
@@ -253,17 +276,6 @@ static int set_stream(int video_fd, unsigned int type, bool enable)
 	return 0;
 }
 
-static int source_pixel_format(enum format_type type)
-{
-	switch (type) {
-	case FORMAT_TYPE_MPEG2:
-		return V4L2_PIX_FMT_MPEG2_SLICE;
-	default:
-		fprintf(stderr, "Invalid format type\n");
-		return -1;
-	}
-}
-
 static int set_format_controls(int video_fd, int request_fd, enum format_type type, union controls *frame)
 {
 	int rc;
@@ -285,31 +297,54 @@ static int set_format_controls(int video_fd, int request_fd, enum format_type ty
 	return 0;
 }
 
-int video_engine_start(int video_fd, int media_fd, unsigned int width, unsigned int height, enum format_type type, struct video_buffer **buffers, unsigned int buffers_count)
+static int source_pixel_format(enum format_type type)
+{
+	switch (type) {
+	case FORMAT_TYPE_MPEG2:
+		return V4L2_PIX_FMT_MPEG2_SLICE;
+	default:
+		fprintf(stderr, "Invalid format type\n");
+		return -1;
+	}
+}
+
+bool video_engine_format_test(int video_fd, unsigned int width, unsigned int height, unsigned int format)
+{
+	int rc;
+
+	rc = try_format(video_fd, V4L2_BUF_TYPE_VIDEO_CAPTURE_MPLANE, width, height, format);
+
+	return rc >= 0;
+}
+
+int video_engine_start(int video_fd, int media_fd, unsigned int width, unsigned int height, unsigned int format, enum format_type type, struct video_buffer **buffers, unsigned int buffers_count)
 {
 	struct media_request_alloc request_alloc;
 	struct video_buffer *buffer;
+	unsigned int source_format;
 	unsigned int source_length;
 	unsigned int source_offset;
+	unsigned int destination_format;
 	unsigned int destination_length[2];
 	unsigned int destination_offset[2];
 	unsigned int export_fds_count;
-	unsigned int format;
 	unsigned int i, j;
 	int rc;
 
 	*buffers = malloc(buffers_count * sizeof(**buffers));
 	memset(*buffers, 0, buffers_count * sizeof(**buffers));
 
-	format = source_pixel_format(type);
+	source_format = source_pixel_format(type);
 
-	rc = set_format(video_fd, V4L2_BUF_TYPE_VIDEO_OUTPUT_MPLANE, format, width, height);
+	rc = set_format(video_fd, V4L2_BUF_TYPE_VIDEO_OUTPUT_MPLANE, width, height, source_format);
 	if (rc < 0) {
 		fprintf(stderr, "Unable to set source format\n");
 		goto error;
 	}
 
-	rc = set_format(video_fd, V4L2_BUF_TYPE_VIDEO_CAPTURE_MPLANE, V4L2_PIX_FMT_MB32_NV12, width, height);
+	destination_format = format;
+
+	rc = set_format(video_fd, V4L2_BUF_TYPE_VIDEO_CAPTURE_MPLANE, width, height, destination_format);
 	if (rc < 0) {
 		fprintf(stderr, "Unable to set destination format\n");
 		goto error;

@@ -32,8 +32,16 @@
 #include <linux/videodev2.h>
 #include <linux/media.h>
 #include <xf86drm.h>
+#include <drm_fourcc.h>
 
 #include "cedrus-frame-test.h"
+
+struct format_description formats[] = {
+	{ "NV12 YUV", V4L2_PIX_FMT_NV12, DRM_FORMAT_NV12, DRM_FORMAT_MOD_NONE, 16 },
+	{ "MB32-tiled NV12 YUV", V4L2_PIX_FMT_MB32_NV12, DRM_FORMAT_NV12, DRM_FORMAT_MOD_ALLWINNER_MB32_TILED, 16 },
+};
+
+unsigned int formats_count = sizeof(formats) / sizeof(formats[0]);
 
 static void print_help(void)
 {
@@ -180,6 +188,7 @@ int main(int argc, char *argv[])
 	struct timespec before, after;
 	struct timespec video_before, video_after;
 	struct timespec display_before, display_after;
+	struct format_description *selected_format = NULL;
 	bool before_taken = false;
 	void *slice_data = NULL;
 	char *slice_filename = NULL;
@@ -192,11 +201,13 @@ int main(int argc, char *argv[])
 	unsigned int index_origin;
 	unsigned int display_index;
 	unsigned int display_count;
+	unsigned int i;
 	long frame_time;
 	long frame_diff;
 	int video_fd = -1;
 	int media_fd = -1;
 	int drm_fd = -1;
+	bool test;
 	int opt;
 	int rc;
 
@@ -298,13 +309,28 @@ int main(int argc, char *argv[])
 		goto error;
 	}
 
-	rc = video_engine_start(video_fd, media_fd, width, height, preset->type, &video_buffers, config.buffers_count);
+	for (i = 0; i < formats_count; i++) {
+		test = video_engine_format_test(video_fd, width, height, formats[i].v4l2_format);
+		if (test) {
+			selected_format = &formats[i];
+			break;
+		}
+	}
+
+	if (selected_format == NULL) {
+		fprintf(stderr, "Unable to find any supported destination format\n");
+		goto error;
+	}
+
+	printf("Destination format: %s\n", selected_format->description);
+
+	rc = video_engine_start(video_fd, media_fd, width, height, selected_format->v4l2_format, preset->type, &video_buffers, config.buffers_count);
 	if (rc < 0) {
 		fprintf(stderr, "Unable to start video engine\n");
 		goto error;
 	}
 
-	rc = display_engine_start(drm_fd, width, height, video_buffers, config.buffers_count, &gem_buffers, &setup);
+	rc = display_engine_start(drm_fd, width, height, selected_format->drm_format, selected_format->drm_modifier, selected_format->bpp, video_buffers, config.buffers_count, &gem_buffers, &setup);
 	if (rc < 0) {
 		fprintf(stderr, "Unable to start display engine\n");
 		goto error;
