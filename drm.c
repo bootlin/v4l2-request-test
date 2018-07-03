@@ -458,7 +458,7 @@ static int get_crtc_id(int drm_fd, unsigned int encoder_id, unsigned int *crtc_i
 	return 0;
 }
 
-static int get_plane_id(int drm_fd, unsigned int crtc_id, unsigned int *plane_id)
+static int get_plane_id(int drm_fd, unsigned int crtc_id, unsigned int *plane_id, unsigned int format)
 {
 	drmModeResPtr ressources = NULL;
 	drmModePlaneResPtr plane_ressources = NULL;
@@ -468,6 +468,7 @@ static int get_plane_id(int drm_fd, unsigned int crtc_id, unsigned int *plane_id
 	unsigned int crtc_index;
 	unsigned int type;
 	unsigned int i, j;
+	bool format_found;
 	int rc;
 
 	ressources = drmModeGetResources(drm_fd);
@@ -542,7 +543,16 @@ static int get_plane_id(int drm_fd, unsigned int crtc_id, unsigned int *plane_id
 		drmModeFreeObjectProperties(properties);
 		properties = NULL;
 
-		if (type == DRM_PLANE_TYPE_OVERLAY)
+		if (type != DRM_PLANE_TYPE_OVERLAY)
+			continue;
+
+		format_found = false;
+
+		for (j = 0; j < plane->count_formats; j++)
+			if (plane->formats[j] == format)
+				format_found = true;
+
+		if (format_found)
 			break;
 
 		drmModeFreePlane(plane);
@@ -620,7 +630,7 @@ int display_engine_start(int drm_fd, unsigned int width, unsigned int height, un
 		return -1;
 	}
 
-	rc = get_plane_id(drm_fd, crtc_id, &plane_id);
+	rc = get_plane_id(drm_fd, crtc_id, &plane_id, format);
 	if (rc < 0) {
 		fprintf(stderr, "Unable to get DRM plane id for CRTC %d\n", crtc_id);
 		return -1;
