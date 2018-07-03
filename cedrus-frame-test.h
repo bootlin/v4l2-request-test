@@ -138,6 +138,7 @@ struct display_properties_ids {
 	uint32_t plane_crtc_y;
 	uint32_t plane_crtc_w;
 	uint32_t plane_crtc_h;
+	uint32_t plane_zpos;
 };
 
 struct display_setup {

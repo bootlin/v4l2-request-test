@@ -193,29 +193,6 @@ static int unmap_buffer(int drm_fd, struct gem_buffer *buffer)
 	return 0;
 }
 
-static int get_crtc_mode(int drm_fd, unsigned int crtc_id, drmModeModeInfoPtr mode)
-{
-	drmModeCrtcPtr crtc;
-
-	crtc = drmModeGetCrtc(drm_fd, crtc_id);
-	if (crtc == NULL) {
-		fprintf(stderr, "Unable to get CRTC mode: %s\n", strerror(errno));
-		return -1;
-	}
-
-	if (!crtc->mode_valid) {
-		fprintf(stderr, "Unable to get valid mode for CRTC %d\n", crtc_id);
-		return -1;
-	}
-
-	if (mode != NULL)
-		memcpy(mode, &crtc->mode, sizeof(drmModeModeInfo));
-
-	drmModeFreeCrtc(crtc);
-
-	return 0;
-}
-
 static int add_framebuffer(int drm_fd, struct gem_buffer *buffer, unsigned int width, unsigned int height, unsigned int format, uint64_t modifier)
 {
 	uint64_t modifiers[4] = { 0, 0, 0, 0 };
@@ -264,6 +241,7 @@ static int discover_properties(int drm_fd, int connector_id, int crtc_id, int pl
 		{ DRM_MODE_OBJECT_PLANE, plane_id, "CRTC_Y", &ids->plane_crtc_y },
 		{ DRM_MODE_OBJECT_PLANE, plane_id, "CRTC_W", &ids->plane_crtc_w },
 		{ DRM_MODE_OBJECT_PLANE, plane_id, "CRTC_H", &ids->plane_crtc_h },
+		{ DRM_MODE_OBJECT_PLANE, plane_id, "zpos", &ids->plane_zpos },
 	};
 	unsigned int glue_count = sizeof(glue) / sizeof(glue[0]);
 	unsigned int i, j;
@@ -320,7 +298,7 @@ complete:
 	return rc;
 }
 
-static int commit_atomic_mode(int drm_fd, unsigned int connector_id, unsigned int crtc_id, unsigned int plane_id, struct display_properties_ids *ids, unsigned int framebuffer_id, unsigned int width, unsigned int height, unsigned int x, unsigned int y, unsigned int scaled_width, unsigned int scaled_height)
+static int commit_atomic_mode(int drm_fd, unsigned int connector_id, unsigned int crtc_id, unsigned int plane_id, struct display_properties_ids *ids, unsigned int framebuffer_id, unsigned int width, unsigned int height, unsigned int x, unsigned int y, unsigned int scaled_width, unsigned int scaled_height, unsigned int zpos)
 {
 	drmModeAtomicReqPtr request;
 	uint32_t flags = DRM_MODE_ATOMIC_ALLOW_MODESET;
@@ -338,6 +316,7 @@ static int commit_atomic_mode(int drm_fd, unsigned int connector_id, unsigned in
 	drmModeAtomicAddProperty(request, plane_id, ids->plane_crtc_y, y);
 	drmModeAtomicAddProperty(request, plane_id, ids->plane_crtc_w, scaled_width);
 	drmModeAtomicAddProperty(request, plane_id, ids->plane_crtc_h, scaled_height);
+	drmModeAtomicAddProperty(request, plane_id, ids->plane_zpos, zpos);
 
 	rc = drmModeAtomicCommit(drm_fd, request, flags, NULL);
 	if (rc < 0) {
@@ -386,7 +365,7 @@ complete:
 	return rc;
 }
 
-static int get_connector_encoder_id(int drm_fd, unsigned int *connector_id, unsigned int *encoder_id)
+static int select_connector_encoder(int drm_fd, unsigned int *connector_id, unsigned int *encoder_id)
 {
 	drmModeResPtr ressources = NULL;
 	drmModeConnectorPtr connector = NULL;
@@ -440,31 +419,60 @@ complete:
 	return rc;
 }
 
-static int get_crtc_id(int drm_fd, unsigned int encoder_id, unsigned int *crtc_id)
+static int select_crtc(int drm_fd, unsigned int encoder_id, unsigned int *crtc_id, drmModeModeInfoPtr mode)
 {
 	drmModeEncoderPtr encoder = NULL;
+	drmModeCrtcPtr crtc = NULL;
+	int rc;
 
 	encoder = drmModeGetEncoder(drm_fd, encoder_id);
 	if (encoder == NULL) {
 		fprintf(stderr, "Unable to get DRM encoder: %s\n", strerror(errno));
-		return -1;
+		goto error;
 	}
 
 	if (crtc_id != NULL)
 		*crtc_id = encoder->crtc_id;
 
-	drmModeFreeEncoder(encoder);
+	crtc = drmModeGetCrtc(drm_fd, encoder->crtc_id);
+	if (crtc == NULL) {
+		fprintf(stderr, "Unable to get CRTC mode: %s\n", strerror(errno));
+		goto error;
+	}
 
-	return 0;
+	if (!crtc->mode_valid) {
+		fprintf(stderr, "Unable to get valid mode for CRTC %d\n", crtc_id);
+		goto error;
+	}
+
+	if (mode != NULL)
+		memcpy(mode, &crtc->mode, sizeof(drmModeModeInfo));
+
+	rc = 0;
+	goto complete;
+
+error:
+	rc = -1;
+
+complete:
+	if (encoder != NULL)
+		drmModeFreeEncoder(encoder);
+
+	if (crtc != NULL)
+		drmModeFreeCrtc(crtc);
+
+	return rc;
 }
 
-static int get_plane_id(int drm_fd, unsigned int crtc_id, unsigned int *plane_id, unsigned int format)
+static int select_plane(int drm_fd, unsigned int crtc_id, unsigned int format, unsigned int *plane_id, unsigned int *zpos)
 {
 	drmModeResPtr ressources = NULL;
 	drmModePlaneResPtr plane_ressources = NULL;
 	drmModePlanePtr plane = NULL;
 	drmModeObjectPropertiesPtr properties = NULL;
 	drmModePropertyPtr property = NULL;
+	unsigned int zpos_primary = 0;
+	unsigned int zpos_value;
 	unsigned int crtc_index;
 	unsigned int type;
 	unsigned int i, j;
@@ -514,6 +522,8 @@ static int get_plane_id(int drm_fd, unsigned int crtc_id, unsigned int *plane_id
 			goto error;
 		}
 
+		zpos_value = zpos_primary;
+
 		for (j = 0; j < properties->count_props; j++) {
 			property = drmModeGetProperty(drm_fd, properties->props[j]);
 			if (property == NULL) {
@@ -523,6 +533,9 @@ static int get_plane_id(int drm_fd, unsigned int crtc_id, unsigned int *plane_id
 
 			if (strcmp(property->name, "type") == 0) {
 				type = properties->prop_values[j];
+				break;
+			} else if (strcmp(property->name, "zpos") == 0) {
+				zpos_value = properties->prop_values[j];
 				break;
 			}
 
@@ -542,6 +555,9 @@ static int get_plane_id(int drm_fd, unsigned int crtc_id, unsigned int *plane_id
 
 		drmModeFreeObjectProperties(properties);
 		properties = NULL;
+
+		if (type == DRM_PLANE_TYPE_PRIMARY)
+			zpos_primary = zpos_value;
 
 		if (type != DRM_PLANE_TYPE_OVERLAY)
 			continue;
@@ -566,6 +582,13 @@ static int get_plane_id(int drm_fd, unsigned int crtc_id, unsigned int *plane_id
 
 	if (plane_id != NULL)
 		*plane_id = plane->plane_id;
+
+	if (zpos != NULL) {
+		if (zpos_value <= zpos_primary)
+			zpos_value = zpos_primary + 1;
+
+		*zpos = zpos_value;
+	}
 
 	rc = 0;
 	goto complete;
@@ -597,6 +620,7 @@ int display_engine_start(int drm_fd, unsigned int width, unsigned int height, un
 	unsigned int scaled_width, scaled_height;
 	unsigned int x, y;
 	unsigned int i, j;
+	unsigned int zpos;
 	unsigned int export_fds_count;
 	unsigned int connector_id;
 	unsigned int encoder_id;
@@ -618,27 +642,21 @@ int display_engine_start(int drm_fd, unsigned int width, unsigned int height, un
 		return -1;
 	}
 
-	rc = get_connector_encoder_id(drm_fd, &connector_id, &encoder_id);
+	rc = select_connector_encoder(drm_fd, &connector_id, &encoder_id);
 	if (rc < 0) {
-		fprintf(stderr, "Unable to get DRM connector/encoder ids\n");
+		fprintf(stderr, "Unable to select DRM connector/encoder\n");
 		return -1;
 	}
 
-	rc = get_crtc_id(drm_fd, encoder_id, &crtc_id);
+	rc = select_crtc(drm_fd, encoder_id, &crtc_id, &mode);
 	if (rc < 0) {
-		fprintf(stderr, "Unable to get DRM CRTC id\n");
+		fprintf(stderr, "Unable to selec DRM CRTC\n");
 		return -1;
 	}
 
-	rc = get_plane_id(drm_fd, crtc_id, &plane_id, format);
+	rc = select_plane(drm_fd, crtc_id, format, &plane_id, &zpos);
 	if (rc < 0) {
-		fprintf(stderr, "Unable to get DRM plane id for CRTC %d\n", crtc_id);
-		return -1;
-	}
-
-	rc = get_crtc_mode(drm_fd, crtc_id, &mode);
-	if (rc < 0) {
-		fprintf(stderr, "Unable to get DRM CRTC mode\n");
+		fprintf(stderr, "Unable to select DRM plane for CRTC %d\n", crtc_id);
 		return -1;
 	}
 
@@ -721,7 +739,7 @@ int display_engine_start(int drm_fd, unsigned int width, unsigned int height, un
 
 	buffer = &((*buffers)[0]);
 
-	rc = commit_atomic_mode(drm_fd, connector_id, crtc_id, plane_id, &setup->properties_ids, buffer->framebuffer_id, width, height, x, y, scaled_width, scaled_height);
+	rc = commit_atomic_mode(drm_fd, connector_id, crtc_id, plane_id, &setup->properties_ids, buffer->framebuffer_id, width, height, x, y, scaled_width, scaled_height, zpos);
 	if (rc < 0) {
 		fprintf(stderr, "Unable to commit initial plane\n");
 		return -1;
