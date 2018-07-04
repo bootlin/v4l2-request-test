@@ -1,7 +1,7 @@
 	{
 		.index = 0,
-		.frame.mpeg2.header = {
-			.picture_coding_type = V4L2_SLICE_PCT_I,
+		.frame.mpeg2.slice_params = {
+			.slice_type = V4L2_MPEG2_SLICE_TYPE_I,
 			.f_code = { 15, 15, 15, 15 },
 			.intra_dc_precision = 0,
 			.picture_structure = 3,
@@ -17,8 +17,8 @@
 	},
 	{
 		.index = 1,
-		.frame.mpeg2.header = {
-			.picture_coding_type = V4L2_SLICE_PCT_P,
+		.frame.mpeg2.slice_params = {
+			.slice_type = V4L2_MPEG2_SLICE_TYPE_P,
 			.f_code = { 4, 4, 15, 15 },
 			.intra_dc_precision = 0,
 			.picture_structure = 3,
@@ -34,8 +34,8 @@
 	},
 	{
 		.index = 2,
-		.frame.mpeg2.header = {
-			.picture_coding_type = V4L2_SLICE_PCT_B,
+		.frame.mpeg2.slice_params = {
+			.slice_type = V4L2_MPEG2_SLICE_TYPE_B,
 			.f_code = { 3, 3, 3, 3 },
 			.intra_dc_precision = 0,
 			.picture_structure = 3,
@@ -51,8 +51,8 @@
 	},
 	{
 		.index = 3,
-		.frame.mpeg2.header = {
-			.picture_coding_type = V4L2_SLICE_PCT_B,
+		.frame.mpeg2.slice_params = {
+			.slice_type = V4L2_MPEG2_SLICE_TYPE_B,
 			.f_code = { 3, 3, 2, 2 },
 			.intra_dc_precision = 0,
 			.picture_structure = 3,
@@ -68,8 +68,8 @@
 	},
 	{
 		.index = 4,
-		.frame.mpeg2.header = {
-			.picture_coding_type = V4L2_SLICE_PCT_P,
+		.frame.mpeg2.slice_params = {
+			.slice_type = V4L2_MPEG2_SLICE_TYPE_P,
 			.f_code = { 4, 4, 15, 15 },
 			.intra_dc_precision = 0,
 			.picture_structure = 3,
@@ -85,8 +85,8 @@
 	},
 	{
 		.index = 5,
-		.frame.mpeg2.header = {
-			.picture_coding_type = V4L2_SLICE_PCT_B,
+		.frame.mpeg2.slice_params = {
+			.slice_type = V4L2_MPEG2_SLICE_TYPE_B,
 			.f_code = { 2, 2, 3, 3 },
 			.intra_dc_precision = 0,
 			.picture_structure = 3,
@@ -102,8 +102,8 @@
 	},
 	{
 		.index = 6,
-		.frame.mpeg2.header = {
-			.picture_coding_type = V4L2_SLICE_PCT_B,
+		.frame.mpeg2.slice_params = {
+			.slice_type = V4L2_MPEG2_SLICE_TYPE_B,
 			.f_code = { 3, 3, 3, 3 },
 			.intra_dc_precision = 0,
 			.picture_structure = 3,
@@ -119,8 +119,8 @@
 	},
 	{
 		.index = 7,
-		.frame.mpeg2.header = {
-			.picture_coding_type = V4L2_SLICE_PCT_P,
+		.frame.mpeg2.slice_params = {
+			.slice_type = V4L2_MPEG2_SLICE_TYPE_P,
 			.f_code = { 4, 4, 15, 15 },
 			.intra_dc_precision = 0,
 			.picture_structure = 3,
@@ -136,8 +136,8 @@
 	},
 	{
 		.index = 8,
-		.frame.mpeg2.header = {
-			.picture_coding_type = V4L2_SLICE_PCT_B,
+		.frame.mpeg2.slice_params = {
+			.slice_type = V4L2_MPEG2_SLICE_TYPE_B,
 			.f_code = { 3, 3, 3, 3 },
 			.intra_dc_precision = 0,
 			.picture_structure = 3,
@@ -153,8 +153,8 @@
 	},
 	{
 		.index = 9,
-		.frame.mpeg2.header = {
-			.picture_coding_type = V4L2_SLICE_PCT_B,
+		.frame.mpeg2.slice_params = {
+			.slice_type = V4L2_MPEG2_SLICE_TYPE_B,
 			.f_code = { 3, 3, 2, 2 },
 			.intra_dc_precision = 0,
 			.picture_structure = 3,
@@ -170,8 +170,8 @@
 	},
 	{
 		.index = 10,
-		.frame.mpeg2.header = {
-			.picture_coding_type = V4L2_SLICE_PCT_I,
+		.frame.mpeg2.slice_params = {
+			.slice_type = V4L2_MPEG2_SLICE_TYPE_I,
 			.f_code = { 15, 15, 15, 15 },
 			.intra_dc_precision = 0,
 			.picture_structure = 3,
@@ -187,8 +187,8 @@
 	},
 	{
 		.index = 11,
-		.frame.mpeg2.header = {
-			.picture_coding_type = V4L2_SLICE_PCT_B,
+		.frame.mpeg2.slice_params = {
+			.slice_type = V4L2_MPEG2_SLICE_TYPE_B,
 			.f_code = { 2, 2, 3, 3 },
 			.intra_dc_precision = 0,
 			.picture_structure = 3,
@@ -204,8 +204,8 @@
 	},
 	{
 		.index = 12,
-		.frame.mpeg2.header = {
-			.picture_coding_type = V4L2_SLICE_PCT_B,
+		.frame.mpeg2.slice_params = {
+			.slice_type = V4L2_MPEG2_SLICE_TYPE_B,
 			.f_code = { 3, 3, 1, 1 },
 			.intra_dc_precision = 0,
 			.picture_structure = 3,
@@ -221,8 +221,8 @@
 	},
 	{
 		.index = 13,
-		.frame.mpeg2.header = {
-			.picture_coding_type = V4L2_SLICE_PCT_P,
+		.frame.mpeg2.slice_params = {
+			.slice_type = V4L2_MPEG2_SLICE_TYPE_P,
 			.f_code = { 4, 4, 15, 15 },
 			.intra_dc_precision = 0,
 			.picture_structure = 3,
@@ -238,8 +238,8 @@
 	},
 	{
 		.index = 14,
-		.frame.mpeg2.header = {
-			.picture_coding_type = V4L2_SLICE_PCT_B,
+		.frame.mpeg2.slice_params = {
+			.slice_type = V4L2_MPEG2_SLICE_TYPE_B,
 			.f_code = { 1, 1, 2, 2 },
 			.intra_dc_precision = 0,
 			.picture_structure = 3,
@@ -255,8 +255,8 @@
 	},
 	{
 		.index = 15,
-		.frame.mpeg2.header = {
-			.picture_coding_type = V4L2_SLICE_PCT_B,
+		.frame.mpeg2.slice_params = {
+			.slice_type = V4L2_MPEG2_SLICE_TYPE_B,
 			.f_code = { 3, 3, 2, 2 },
 			.intra_dc_precision = 0,
 			.picture_structure = 3,
@@ -272,8 +272,8 @@
 	},
 	{
 		.index = 16,
-		.frame.mpeg2.header = {
-			.picture_coding_type = V4L2_SLICE_PCT_P,
+		.frame.mpeg2.slice_params = {
+			.slice_type = V4L2_MPEG2_SLICE_TYPE_P,
 			.f_code = { 4, 4, 15, 15 },
 			.intra_dc_precision = 0,
 			.picture_structure = 3,
@@ -289,8 +289,8 @@
 	},
 	{
 		.index = 17,
-		.frame.mpeg2.header = {
-			.picture_coding_type = V4L2_SLICE_PCT_B,
+		.frame.mpeg2.slice_params = {
+			.slice_type = V4L2_MPEG2_SLICE_TYPE_B,
 			.f_code = { 2, 2, 3, 3 },
 			.intra_dc_precision = 0,
 			.picture_structure = 3,
@@ -306,8 +306,8 @@
 	},
 	{
 		.index = 18,
-		.frame.mpeg2.header = {
-			.picture_coding_type = V4L2_SLICE_PCT_B,
+		.frame.mpeg2.slice_params = {
+			.slice_type = V4L2_MPEG2_SLICE_TYPE_B,
 			.f_code = { 3, 3, 3, 3 },
 			.intra_dc_precision = 0,
 			.picture_structure = 3,
@@ -323,8 +323,8 @@
 	},
 	{
 		.index = 19,
-		.frame.mpeg2.header = {
-			.picture_coding_type = V4L2_SLICE_PCT_P,
+		.frame.mpeg2.slice_params = {
+			.slice_type = V4L2_MPEG2_SLICE_TYPE_P,
 			.f_code = { 4, 4, 15, 15 },
 			.intra_dc_precision = 0,
 			.picture_structure = 3,
@@ -340,8 +340,8 @@
 	},
 	{
 		.index = 20,
-		.frame.mpeg2.header = {
-			.picture_coding_type = V4L2_SLICE_PCT_B,
+		.frame.mpeg2.slice_params = {
+			.slice_type = V4L2_MPEG2_SLICE_TYPE_B,
 			.f_code = { 4, 4, 2, 2 },
 			.intra_dc_precision = 0,
 			.picture_structure = 3,
@@ -357,8 +357,8 @@
 	},
 	{
 		.index = 21,
-		.frame.mpeg2.header = {
-			.picture_coding_type = V4L2_SLICE_PCT_B,
+		.frame.mpeg2.slice_params = {
+			.slice_type = V4L2_MPEG2_SLICE_TYPE_B,
 			.f_code = { 3, 3, 2, 2 },
 			.intra_dc_precision = 0,
 			.picture_structure = 3,
@@ -374,8 +374,8 @@
 	},
 	{
 		.index = 22,
-		.frame.mpeg2.header = {
-			.picture_coding_type = V4L2_SLICE_PCT_I,
+		.frame.mpeg2.slice_params = {
+			.slice_type = V4L2_MPEG2_SLICE_TYPE_I,
 			.f_code = { 15, 15, 15, 15 },
 			.intra_dc_precision = 0,
 			.picture_structure = 3,
@@ -391,8 +391,8 @@
 	},
 	{
 		.index = 23,
-		.frame.mpeg2.header = {
-			.picture_coding_type = V4L2_SLICE_PCT_B,
+		.frame.mpeg2.slice_params = {
+			.slice_type = V4L2_MPEG2_SLICE_TYPE_B,
 			.f_code = { 2, 2, 3, 3 },
 			.intra_dc_precision = 0,
 			.picture_structure = 3,
@@ -408,8 +408,8 @@
 	},
 	{
 		.index = 24,
-		.frame.mpeg2.header = {
-			.picture_coding_type = V4L2_SLICE_PCT_B,
+		.frame.mpeg2.slice_params = {
+			.slice_type = V4L2_MPEG2_SLICE_TYPE_B,
 			.f_code = { 3, 3, 2, 2 },
 			.intra_dc_precision = 0,
 			.picture_structure = 3,
@@ -425,8 +425,8 @@
 	},
 	{
 		.index = 25,
-		.frame.mpeg2.header = {
-			.picture_coding_type = V4L2_SLICE_PCT_P,
+		.frame.mpeg2.slice_params = {
+			.slice_type = V4L2_MPEG2_SLICE_TYPE_P,
 			.f_code = { 4, 4, 15, 15 },
 			.intra_dc_precision = 0,
 			.picture_structure = 3,
@@ -442,8 +442,8 @@
 	},
 	{
 		.index = 26,
-		.frame.mpeg2.header = {
-			.picture_coding_type = V4L2_SLICE_PCT_B,
+		.frame.mpeg2.slice_params = {
+			.slice_type = V4L2_MPEG2_SLICE_TYPE_B,
 			.f_code = { 3, 3, 3, 3 },
 			.intra_dc_precision = 0,
 			.picture_structure = 3,
@@ -459,8 +459,8 @@
 	},
 	{
 		.index = 27,
-		.frame.mpeg2.header = {
-			.picture_coding_type = V4L2_SLICE_PCT_B,
+		.frame.mpeg2.slice_params = {
+			.slice_type = V4L2_MPEG2_SLICE_TYPE_B,
 			.f_code = { 4, 4, 2, 2 },
 			.intra_dc_precision = 0,
 			.picture_structure = 3,
@@ -476,8 +476,8 @@
 	},
 	{
 		.index = 28,
-		.frame.mpeg2.header = {
-			.picture_coding_type = V4L2_SLICE_PCT_P,
+		.frame.mpeg2.slice_params = {
+			.slice_type = V4L2_MPEG2_SLICE_TYPE_P,
 			.f_code = { 3, 3, 15, 15 },
 			.intra_dc_precision = 0,
 			.picture_structure = 3,
@@ -493,8 +493,8 @@
 	},
 	{
 		.index = 29,
-		.frame.mpeg2.header = {
-			.picture_coding_type = V4L2_SLICE_PCT_B,
+		.frame.mpeg2.slice_params = {
+			.slice_type = V4L2_MPEG2_SLICE_TYPE_B,
 			.f_code = { 2, 2, 2, 2 },
 			.intra_dc_precision = 0,
 			.picture_structure = 3,
@@ -510,8 +510,8 @@
 	},
 	{
 		.index = 30,
-		.frame.mpeg2.header = {
-			.picture_coding_type = V4L2_SLICE_PCT_B,
+		.frame.mpeg2.slice_params = {
+			.slice_type = V4L2_MPEG2_SLICE_TYPE_B,
 			.f_code = { 3, 3, 3, 3 },
 			.intra_dc_precision = 0,
 			.picture_structure = 3,
@@ -527,8 +527,8 @@
 	},
 	{
 		.index = 31,
-		.frame.mpeg2.header = {
-			.picture_coding_type = V4L2_SLICE_PCT_P,
+		.frame.mpeg2.slice_params = {
+			.slice_type = V4L2_MPEG2_SLICE_TYPE_P,
 			.f_code = { 4, 4, 15, 15 },
 			.intra_dc_precision = 0,
 			.picture_structure = 3,
@@ -544,8 +544,8 @@
 	},
 	{
 		.index = 32,
-		.frame.mpeg2.header = {
-			.picture_coding_type = V4L2_SLICE_PCT_B,
+		.frame.mpeg2.slice_params = {
+			.slice_type = V4L2_MPEG2_SLICE_TYPE_B,
 			.f_code = { 3, 3, 3, 3 },
 			.intra_dc_precision = 0,
 			.picture_structure = 3,
@@ -561,8 +561,8 @@
 	},
 	{
 		.index = 33,
-		.frame.mpeg2.header = {
-			.picture_coding_type = V4L2_SLICE_PCT_B,
+		.frame.mpeg2.slice_params = {
+			.slice_type = V4L2_MPEG2_SLICE_TYPE_B,
 			.f_code = { 3, 3, 2, 2 },
 			.intra_dc_precision = 0,
 			.picture_structure = 3,
@@ -578,8 +578,8 @@
 	},
 	{
 		.index = 34,
-		.frame.mpeg2.header = {
-			.picture_coding_type = V4L2_SLICE_PCT_I,
+		.frame.mpeg2.slice_params = {
+			.slice_type = V4L2_MPEG2_SLICE_TYPE_I,
 			.f_code = { 15, 15, 15, 15 },
 			.intra_dc_precision = 0,
 			.picture_structure = 3,
@@ -595,8 +595,8 @@
 	},
 	{
 		.index = 35,
-		.frame.mpeg2.header = {
-			.picture_coding_type = V4L2_SLICE_PCT_B,
+		.frame.mpeg2.slice_params = {
+			.slice_type = V4L2_MPEG2_SLICE_TYPE_B,
 			.f_code = { 3, 3, 3, 3 },
 			.intra_dc_precision = 0,
 			.picture_structure = 3,
@@ -612,8 +612,8 @@
 	},
 	{
 		.index = 36,
-		.frame.mpeg2.header = {
-			.picture_coding_type = V4L2_SLICE_PCT_B,
+		.frame.mpeg2.slice_params = {
+			.slice_type = V4L2_MPEG2_SLICE_TYPE_B,
 			.f_code = { 3, 3, 3, 3 },
 			.intra_dc_precision = 0,
 			.picture_structure = 3,
@@ -629,8 +629,8 @@
 	},
 	{
 		.index = 37,
-		.frame.mpeg2.header = {
-			.picture_coding_type = V4L2_SLICE_PCT_P,
+		.frame.mpeg2.slice_params = {
+			.slice_type = V4L2_MPEG2_SLICE_TYPE_P,
 			.f_code = { 4, 4, 15, 15 },
 			.intra_dc_precision = 0,
 			.picture_structure = 3,
@@ -646,8 +646,8 @@
 	},
 	{
 		.index = 38,
-		.frame.mpeg2.header = {
-			.picture_coding_type = V4L2_SLICE_PCT_B,
+		.frame.mpeg2.slice_params = {
+			.slice_type = V4L2_MPEG2_SLICE_TYPE_B,
 			.f_code = { 3, 3, 4, 4 },
 			.intra_dc_precision = 0,
 			.picture_structure = 3,
@@ -663,8 +663,8 @@
 	},
 	{
 		.index = 39,
-		.frame.mpeg2.header = {
-			.picture_coding_type = V4L2_SLICE_PCT_B,
+		.frame.mpeg2.slice_params = {
+			.slice_type = V4L2_MPEG2_SLICE_TYPE_B,
 			.f_code = { 3, 3, 3, 3 },
 			.intra_dc_precision = 0,
 			.picture_structure = 3,
@@ -680,8 +680,8 @@
 	},
 	{
 		.index = 40,
-		.frame.mpeg2.header = {
-			.picture_coding_type = V4L2_SLICE_PCT_P,
+		.frame.mpeg2.slice_params = {
+			.slice_type = V4L2_MPEG2_SLICE_TYPE_P,
 			.f_code = { 4, 4, 15, 15 },
 			.intra_dc_precision = 0,
 			.picture_structure = 3,
@@ -697,8 +697,8 @@
 	},
 	{
 		.index = 41,
-		.frame.mpeg2.header = {
-			.picture_coding_type = V4L2_SLICE_PCT_B,
+		.frame.mpeg2.slice_params = {
+			.slice_type = V4L2_MPEG2_SLICE_TYPE_B,
 			.f_code = { 3, 3, 2, 2 },
 			.intra_dc_precision = 0,
 			.picture_structure = 3,
@@ -714,8 +714,8 @@
 	},
 	{
 		.index = 42,
-		.frame.mpeg2.header = {
-			.picture_coding_type = V4L2_SLICE_PCT_B,
+		.frame.mpeg2.slice_params = {
+			.slice_type = V4L2_MPEG2_SLICE_TYPE_B,
 			.f_code = { 3, 3, 2, 2 },
 			.intra_dc_precision = 0,
 			.picture_structure = 3,
@@ -731,8 +731,8 @@
 	},
 	{
 		.index = 43,
-		.frame.mpeg2.header = {
-			.picture_coding_type = V4L2_SLICE_PCT_P,
+		.frame.mpeg2.slice_params = {
+			.slice_type = V4L2_MPEG2_SLICE_TYPE_P,
 			.f_code = { 4, 4, 15, 15 },
 			.intra_dc_precision = 0,
 			.picture_structure = 3,
@@ -748,8 +748,8 @@
 	},
 	{
 		.index = 44,
-		.frame.mpeg2.header = {
-			.picture_coding_type = V4L2_SLICE_PCT_B,
+		.frame.mpeg2.slice_params = {
+			.slice_type = V4L2_MPEG2_SLICE_TYPE_B,
 			.f_code = { 3, 3, 3, 3 },
 			.intra_dc_precision = 0,
 			.picture_structure = 3,
@@ -765,8 +765,8 @@
 	},
 	{
 		.index = 45,
-		.frame.mpeg2.header = {
-			.picture_coding_type = V4L2_SLICE_PCT_B,
+		.frame.mpeg2.slice_params = {
+			.slice_type = V4L2_MPEG2_SLICE_TYPE_B,
 			.f_code = { 4, 4, 3, 3 },
 			.intra_dc_precision = 0,
 			.picture_structure = 3,
@@ -782,8 +782,8 @@
 	},
 	{
 		.index = 46,
-		.frame.mpeg2.header = {
-			.picture_coding_type = V4L2_SLICE_PCT_I,
+		.frame.mpeg2.slice_params = {
+			.slice_type = V4L2_MPEG2_SLICE_TYPE_I,
 			.f_code = { 15, 15, 15, 15 },
 			.intra_dc_precision = 0,
 			.picture_structure = 3,
@@ -799,8 +799,8 @@
 	},
 	{
 		.index = 47,
-		.frame.mpeg2.header = {
-			.picture_coding_type = V4L2_SLICE_PCT_B,
+		.frame.mpeg2.slice_params = {
+			.slice_type = V4L2_MPEG2_SLICE_TYPE_B,
 			.f_code = { 3, 3, 3, 3 },
 			.intra_dc_precision = 0,
 			.picture_structure = 3,
@@ -816,8 +816,8 @@
 	},
 	{
 		.index = 48,
-		.frame.mpeg2.header = {
-			.picture_coding_type = V4L2_SLICE_PCT_B,
+		.frame.mpeg2.slice_params = {
+			.slice_type = V4L2_MPEG2_SLICE_TYPE_B,
 			.f_code = { 3, 3, 3, 3 },
 			.intra_dc_precision = 0,
 			.picture_structure = 3,
@@ -833,8 +833,8 @@
 	},
 	{
 		.index = 49,
-		.frame.mpeg2.header = {
-			.picture_coding_type = V4L2_SLICE_PCT_P,
+		.frame.mpeg2.slice_params = {
+			.slice_type = V4L2_MPEG2_SLICE_TYPE_P,
 			.f_code = { 5, 5, 15, 15 },
 			.intra_dc_precision = 0,
 			.picture_structure = 3,

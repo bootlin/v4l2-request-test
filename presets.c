@@ -128,7 +128,7 @@ struct preset *preset_find(char *name)
 
 int frame_controls_fill(union controls *frame, struct preset *preset, unsigned int buffers_count, unsigned int index, unsigned int slice_size)
 {
-	struct v4l2_ctrl_h264_decode_param *decode;
+	struct v4l2_ctrl_h264_decode_param *decode_param;
 	struct v4l2_h264_dpb_entry *dpb;
 	unsigned int i;
 
@@ -144,19 +144,19 @@ int frame_controls_fill(union controls *frame, struct preset *preset, unsigned i
 
 	switch (preset->type) {
 	case FORMAT_TYPE_MPEG2:
-		frame->mpeg2.header.slice_pos = 0;
-		frame->mpeg2.header.slice_len = slice_size * 8;
+		frame->mpeg2.slice_params.slice_pos = 0;
+		frame->mpeg2.slice_params.slice_len = slice_size * 8;
 
-		frame->mpeg2.header.width = preset->width;
-		frame->mpeg2.header.height = preset->height;
+		frame->mpeg2.slice_params.width = preset->width;
+		frame->mpeg2.slice_params.height = preset->height;
 
-		frame->mpeg2.header.forward_ref_index %= buffers_count;
-		frame->mpeg2.header.backward_ref_index %= buffers_count;
+		frame->mpeg2.slice_params.forward_ref_index %= buffers_count;
+		frame->mpeg2.slice_params.backward_ref_index %= buffers_count;
 		break;
 	case FORMAT_TYPE_H264:
 		for (i = 0; i < 16; i++) {
-			decode = &frame->h264.decode;
-			dpb = &decode->dpb[i];
+			decode_param = &frame->h264.decode_param;
+			dpb = &decode_param->dpb[i];
 			dpb->buf_index = dpb->frame_num;
 		}
 		break;
@@ -175,10 +175,10 @@ unsigned int frame_pct(struct preset *preset, unsigned int index)
 
 	switch (preset->type) {
 	case FORMAT_TYPE_MPEG2:
-		switch (preset->frames[index].frame.mpeg2.header.picture_coding_type) {
-		case V4L2_SLICE_PCT_I: return PCT_I;
-		case V4L2_SLICE_PCT_P: return PCT_P;
-		case V4L2_SLICE_PCT_B: return PCT_B;
+		switch (preset->frames[index].frame.mpeg2.slice_params.slice_type) {
+		case V4L2_MPEG2_SLICE_TYPE_I: return PCT_I;
+		case V4L2_MPEG2_SLICE_TYPE_P: return PCT_P;
+		case V4L2_MPEG2_SLICE_TYPE_B: return PCT_B;
 		default: return PCT_I;
 		}
 	default:
@@ -193,7 +193,7 @@ unsigned int frame_backward_ref_index(struct preset *preset, unsigned int index)
 
 	switch (preset->type) {
 	case FORMAT_TYPE_MPEG2:
-		return preset->frames[index].frame.mpeg2.header.backward_ref_index;
+		return preset->frames[index].frame.mpeg2.slice_params.backward_ref_index;
 	default:
 		return 0;
 	}

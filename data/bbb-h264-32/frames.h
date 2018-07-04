@@ -1,7 +1,7 @@
 	{
 		.index = 0,
 		.frame.h264 = {
-			.decode = {
+			.decode_param = {
 				.top_field_order_cnt = 0,
 				.bottom_field_order_cnt = 0,
 				.dpb = {
@@ -212,7 +212,7 @@
 					},
 				},
 			},
-			.slice = {
+			.slice_param = {
 				.size = 33286,
 				.header_bit_size = 30,
 				.first_mb_in_slice = 0,
@@ -230,7 +230,7 @@
 	{
 		.index = 1,
 		.frame.h264 = {
-			.decode = {
+			.decode_param = {
 				.top_field_order_cnt = 2,
 				.bottom_field_order_cnt = 2,
 				.dpb = {
@@ -441,7 +441,7 @@
 					},
 				},
 			},
-			.slice = {
+			.slice_param = {
 				.size = 3294,
 				.header_bit_size = 29,
 				.first_mb_in_slice = 0,
@@ -460,7 +460,7 @@
 	{
 		.index = 2,
 		.frame.h264 = {
-			.decode = {
+			.decode_param = {
 				.top_field_order_cnt = 4,
 				.bottom_field_order_cnt = 4,
 				.dpb = {
@@ -671,7 +671,7 @@
 					},
 				},
 			},
-			.slice = {
+			.slice_param = {
 				.size = 10722,
 				.header_bit_size = 31,
 				.first_mb_in_slice = 0,
@@ -690,7 +690,7 @@
 	{
 		.index = 3,
 		.frame.h264 = {
-			.decode = {
+			.decode_param = {
 				.top_field_order_cnt = 6,
 				.bottom_field_order_cnt = 6,
 				.dpb = {
@@ -901,7 +901,7 @@
 					},
 				},
 			},
-			.slice = {
+			.slice_param = {
 				.size = 14920,
 				.header_bit_size = 26,
 				.first_mb_in_slice = 0,
@@ -920,7 +920,7 @@
 	{
 		.index = 4,
 		.frame.h264 = {
-			.decode = {
+			.decode_param = {
 				.top_field_order_cnt = 8,
 				.bottom_field_order_cnt = 8,
 				.dpb = {
@@ -1131,7 +1131,7 @@
 					},
 				},
 			},
-			.slice = {
+			.slice_param = {
 				.size = 8576,
 				.header_bit_size = 26,
 				.first_mb_in_slice = 0,
@@ -1150,7 +1150,7 @@
 	{
 		.index = 5,
 		.frame.h264 = {
-			.decode = {
+			.decode_param = {
 				.top_field_order_cnt = 10,
 				.bottom_field_order_cnt = 10,
 				.dpb = {
@@ -1361,7 +1361,7 @@
 					},
 				},
 			},
-			.slice = {
+			.slice_param = {
 				.size = 2660,
 				.header_bit_size = 26,
 				.first_mb_in_slice = 0,
@@ -1380,7 +1380,7 @@
 	{
 		.index = 6,
 		.frame.h264 = {
-			.decode = {
+			.decode_param = {
 				.top_field_order_cnt = 12,
 				.bottom_field_order_cnt = 12,
 				.dpb = {
@@ -1591,7 +1591,7 @@
 					},
 				},
 			},
-			.slice = {
+			.slice_param = {
 				.size = 1646,
 				.header_bit_size = 28,
 				.first_mb_in_slice = 0,
@@ -1610,7 +1610,7 @@
 	{
 		.index = 7,
 		.frame.h264 = {
-			.decode = {
+			.decode_param = {
 				.top_field_order_cnt = 14,
 				.bottom_field_order_cnt = 14,
 				.dpb = {
@@ -1821,7 +1821,7 @@
 					},
 				},
 			},
-			.slice = {
+			.slice_param = {
 				.size = 1015,
 				.header_bit_size = 28,
 				.first_mb_in_slice = 0,
@@ -1840,7 +1840,7 @@
 	{
 		.index = 8,
 		.frame.h264 = {
-			.decode = {
+			.decode_param = {
 				.top_field_order_cnt = 16,
 				.bottom_field_order_cnt = 16,
 				.dpb = {
@@ -2051,7 +2051,7 @@
 					},
 				},
 			},
-			.slice = {
+			.slice_param = {
 				.size = 725,
 				.header_bit_size = 30,
 				.first_mb_in_slice = 0,
@@ -2070,7 +2070,7 @@
 	{
 		.index = 9,
 		.frame.h264 = {
-			.decode = {
+			.decode_param = {
 				.top_field_order_cnt = 18,
 				.bottom_field_order_cnt = 18,
 				.dpb = {
@@ -2281,7 +2281,7 @@
 					},
 				},
 			},
-			.slice = {
+			.slice_param = {
 				.size = 285,
 				.header_bit_size = 30,
 				.first_mb_in_slice = 0,
@@ -2300,7 +2300,7 @@
 	{
 		.index = 10,
 		.frame.h264 = {
-			.decode = {
+			.decode_param = {
 				.top_field_order_cnt = 20,
 				.bottom_field_order_cnt = 20,
 				.dpb = {
@@ -2511,7 +2511,7 @@
 					},
 				},
 			},
-			.slice = {
+			.slice_param = {
 				.size = 327,
 				.header_bit_size = 30,
 				.first_mb_in_slice = 0,
@@ -2530,7 +2530,7 @@
 	{
 		.index = 11,
 		.frame.h264 = {
-			.decode = {
+			.decode_param = {
 				.top_field_order_cnt = 22,
 				.bottom_field_order_cnt = 22,
 				.dpb = {
@@ -2741,7 +2741,7 @@
 					},
 				},
 			},
-			.slice = {
+			.slice_param = {
 				.size = 370,
 				.header_bit_size = 32,
 				.first_mb_in_slice = 0,
@@ -2760,7 +2760,7 @@
 	{
 		.index = 12,
 		.frame.h264 = {
-			.decode = {
+			.decode_param = {
 				.top_field_order_cnt = 24,
 				.bottom_field_order_cnt = 24,
 				.dpb = {
@@ -2971,7 +2971,7 @@
 					},
 				},
 			},
-			.slice = {
+			.slice_param = {
 				.size = 341,
 				.header_bit_size = 32,
 				.first_mb_in_slice = 0,
@@ -2990,7 +2990,7 @@
 	{
 		.index = 13,
 		.frame.h264 = {
-			.decode = {
+			.decode_param = {
 				.top_field_order_cnt = 26,
 				.bottom_field_order_cnt = 26,
 				.dpb = {
@@ -3201,7 +3201,7 @@
 					},
 				},
 			},
-			.slice = {
+			.slice_param = {
 				.size = 225,
 				.header_bit_size = 32,
 				.first_mb_in_slice = 0,
@@ -3220,7 +3220,7 @@
 	{
 		.index = 14,
 		.frame.h264 = {
-			.decode = {
+			.decode_param = {
 				.top_field_order_cnt = 28,
 				.bottom_field_order_cnt = 28,
 				.dpb = {
@@ -3431,7 +3431,7 @@
 					},
 				},
 			},
-			.slice = {
+			.slice_param = {
 				.size = 53017,
 				.header_bit_size = 30,
 				.first_mb_in_slice = 0,
@@ -3449,7 +3449,7 @@
 	{
 		.index = 15,
 		.frame.h264 = {
-			.decode = {
+			.decode_param = {
 				.top_field_order_cnt = 30,
 				.bottom_field_order_cnt = 30,
 				.dpb = {
@@ -3660,7 +3660,7 @@
 					},
 				},
 			},
-			.slice = {
+			.slice_param = {
 				.size = 3802,
 				.header_bit_size = 28,
 				.first_mb_in_slice = 0,
@@ -3679,7 +3679,7 @@
 	{
 		.index = 16,
 		.frame.h264 = {
-			.decode = {
+			.decode_param = {
 				.top_field_order_cnt = 32,
 				.bottom_field_order_cnt = 32,
 				.dpb = {
@@ -3890,7 +3890,7 @@
 					},
 				},
 			},
-			.slice = {
+			.slice_param = {
 				.size = 3187,
 				.header_bit_size = 30,
 				.first_mb_in_slice = 0,
@@ -3909,7 +3909,7 @@
 	{
 		.index = 17,
 		.frame.h264 = {
-			.decode = {
+			.decode_param = {
 				.top_field_order_cnt = 34,
 				.bottom_field_order_cnt = 34,
 				.dpb = {
@@ -4120,7 +4120,7 @@
 					},
 				},
 			},
-			.slice = {
+			.slice_param = {
 				.size = 3760,
 				.header_bit_size = 28,
 				.first_mb_in_slice = 0,
@@ -4139,7 +4139,7 @@
 	{
 		.index = 18,
 		.frame.h264 = {
-			.decode = {
+			.decode_param = {
 				.top_field_order_cnt = 36,
 				.bottom_field_order_cnt = 36,
 				.dpb = {
@@ -4350,7 +4350,7 @@
 					},
 				},
 			},
-			.slice = {
+			.slice_param = {
 				.size = 7605,
 				.header_bit_size = 28,
 				.first_mb_in_slice = 0,
@@ -4369,7 +4369,7 @@
 	{
 		.index = 19,
 		.frame.h264 = {
-			.decode = {
+			.decode_param = {
 				.top_field_order_cnt = 38,
 				.bottom_field_order_cnt = 38,
 				.dpb = {
@@ -4580,7 +4580,7 @@
 					},
 				},
 			},
-			.slice = {
+			.slice_param = {
 				.size = 9194,
 				.header_bit_size = 28,
 				.first_mb_in_slice = 0,
@@ -4599,7 +4599,7 @@
 	{
 		.index = 20,
 		.frame.h264 = {
-			.decode = {
+			.decode_param = {
 				.top_field_order_cnt = 40,
 				.bottom_field_order_cnt = 40,
 				.dpb = {
@@ -4810,7 +4810,7 @@
 					},
 				},
 			},
-			.slice = {
+			.slice_param = {
 				.size = 10690,
 				.header_bit_size = 28,
 				.first_mb_in_slice = 0,
@@ -4829,7 +4829,7 @@
 	{
 		.index = 21,
 		.frame.h264 = {
-			.decode = {
+			.decode_param = {
 				.top_field_order_cnt = 42,
 				.bottom_field_order_cnt = 42,
 				.dpb = {
@@ -5040,7 +5040,7 @@
 					},
 				},
 			},
-			.slice = {
+			.slice_param = {
 				.size = 8287,
 				.header_bit_size = 30,
 				.first_mb_in_slice = 0,
@@ -5059,7 +5059,7 @@
 	{
 		.index = 22,
 		.frame.h264 = {
-			.decode = {
+			.decode_param = {
 				.top_field_order_cnt = 44,
 				.bottom_field_order_cnt = 44,
 				.dpb = {
@@ -5270,7 +5270,7 @@
 					},
 				},
 			},
-			.slice = {
+			.slice_param = {
 				.size = 5160,
 				.header_bit_size = 30,
 				.first_mb_in_slice = 0,
@@ -5289,7 +5289,7 @@
 	{
 		.index = 23,
 		.frame.h264 = {
-			.decode = {
+			.decode_param = {
 				.top_field_order_cnt = 46,
 				.bottom_field_order_cnt = 46,
 				.dpb = {
@@ -5500,7 +5500,7 @@
 					},
 				},
 			},
-			.slice = {
+			.slice_param = {
 				.size = 5681,
 				.header_bit_size = 30,
 				.first_mb_in_slice = 0,
@@ -5519,7 +5519,7 @@
 	{
 		.index = 24,
 		.frame.h264 = {
-			.decode = {
+			.decode_param = {
 				.top_field_order_cnt = 48,
 				.bottom_field_order_cnt = 48,
 				.dpb = {
@@ -5730,7 +5730,7 @@
 					},
 				},
 			},
-			.slice = {
+			.slice_param = {
 				.size = 3740,
 				.header_bit_size = 30,
 				.first_mb_in_slice = 0,
@@ -5749,7 +5749,7 @@
 	{
 		.index = 25,
 		.frame.h264 = {
-			.decode = {
+			.decode_param = {
 				.top_field_order_cnt = 50,
 				.bottom_field_order_cnt = 50,
 				.dpb = {
@@ -5960,7 +5960,7 @@
 					},
 				},
 			},
-			.slice = {
+			.slice_param = {
 				.size = 3387,
 				.header_bit_size = 30,
 				.first_mb_in_slice = 0,
@@ -5979,7 +5979,7 @@
 	{
 		.index = 26,
 		.frame.h264 = {
-			.decode = {
+			.decode_param = {
 				.top_field_order_cnt = 52,
 				.bottom_field_order_cnt = 52,
 				.dpb = {
@@ -6190,7 +6190,7 @@
 					},
 				},
 			},
-			.slice = {
+			.slice_param = {
 				.size = 3353,
 				.header_bit_size = 30,
 				.first_mb_in_slice = 0,
@@ -6209,7 +6209,7 @@
 	{
 		.index = 27,
 		.frame.h264 = {
-			.decode = {
+			.decode_param = {
 				.top_field_order_cnt = 54,
 				.bottom_field_order_cnt = 54,
 				.dpb = {
@@ -6420,7 +6420,7 @@
 					},
 				},
 			},
-			.slice = {
+			.slice_param = {
 				.size = 3053,
 				.header_bit_size = 32,
 				.first_mb_in_slice = 0,
@@ -6439,7 +6439,7 @@
 	{
 		.index = 28,
 		.frame.h264 = {
-			.decode = {
+			.decode_param = {
 				.top_field_order_cnt = 56,
 				.bottom_field_order_cnt = 56,
 				.dpb = {
@@ -6650,7 +6650,7 @@
 					},
 				},
 			},
-			.slice = {
+			.slice_param = {
 				.size = 3769,
 				.header_bit_size = 32,
 				.first_mb_in_slice = 0,
@@ -6669,7 +6669,7 @@
 	{
 		.index = 29,
 		.frame.h264 = {
-			.decode = {
+			.decode_param = {
 				.top_field_order_cnt = 58,
 				.bottom_field_order_cnt = 58,
 				.dpb = {
@@ -6880,7 +6880,7 @@
 					},
 				},
 			},
-			.slice = {
+			.slice_param = {
 				.size = 3984,
 				.header_bit_size = 32,
 				.first_mb_in_slice = 0,
@@ -6899,7 +6899,7 @@
 	{
 		.index = 30,
 		.frame.h264 = {
-			.decode = {
+			.decode_param = {
 				.top_field_order_cnt = 60,
 				.bottom_field_order_cnt = 60,
 				.dpb = {
@@ -7110,7 +7110,7 @@
 					},
 				},
 			},
-			.slice = {
+			.slice_param = {
 				.size = 2726,
 				.header_bit_size = 32,
 				.first_mb_in_slice = 0,
@@ -7129,7 +7129,7 @@
 	{
 		.index = 31,
 		.frame.h264 = {
-			.decode = {
+			.decode_param = {
 				.top_field_order_cnt = 62,
 				.bottom_field_order_cnt = 62,
 				.dpb = {
@@ -7340,7 +7340,7 @@
 					},
 				},
 			},
-			.slice = {
+			.slice_param = {
 				.size = 2850,
 				.header_bit_size = 34,
 				.first_mb_in_slice = 0,

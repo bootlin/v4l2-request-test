@@ -1,7 +1,7 @@
 	{
 		.index = 0,
 		.frame.h264 = {
-			.decode = {
+			.decode_param = {
 			},
 			.pps = {
 				.weighted_bipred_idc = 0,
@@ -190,7 +190,7 @@
 					},
 				},
 			},
-			.slice = {
+			.slice_param = {
 				.size = 36843,
 				.header_bit_size = 32,
 				.first_mb_in_slice = 0,
@@ -210,7 +210,7 @@
 	{
 		.index = 1,
 		.frame.h264 = {
-			.decode = {
+			.decode_param = {
 			},
 			.pps = {
 				.weighted_bipred_idc = 0,
@@ -399,7 +399,7 @@
 					},
 				},
 			},
-			.slice = {
+			.slice_param = {
 				.size = 23036,
 				.header_bit_size = 36,
 				.first_mb_in_slice = 0,
@@ -419,7 +419,7 @@
 	{
 		.index = 2,
 		.frame.h264 = {
-			.decode = {
+			.decode_param = {
 			},
 			.pps = {
 				.weighted_bipred_idc = 0,
@@ -608,7 +608,7 @@
 					},
 				},
 			},
-			.slice = {
+			.slice_param = {
 				.size = 23745,
 				.header_bit_size = 36,
 				.first_mb_in_slice = 0,
@@ -628,7 +628,7 @@
 	{
 		.index = 3,
 		.frame.h264 = {
-			.decode = {
+			.decode_param = {
 			},
 			.pps = {
 				.weighted_bipred_idc = 0,
@@ -817,7 +817,7 @@
 					},
 				},
 			},
-			.slice = {
+			.slice_param = {
 				.size = 23342,
 				.header_bit_size = 38,
 				.first_mb_in_slice = 0,
@@ -837,7 +837,7 @@
 	{
 		.index = 4,
 		.frame.h264 = {
-			.decode = {
+			.decode_param = {
 			},
 			.pps = {
 				.weighted_bipred_idc = 0,
@@ -1026,7 +1026,7 @@
 					},
 				},
 			},
-			.slice = {
+			.slice_param = {
 				.size = 23299,
 				.header_bit_size = 36,
 				.first_mb_in_slice = 0,
@@ -1046,7 +1046,7 @@
 	{
 		.index = 5,
 		.frame.h264 = {
-			.decode = {
+			.decode_param = {
 			},
 			.pps = {
 				.weighted_bipred_idc = 0,
@@ -1235,7 +1235,7 @@
 					},
 				},
 			},
-			.slice = {
+			.slice_param = {
 				.size = 23228,
 				.header_bit_size = 38,
 				.first_mb_in_slice = 0,
@@ -1255,7 +1255,7 @@
 	{
 		.index = 6,
 		.frame.h264 = {
-			.decode = {
+			.decode_param = {
 			},
 			.pps = {
 				.weighted_bipred_idc = 0,
@@ -1444,7 +1444,7 @@
 					},
 				},
 			},
-			.slice = {
+			.slice_param = {
 				.size = 23309,
 				.header_bit_size = 36,
 				.first_mb_in_slice = 0,
@@ -1464,7 +1464,7 @@
 	{
 		.index = 7,
 		.frame.h264 = {
-			.decode = {
+			.decode_param = {
 			},
 			.pps = {
 				.weighted_bipred_idc = 0,
@@ -1653,7 +1653,7 @@
 					},
 				},
 			},
-			.slice = {
+			.slice_param = {
 				.size = 23276,
 				.header_bit_size = 38,
 				.first_mb_in_slice = 0,
@@ -1673,7 +1673,7 @@
 	{
 		.index = 8,
 		.frame.h264 = {
-			.decode = {
+			.decode_param = {
 			},
 			.pps = {
 				.weighted_bipred_idc = 0,
@@ -1862,7 +1862,7 @@
 					},
 				},
 			},
-			.slice = {
+			.slice_param = {
 				.size = 23308,
 				.header_bit_size = 36,
 				.first_mb_in_slice = 0,
@@ -1882,7 +1882,7 @@
 	{
 		.index = 9,
 		.frame.h264 = {
-			.decode = {
+			.decode_param = {
 			},
 			.pps = {
 				.weighted_bipred_idc = 0,
@@ -2071,7 +2071,7 @@
 					},
 				},
 			},
-			.slice = {
+			.slice_param = {
 				.size = 23252,
 				.header_bit_size = 38,
 				.first_mb_in_slice = 0,
@@ -2091,7 +2091,7 @@
 	{
 		.index = 10,
 		.frame.h264 = {
-			.decode = {
+			.decode_param = {
 			},
 			.pps = {
 				.weighted_bipred_idc = 0,
@@ -2280,7 +2280,7 @@
 					},
 				},
 			},
-			.slice = {
+			.slice_param = {
 				.size = 23278,
 				.header_bit_size = 36,
 				.first_mb_in_slice = 0,
@@ -2300,7 +2300,7 @@
 	{
 		.index = 11,
 		.frame.h264 = {
-			.decode = {
+			.decode_param = {
 			},
 			.pps = {
 				.weighted_bipred_idc = 0,
@@ -2489,7 +2489,7 @@
 					},
 				},
 			},
-			.slice = {
+			.slice_param = {
 				.size = 23335,
 				.header_bit_size = 38,
 				.first_mb_in_slice = 0,
@@ -2509,7 +2509,7 @@
 	{
 		.index = 12,
 		.frame.h264 = {
-			.decode = {
+			.decode_param = {
 			},
 			.pps = {
 				.weighted_bipred_idc = 0,
@@ -2698,7 +2698,7 @@
 					},
 				},
 			},
-			.slice = {
+			.slice_param = {
 				.size = 23332,
 				.header_bit_size = 36,
 				.first_mb_in_slice = 0,
@@ -2718,7 +2718,7 @@
 	{
 		.index = 13,
 		.frame.h264 = {
-			.decode = {
+			.decode_param = {
 			},
 			.pps = {
 				.weighted_bipred_idc = 0,
@@ -2907,7 +2907,7 @@
 					},
 				},
 			},
-			.slice = {
+			.slice_param = {
 				.size = 23263,
 				.header_bit_size = 38,
 				.first_mb_in_slice = 0,
@@ -2927,7 +2927,7 @@
 	{
 		.index = 14,
 		.frame.h264 = {
-			.decode = {
+			.decode_param = {
 			},
 			.pps = {
 				.weighted_bipred_idc = 0,
@@ -3116,7 +3116,7 @@
 					},
 				},
 			},
-			.slice = {
+			.slice_param = {
 				.size = 26141,
 				.header_bit_size = 36,
 				.first_mb_in_slice = 0,
@@ -3136,7 +3136,7 @@
 	{
 		.index = 15,
 		.frame.h264 = {
-			.decode = {
+			.decode_param = {
 			},
 			.pps = {
 				.weighted_bipred_idc = 0,
@@ -3325,7 +3325,7 @@
 					},
 				},
 			},
-			.slice = {
+			.slice_param = {
 				.size = 26301,
 				.header_bit_size = 38,
 				.first_mb_in_slice = 0,
@@ -3345,7 +3345,7 @@
 	{
 		.index = 16,
 		.frame.h264 = {
-			.decode = {
+			.decode_param = {
 			},
 			.pps = {
 				.weighted_bipred_idc = 0,
@@ -3534,7 +3534,7 @@
 					},
 				},
 			},
-			.slice = {
+			.slice_param = {
 				.size = 26326,
 				.header_bit_size = 36,
 				.first_mb_in_slice = 0,
@@ -3554,7 +3554,7 @@
 	{
 		.index = 17,
 		.frame.h264 = {
-			.decode = {
+			.decode_param = {
 			},
 			.pps = {
 				.weighted_bipred_idc = 0,
@@ -3743,7 +3743,7 @@
 					},
 				},
 			},
-			.slice = {
+			.slice_param = {
 				.size = 26165,
 				.header_bit_size = 38,
 				.first_mb_in_slice = 0,
@@ -3763,7 +3763,7 @@
 	{
 		.index = 18,
 		.frame.h264 = {
-			.decode = {
+			.decode_param = {
 			},
 			.pps = {
 				.weighted_bipred_idc = 0,
@@ -3952,7 +3952,7 @@
 					},
 				},
 			},
-			.slice = {
+			.slice_param = {
 				.size = 26113,
 				.header_bit_size = 36,
 				.first_mb_in_slice = 0,
@@ -3972,7 +3972,7 @@
 	{
 		.index = 19,
 		.frame.h264 = {
-			.decode = {
+			.decode_param = {
 			},
 			.pps = {
 				.weighted_bipred_idc = 0,
@@ -4161,7 +4161,7 @@
 					},
 				},
 			},
-			.slice = {
+			.slice_param = {
 				.size = 25794,
 				.header_bit_size = 38,
 				.first_mb_in_slice = 0,
@@ -4181,7 +4181,7 @@
 	{
 		.index = 20,
 		.frame.h264 = {
-			.decode = {
+			.decode_param = {
 			},
 			.pps = {
 				.weighted_bipred_idc = 0,
@@ -4370,7 +4370,7 @@
 					},
 				},
 			},
-			.slice = {
+			.slice_param = {
 				.size = 25432,
 				.header_bit_size = 36,
 				.first_mb_in_slice = 0,
@@ -4390,7 +4390,7 @@
 	{
 		.index = 21,
 		.frame.h264 = {
-			.decode = {
+			.decode_param = {
 			},
 			.pps = {
 				.weighted_bipred_idc = 0,
@@ -4579,7 +4579,7 @@
 					},
 				},
 			},
-			.slice = {
+			.slice_param = {
 				.size = 25104,
 				.header_bit_size = 38,
 				.first_mb_in_slice = 0,
@@ -4599,7 +4599,7 @@
 	{
 		.index = 22,
 		.frame.h264 = {
-			.decode = {
+			.decode_param = {
 			},
 			.pps = {
 				.weighted_bipred_idc = 0,
@@ -4788,7 +4788,7 @@
 					},
 				},
 			},
-			.slice = {
+			.slice_param = {
 				.size = 24968,
 				.header_bit_size = 36,
 				.first_mb_in_slice = 0,
@@ -4808,7 +4808,7 @@
 	{
 		.index = 23,
 		.frame.h264 = {
-			.decode = {
+			.decode_param = {
 			},
 			.pps = {
 				.weighted_bipred_idc = 0,
@@ -4997,7 +4997,7 @@
 					},
 				},
 			},
-			.slice = {
+			.slice_param = {
 				.size = 24776,
 				.header_bit_size = 38,
 				.first_mb_in_slice = 0,
@@ -5017,7 +5017,7 @@
 	{
 		.index = 24,
 		.frame.h264 = {
-			.decode = {
+			.decode_param = {
 			},
 			.pps = {
 				.weighted_bipred_idc = 0,
@@ -5206,7 +5206,7 @@
 					},
 				},
 			},
-			.slice = {
+			.slice_param = {
 				.size = 24687,
 				.header_bit_size = 36,
 				.first_mb_in_slice = 0,
@@ -5226,7 +5226,7 @@
 	{
 		.index = 25,
 		.frame.h264 = {
-			.decode = {
+			.decode_param = {
 			},
 			.pps = {
 				.weighted_bipred_idc = 0,
@@ -5415,7 +5415,7 @@
 					},
 				},
 			},
-			.slice = {
+			.slice_param = {
 				.size = 24523,
 				.header_bit_size = 38,
 				.first_mb_in_slice = 0,
@@ -5435,7 +5435,7 @@
 	{
 		.index = 26,
 		.frame.h264 = {
-			.decode = {
+			.decode_param = {
 			},
 			.pps = {
 				.weighted_bipred_idc = 0,
@@ -5624,7 +5624,7 @@
 					},
 				},
 			},
-			.slice = {
+			.slice_param = {
 				.size = 24694,
 				.header_bit_size = 36,
 				.first_mb_in_slice = 0,
@@ -5644,7 +5644,7 @@
 	{
 		.index = 27,
 		.frame.h264 = {
-			.decode = {
+			.decode_param = {
 			},
 			.pps = {
 				.weighted_bipred_idc = 0,
@@ -5833,7 +5833,7 @@
 					},
 				},
 			},
-			.slice = {
+			.slice_param = {
 				.size = 24709,
 				.header_bit_size = 38,
 				.first_mb_in_slice = 0,
@@ -5853,7 +5853,7 @@
 	{
 		.index = 28,
 		.frame.h264 = {
-			.decode = {
+			.decode_param = {
 			},
 			.pps = {
 				.weighted_bipred_idc = 0,
@@ -6042,7 +6042,7 @@
 					},
 				},
 			},
-			.slice = {
+			.slice_param = {
 				.size = 24722,
 				.header_bit_size = 36,
 				.first_mb_in_slice = 0,
@@ -6062,7 +6062,7 @@
 	{
 		.index = 29,
 		.frame.h264 = {
-			.decode = {
+			.decode_param = {
 			},
 			.pps = {
 				.weighted_bipred_idc = 0,
@@ -6251,7 +6251,7 @@
 					},
 				},
 			},
-			.slice = {
+			.slice_param = {
 				.size = 24755,
 				.header_bit_size = 38,
 				.first_mb_in_slice = 0,
@@ -6271,7 +6271,7 @@
 	{
 		.index = 30,
 		.frame.h264 = {
-			.decode = {
+			.decode_param = {
 			},
 			.pps = {
 				.weighted_bipred_idc = 0,
@@ -6460,7 +6460,7 @@
 					},
 				},
 			},
-			.slice = {
+			.slice_param = {
 				.size = 24690,
 				.header_bit_size = 36,
 				.first_mb_in_slice = 0,
@@ -6480,7 +6480,7 @@
 	{
 		.index = 31,
 		.frame.h264 = {
-			.decode = {
+			.decode_param = {
 			},
 			.pps = {
 				.weighted_bipred_idc = 0,
@@ -6669,7 +6669,7 @@
 					},
 				},
 			},
-			.slice = {
+			.slice_param = {
 				.size = 24811,
 				.header_bit_size = 38,
 				.first_mb_in_slice = 0,

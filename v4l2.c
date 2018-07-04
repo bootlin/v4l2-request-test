@@ -285,12 +285,12 @@ static int set_format_controls(int video_fd, int request_fd, enum format_type ty
 		void *data;
 		unsigned int size;
 	} glue[] = {
-		{ FORMAT_TYPE_MPEG2, "slice header", V4L2_CID_MPEG_VIDEO_MPEG2_SLICE_HEADER, &frame->mpeg2.header, sizeof(frame->mpeg2.header) },
-		{ FORMAT_TYPE_H264, "decode parameters", V4L2_CID_MPEG_VIDEO_H264_DECODE_PARAM, &frame->h264.decode, sizeof(frame->h264.decode) },
+		{ FORMAT_TYPE_MPEG2, "slice parameters", V4L2_CID_MPEG_VIDEO_MPEG2_SLICE_PARAMS, &frame->mpeg2.slice_params, sizeof(frame->mpeg2.slice_params) },
+		{ FORMAT_TYPE_H264, "decode parameters", V4L2_CID_MPEG_VIDEO_H264_DECODE_PARAM, &frame->h264.decode_param, sizeof(frame->h264.decode_param) },
 		{ FORMAT_TYPE_H264, "picture parameter set", V4L2_CID_MPEG_VIDEO_H264_PPS, &frame->h264.pps, sizeof(frame->h264.pps) },
 		{ FORMAT_TYPE_H264, "sequence parameter set", V4L2_CID_MPEG_VIDEO_H264_SPS, &frame->h264.sps, sizeof(frame->h264.sps) },
 		{ FORMAT_TYPE_H264, "scaling matrix", V4L2_CID_MPEG_VIDEO_H264_SCALING_MATRIX, &frame->h264.scaling_matrix, sizeof(frame->h264.scaling_matrix) },
-		{ FORMAT_TYPE_H264, "scaling matrix", V4L2_CID_MPEG_VIDEO_H264_SLICE_PARAM, &frame->h264.slice, sizeof(frame->h264.slice) },
+		{ FORMAT_TYPE_H264, "scaling matrix", V4L2_CID_MPEG_VIDEO_H264_SLICE_PARAM, &frame->h264.slice_param, sizeof(frame->h264.slice_param) },
 	};
 	unsigned int glue_count = sizeof(glue) / sizeof(glue[0]);
 	unsigned int i;

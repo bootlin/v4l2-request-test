@@ -402,7 +402,7 @@ int main(int argc, char *argv[])
 
 		rc = frame_controls_fill(&frame, preset, config.buffers_count, index, slice_size);
 		if (rc < 0) {
-			fprintf(stderr, "Unable to fill frame header\n");
+			fprintf(stderr, "Unable to fill frame controls\n");
 			goto error;
 		}
 
