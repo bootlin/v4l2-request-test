@@ -45,12 +45,10 @@ static int try_format(int video_fd, unsigned int type, unsigned int width, unsig
 	format.fmt.pix_mp.height = height;
 	format.fmt.pix_mp.plane_fmt[0].sizeimage = type == V4L2_BUF_TYPE_VIDEO_OUTPUT_MPLANE ? DESTINATION_SIZE_MAX : 0;
 	format.fmt.pix_mp.pixelformat = pixelformat;
-	format.fmt.pix_mp.field = V4L2_FIELD_ANY;
-	format.fmt.pix_mp.num_planes = type == V4L2_BUF_TYPE_VIDEO_CAPTURE_MPLANE ? 2 : 1;
 
-	rc = ioctl(video_fd, VIDIOC_S_FMT, &format);
+	rc = ioctl(video_fd, VIDIOC_TRY_FMT, &format);
 	if (rc < 0) {
-		fprintf(stderr, "Unable to set format for type %d: %s\n", type, strerror(errno));
+		fprintf(stderr, "Unable to try format for type %d: %s\n", type, strerror(errno));
 		return -1;
 	}
 
@@ -68,14 +66,54 @@ static int set_format(int video_fd, unsigned int type, unsigned int width, unsig
 	format.fmt.pix_mp.height = height;
 	format.fmt.pix_mp.plane_fmt[0].sizeimage = type == V4L2_BUF_TYPE_VIDEO_OUTPUT_MPLANE ? DESTINATION_SIZE_MAX : 0;
 	format.fmt.pix_mp.pixelformat = pixelformat;
-	format.fmt.pix_mp.field = V4L2_FIELD_ANY;
-	format.fmt.pix_mp.num_planes = type == V4L2_BUF_TYPE_VIDEO_CAPTURE_MPLANE ? 2 : 1;
 
 	rc = ioctl(video_fd, VIDIOC_S_FMT, &format);
 	if (rc < 0) {
 		fprintf(stderr, "Unable to set format for type %d: %s\n", type, strerror(errno));
 		return -1;
 	}
+
+	return 0;
+}
+
+static int get_format(int video_fd, unsigned int type, unsigned int *width, unsigned int *height, unsigned int *bytesperline, unsigned int *sizes, unsigned int *planes_count)
+{
+	struct v4l2_format format;
+	unsigned int count;
+	unsigned int i;
+	int rc;
+
+	memset(&format, 0, sizeof(format));
+	format.type = type;
+
+	rc = ioctl(video_fd, VIDIOC_G_FMT, &format);
+	if (rc < 0) {
+		fprintf(stderr, "Unable to get format for type %d: %s\n", type, strerror(errno));
+		return -1;
+	}
+
+	count = format.fmt.pix_mp.num_planes;
+
+	if (width != NULL)
+		*width = format.fmt.pix_mp.width;
+
+	if (height != NULL)
+		*height = format.fmt.pix_mp.height;
+
+	if (planes_count != NULL)
+		if (*planes_count > 0 && *planes_count < count)
+			count = *planes_count;
+
+	if (bytesperline != NULL)
+		for (i = 0; i < count; i++)
+			bytesperline[i] = format.fmt.pix_mp.plane_fmt[i].bytesperline;
+
+	if (sizes != NULL)
+		for (i = 0; i < count; i++)
+			sizes[i] = format.fmt.pix_mp.plane_fmt[i].sizeimage;
+
+	if (planes_count != NULL)
+		*planes_count = count;
 
 	return 0;
 }
@@ -105,10 +143,11 @@ static int create_buffers(int video_fd, unsigned int type, unsigned int buffers_
 	return 0;
 }
 
-static int request_buffer(int video_fd, unsigned int type, unsigned int index, unsigned int *length, unsigned int *offset)
+static int request_buffer(int video_fd, unsigned int type, unsigned int index, unsigned int *lengths, unsigned int *offsets, unsigned int buffers_count)
 {
-	struct v4l2_plane planes[2];
+	struct v4l2_plane planes[buffers_count];
 	struct v4l2_buffer buffer;
+	unsigned int i;
 	int rc;
 
 	memset(planes, 0, sizeof(planes));
@@ -117,7 +156,7 @@ static int request_buffer(int video_fd, unsigned int type, unsigned int index, u
 	buffer.type = type;
 	buffer.memory = V4L2_MEMORY_MMAP;
 	buffer.index = index;
-	buffer.length = type == V4L2_BUF_TYPE_VIDEO_CAPTURE_MPLANE ? 2 : 1;
+	buffer.length = buffers_count;
 	buffer.m.planes = planes;
 
 	rc = ioctl(video_fd, VIDIOC_QUERYBUF, &buffer);
@@ -126,31 +165,22 @@ static int request_buffer(int video_fd, unsigned int type, unsigned int index, u
 		return -1;
 	}
 
-	if (length != NULL) {
-		if (type == V4L2_BUF_TYPE_VIDEO_CAPTURE_MPLANE) {
-			length[0] = buffer.m.planes[0].length;
-			length[1] = buffer.m.planes[1].length;
-		} else {
-			*length = buffer.m.planes[0].length;
-		}
-	}
+	if (lengths != NULL)
+		for (i = 0; i < buffer.length; i++)
+			lengths[i] = buffer.m.planes[i].length;
 
-	if (offset != NULL) {
-		if (type == V4L2_BUF_TYPE_VIDEO_CAPTURE_MPLANE) {
-			offset[0] = buffer.m.planes[0].m.mem_offset;
-			offset[1] = buffer.m.planes[1].m.mem_offset;
-		} else {
-			*offset = buffer.m.planes[0].m.mem_offset;
-		}
-	}
+	if (offsets != NULL)
+		for (i = 0; i < buffer.length; i++)
+			offsets[i] = buffer.m.planes[i].m.mem_offset;
 
 	return 0;
 }
 
-static int queue_buffer(int video_fd, int request_fd, unsigned int type, unsigned int index, unsigned int size)
+static int queue_buffer(int video_fd, int request_fd, unsigned int type, unsigned int index, unsigned int size, unsigned int buffers_count)
 {
-	struct v4l2_plane planes[2];
+	struct v4l2_plane planes[buffers_count];
 	struct v4l2_buffer buffer;
+	unsigned int i;
 	int rc;
 
 	memset(planes, 0, sizeof(planes));
@@ -159,10 +189,11 @@ static int queue_buffer(int video_fd, int request_fd, unsigned int type, unsigne
 	buffer.type = type;
 	buffer.memory = V4L2_MEMORY_MMAP;
 	buffer.index = index;
-	buffer.length = type == V4L2_BUF_TYPE_VIDEO_CAPTURE_MPLANE ? 2 : 1;
+	buffer.length = buffers_count;
 	buffer.m.planes = planes;
 
-	buffer.m.planes[0].bytesused = size;
+	for (i = 0; i < buffers_count; i++)
+		buffer.m.planes[i].bytesused = size;
 
 	if (request_fd >= 0) {
 		buffer.flags = V4L2_BUF_FLAG_REQUEST_FD;
@@ -178,9 +209,9 @@ static int queue_buffer(int video_fd, int request_fd, unsigned int type, unsigne
 	return 0;
 }
 
-static int dequeue_buffer(int video_fd, int request_fd, unsigned int type, unsigned int index)
+static int dequeue_buffer(int video_fd, int request_fd, unsigned int type, unsigned int index, unsigned int buffers_count)
 {
-	struct v4l2_plane planes[2];
+	struct v4l2_plane planes[buffers_count];
 	struct v4l2_buffer buffer;
 	int rc;
 
@@ -190,7 +221,7 @@ static int dequeue_buffer(int video_fd, int request_fd, unsigned int type, unsig
 	buffer.type = type;
 	buffer.memory = V4L2_MEMORY_MMAP;
 	buffer.index = index;
-	buffer.length = type == V4L2_BUF_TYPE_VIDEO_CAPTURE_MPLANE ? 2 : 1;
+	buffer.length = buffers_count;
 	buffer.m.planes = planes;
 
 	if (request_fd >= 0) {
@@ -332,16 +363,20 @@ bool video_engine_format_test(int video_fd, unsigned int width, unsigned int hei
 	return rc >= 0;
 }
 
-int video_engine_start(int video_fd, int media_fd, unsigned int width, unsigned int height, unsigned int format, enum format_type type, struct video_buffer **buffers, unsigned int buffers_count)
+int video_engine_start(int video_fd, int media_fd, unsigned int width, unsigned int height, struct format_description *format, enum format_type type, struct video_buffer **buffers, unsigned int buffers_count)
 {
 	struct media_request_alloc request_alloc;
 	struct video_buffer *buffer;
 	unsigned int source_format;
 	unsigned int source_length;
-	unsigned int source_offset;
+	unsigned int source_map_offset;
 	unsigned int destination_format;
-	unsigned int destination_length[2];
-	unsigned int destination_offset[2];
+	void *destination_map[VIDEO_MAX_PLANES];
+	unsigned int destination_map_lengths[VIDEO_MAX_PLANES];
+	unsigned int destination_map_offsets[VIDEO_MAX_PLANES];
+	unsigned int destination_sizes[VIDEO_MAX_PLANES];
+	unsigned int destination_bytesperlines[VIDEO_MAX_PLANES];
+	unsigned int destination_planes_count;
 	unsigned int export_fds_count;
 	unsigned int i, j;
 	int rc;
@@ -357,11 +392,19 @@ int video_engine_start(int video_fd, int media_fd, unsigned int width, unsigned 
 		goto error;
 	}
 
-	destination_format = format;
+	destination_format = format->v4l2_format;
 
 	rc = set_format(video_fd, V4L2_BUF_TYPE_VIDEO_CAPTURE_MPLANE, width, height, destination_format);
 	if (rc < 0) {
 		fprintf(stderr, "Unable to set destination format\n");
+		goto error;
+	}
+
+	destination_planes_count = 0;
+
+	rc = get_format(video_fd, V4L2_BUF_TYPE_VIDEO_CAPTURE_MPLANE, NULL, NULL, destination_bytesperlines, destination_sizes, &destination_planes_count);
+	if (rc < 0) {
+		fprintf(stderr, "Unable to get destination format\n");
 		goto error;
 	}
 
@@ -374,18 +417,19 @@ int video_engine_start(int video_fd, int media_fd, unsigned int width, unsigned 
 	for (i = 0; i < buffers_count; i++) {
 		buffer = &((*buffers)[i]);
 
-		rc = request_buffer(video_fd, V4L2_BUF_TYPE_VIDEO_OUTPUT_MPLANE, i, &source_length, &source_offset);
+		rc = request_buffer(video_fd, V4L2_BUF_TYPE_VIDEO_OUTPUT_MPLANE, i, &source_length, &source_map_offset, 1);
 		if (rc < 0) {
 			fprintf(stderr, "Unable to request source buffer\n");
 			goto error;
 		}
 
-		buffer->source_data = mmap(NULL, source_length, PROT_READ | PROT_WRITE, MAP_SHARED, video_fd, source_offset);
-		if (buffer->source_data == MAP_FAILED) {
+		buffer->source_map = mmap(NULL, source_length, PROT_READ | PROT_WRITE, MAP_SHARED, video_fd, source_map_offset);
+		if (buffer->source_map == MAP_FAILED) {
 			fprintf(stderr, "Unable to map source buffer\n");
 			goto error;
 		}
 
+		buffer->source_data = buffer->source_map;
 		buffer->source_size = source_length;
 	}
 
@@ -398,24 +442,49 @@ int video_engine_start(int video_fd, int media_fd, unsigned int width, unsigned 
 	for (i = 0; i < buffers_count; i++) {
 		buffer = &((*buffers)[i]);
 
-		rc = request_buffer(video_fd, V4L2_BUF_TYPE_VIDEO_CAPTURE_MPLANE, i, destination_length, destination_offset);
+		rc = request_buffer(video_fd, V4L2_BUF_TYPE_VIDEO_CAPTURE_MPLANE, i, destination_map_lengths, destination_map_offsets, format->v4l2_buffers_count);
 		if (rc < 0) {
 			fprintf(stderr, "Unable to request destination buffer\n");
 			goto error;
 		}
 
-		for (j = 0; j < 2; j++) {
-			buffer->destination_data[j] = mmap(NULL, destination_length[j], PROT_READ | PROT_WRITE, MAP_SHARED, video_fd, destination_offset[j]);
-			if (buffer->destination_data[j] == MAP_FAILED) {
+		for (j = 0; j < format->v4l2_buffers_count; j++) {
+			destination_map[j] = mmap(NULL, destination_map_lengths[j], PROT_READ | PROT_WRITE, MAP_SHARED, video_fd, destination_map_offsets[j]);
+			if (destination_map[j] == MAP_FAILED) {
 				fprintf(stderr, "Unable to map destination buffer\n");
 				goto error;
 			}
-
-			buffer->destination_size[j] = destination_length[j];
-			buffer->export_fds[j] = -1;
 		}
 
-		export_fds_count = 2;
+		if (format->v4l2_buffers_count == 1) {
+			for (j = 0; j < destination_planes_count; j++) {
+				buffer->destination_map[j] = j == 0 ? destination_map[0] : NULL;
+				buffer->destination_map_lengths[j] = j == 0 ? destination_map_lengths[0] : 0;
+				buffer->destination_offsets[j] = j > 0 ? destination_sizes[j-1] : 0;
+				buffer->destination_data[j] = (void *) ((unsigned char *) destination_map[0] + buffer->destination_offsets[j]);
+				buffer->destination_sizes[j] = destination_sizes[j];
+				buffer->destination_bytesperlines[j] = destination_bytesperlines[j];
+			}
+		} else if (format->v4l2_buffers_count == destination_planes_count) {
+			for (j = 0; j < destination_planes_count; j++) {
+				buffer->destination_map[j] = destination_map[j];
+				buffer->destination_map_lengths[j] = destination_map_lengths[j];
+				buffer->destination_offsets[j] = 0;
+				buffer->destination_data[j] = destination_map[j];
+				buffer->destination_sizes[j] = destination_sizes[j];
+				buffer->destination_bytesperlines[j] = destination_bytesperlines[j];
+			}
+		} else {
+			fprintf(stderr, "Unsupported combination of %d buffers with %d planes\n", format->v4l2_buffers_count, destination_planes_count);
+			goto error;
+		}
+
+		buffer->destination_planes_count = destination_planes_count;
+		buffer->buffers_count = format->v4l2_buffers_count;
+		export_fds_count = format->v4l2_buffers_count;
+
+		for (j = 0; j < export_fds_count; j++)
+			buffer->export_fds[j] = -1;
 
 		rc = export_buffer(video_fd, V4L2_BUF_TYPE_VIDEO_CAPTURE_MPLANE, i, O_RDONLY, buffer->export_fds, export_fds_count);
 		if (rc < 0) {
@@ -475,11 +544,21 @@ int video_engine_stop(int video_fd, struct video_buffer *buffers, unsigned int b
 	for (i = 0; i < buffers_count; i++) {
 		munmap(buffers[i].source_data, buffers[i].source_size);
 
-		for (j = 0; j < 2; j++) {
-			munmap(buffers[i].destination_data[j], buffers[i].destination_size[j]);
+		for (j = 0; j < buffers[i].buffers_count; j++) {
+			if (buffers[i].destination_map[j] == NULL)
+				break;
+
+			munmap(buffers[i].destination_map[j], buffers[i].destination_map_lengths[j]);
 
 			if (buffers[i].export_fds[j] >= 0)
 				close(buffers[i].export_fds[j]);
+		}
+
+		for (j = 0; j < buffers[i].buffers_count; j++) {
+			if (buffers[i].export_fds[j] < 0)
+				break;
+
+			close(buffers[i].export_fds[j]);
 		}
 
 		close(buffers[i].request_fd);
@@ -507,13 +586,13 @@ int video_engine_decode(int video_fd, unsigned int index, union controls *frame,
 		return -1;
 	}
 
-	rc = queue_buffer(video_fd, request_fd, V4L2_BUF_TYPE_VIDEO_OUTPUT_MPLANE, index, source_size);
+	rc = queue_buffer(video_fd, request_fd, V4L2_BUF_TYPE_VIDEO_OUTPUT_MPLANE, index, source_size, 1);
 	if (rc < 0) {
 		fprintf(stderr, "Unable to queue source buffer\n");
 		return -1;
 	}
 
-	rc = queue_buffer(video_fd, -1, V4L2_BUF_TYPE_VIDEO_CAPTURE_MPLANE, index, 0);
+	rc = queue_buffer(video_fd, -1, V4L2_BUF_TYPE_VIDEO_CAPTURE_MPLANE, index, 0, buffers[index].buffers_count);
 	if (rc < 0) {
 		fprintf(stderr, "Unable to queue destination buffer\n");
 		return -1;
@@ -537,13 +616,13 @@ int video_engine_decode(int video_fd, unsigned int index, union controls *frame,
 		return -1;
 	}
 
-	rc = dequeue_buffer(video_fd, -1, V4L2_BUF_TYPE_VIDEO_OUTPUT_MPLANE, index);
+	rc = dequeue_buffer(video_fd, -1, V4L2_BUF_TYPE_VIDEO_OUTPUT_MPLANE, index, 1);
 	if (rc < 0) {
 		fprintf(stderr, "Unable to dequeue source buffer\n");
 		return -1;
 	}
 
-	rc = dequeue_buffer(video_fd, -1, V4L2_BUF_TYPE_VIDEO_CAPTURE_MPLANE, index);
+	rc = dequeue_buffer(video_fd, -1, V4L2_BUF_TYPE_VIDEO_CAPTURE_MPLANE, index, buffers[index].buffers_count);
 	if (rc < 0) {
 		fprintf(stderr, "Unable to dequeue destination buffer\n");
 		return -1;

@@ -37,8 +37,24 @@
 #include "cedrus-frame-test.h"
 
 struct format_description formats[] = {
-	{ "NV12 YUV", V4L2_PIX_FMT_NV12, DRM_FORMAT_NV12, DRM_FORMAT_MOD_NONE, 16 },
-	{ "MB32-tiled NV12 YUV", V4L2_PIX_FMT_MB32_NV12, DRM_FORMAT_NV12, DRM_FORMAT_MOD_ALLWINNER_MB32_TILED, 16 },
+	{
+		.description		= "NV12 YUV",
+		.v4l2_format		= V4L2_PIX_FMT_NV12,
+		.v4l2_buffers_count	= 1,
+		.drm_format		= DRM_FORMAT_NV12,
+		.drm_modifier		= DRM_FORMAT_MOD_NONE,
+		.drm_planes_count	= 2,
+		.bpp			= 16,
+	},
+	{
+		.description		= "MB32-tiled NV12 YUV",
+		.v4l2_format		= V4L2_PIX_FMT_MB32_NV12,
+		.v4l2_buffers_count	= 1,
+		.drm_format		= DRM_FORMAT_NV12,
+		.drm_modifier		= DRM_FORMAT_MOD_ALLWINNER_MB32_TILED,
+		.drm_planes_count	= 2,
+		.bpp			= 16
+	},
 };
 
 unsigned int formats_count = sizeof(formats) / sizeof(formats[0]);
@@ -334,13 +350,13 @@ int main(int argc, char *argv[])
 
 	printf("Destination format: %s\n", selected_format->description);
 
-	rc = video_engine_start(video_fd, media_fd, width, height, selected_format->v4l2_format, preset->type, &video_buffers, config.buffers_count);
+	rc = video_engine_start(video_fd, media_fd, width, height, selected_format, preset->type, &video_buffers, config.buffers_count);
 	if (rc < 0) {
 		fprintf(stderr, "Unable to start video engine\n");
 		goto error;
 	}
 
-	rc = display_engine_start(drm_fd, width, height, selected_format->drm_format, selected_format->drm_modifier, selected_format->bpp, video_buffers, config.buffers_count, &gem_buffers, &setup);
+	rc = display_engine_start(drm_fd, width, height, selected_format, video_buffers, config.buffers_count, &gem_buffers, &setup);
 	if (rc < 0) {
 		fprintf(stderr, "Unable to start display engine\n");
 		goto error;

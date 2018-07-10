@@ -93,9 +93,9 @@ static int create_tiled_buffer(int drm_fd, unsigned int width, unsigned int heig
 	return 0;
 }
 
-static int create_imported_buffer(int drm_fd, int *import_fds, unsigned int import_fds_count, unsigned int width, unsigned int height, struct gem_buffer *buffer)
+static int create_imported_buffer(int drm_fd, int *import_fds, unsigned int import_fds_count, unsigned int *offsets, unsigned int *pitches, struct gem_buffer *buffer)
 {
-	uint32_t handle;
+	uint32_t handles[4];
 	unsigned int i;
 	int rc;
 
@@ -104,14 +104,17 @@ static int create_imported_buffer(int drm_fd, int *import_fds, unsigned int impo
 	memset(buffer->offsets, 0, sizeof(buffer->offsets));
 
 	for (i = 0; i < import_fds_count; i++) {
-		rc = drmPrimeFDToHandle(drm_fd, import_fds[i], &handle);
+		rc = drmPrimeFDToHandle(drm_fd, import_fds[i], &handles[i]);
 		if (rc < 0) {
 			fprintf(stderr, "Unable to create imported buffer: %s\n", strerror(errno));
 			return -1;
 		}
+	}
 
-		buffer->handles[i] = handle;
-		buffer->pitches[i] = ALIGN(width, 32);
+	for (i = 0; i < buffer->planes_count; i++) {
+		buffer->handles[i] = import_fds_count == 1 ? handles[0] : handles[i];
+		buffer->pitches[i] = pitches[i];
+		buffer->offsets[i] = offsets[i];
 	}
 
 	return 0;
@@ -201,12 +204,13 @@ static int add_framebuffer(int drm_fd, struct gem_buffer *buffer, unsigned int w
 	unsigned int i;
 	int rc;
 
-	for (i = 0; i < 4; i++) {
-		if (buffer->handles[i] != 0) {
+	for (i = 0; i < buffer->planes_count; i++) {
+		if (buffer->handles[i] != 0 && modifier != DRM_FORMAT_MOD_NONE) {
 			flags |= DRM_MODE_FB_MODIFIERS;
 			modifiers[i] = modifier;
 		}
 	}
+
 	rc = drmModeAddFB2WithModifiers(drm_fd, width, height, format, buffer->handles, buffer->pitches, buffer->offsets, modifiers, &id, flags);
 	if (rc < 0) {
 		fprintf(stderr, "Unable to add framebuffer for plane: %s\n", strerror(errno));
@@ -612,7 +616,7 @@ complete:
 	return rc;
 }
 
-int display_engine_start(int drm_fd, unsigned int width, unsigned int height, unsigned int format, uint64_t modifier, unsigned int bpp, struct video_buffer *video_buffers, unsigned int count, struct gem_buffer **buffers, struct display_setup *setup)
+int display_engine_start(int drm_fd, unsigned int width, unsigned int height, struct format_description *format, struct video_buffer *video_buffers, unsigned int count, struct gem_buffer **buffers, struct display_setup *setup)
 {
 	struct video_buffer *video_buffer;
 	struct gem_buffer *buffer;
@@ -654,7 +658,7 @@ int display_engine_start(int drm_fd, unsigned int width, unsigned int height, un
 		return -1;
 	}
 
-	rc = select_plane(drm_fd, crtc_id, format, &plane_id, &zpos);
+	rc = select_plane(drm_fd, crtc_id, format->drm_format, &plane_id, &zpos);
 	if (rc < 0) {
 		fprintf(stderr, "Unable to select DRM plane for CRTC %d\n", crtc_id);
 		return -1;
@@ -678,7 +682,7 @@ int display_engine_start(int drm_fd, unsigned int width, unsigned int height, un
 
 	for (i = 0; i < count; i++) {
 		video_buffer = &video_buffers[i];
-		export_fds_count = sizeof(video_buffer->export_fds) / sizeof(*video_buffer->export_fds);
+		export_fds_count = video_buffer->buffers_count;
 
 		for (j = 0; j < export_fds_count; j++) {
 			if (video_buffer->export_fds[j] < 0) {
@@ -688,6 +692,7 @@ int display_engine_start(int drm_fd, unsigned int width, unsigned int height, un
 		}
 	}
 
+	/* Use double-buffering without DMABUF. */
 	if (!use_dmabuf)
 		count = 2;
 
@@ -697,19 +702,24 @@ int display_engine_start(int drm_fd, unsigned int width, unsigned int height, un
 	for (i = 0; i < count; i++) {
 		buffer = &((*buffers)[i]);
 		video_buffer = &video_buffers[i];
-		export_fds_count = sizeof(video_buffer->export_fds) / sizeof(*video_buffer->export_fds);
+		export_fds_count = video_buffer->buffers_count;
+
+		if (video_buffer->destination_planes_count < format->drm_planes_count)
+			return -1;
+
+		buffer->planes_count = format->drm_planes_count;
 
 		if (use_dmabuf)
-			rc = create_imported_buffer(drm_fd, video_buffer->export_fds, export_fds_count, width, height, buffer);
-		else if (modifier == DRM_FORMAT_MOD_ALLWINNER_MB32_TILED)
-			rc = create_tiled_buffer(drm_fd, width, height, format, buffer);
+			rc = create_imported_buffer(drm_fd, video_buffer->export_fds, export_fds_count, video_buffer->destination_offsets, video_buffer->destination_bytesperlines, buffer);
+		else if (format->drm_modifier == DRM_FORMAT_MOD_ALLWINNER_MB32_TILED)
+			rc = create_tiled_buffer(drm_fd, width, height, format->drm_format, buffer);
 		else
-			rc = create_dumb_buffer(drm_fd, width, height, bpp, buffer);
+			rc = create_dumb_buffer(drm_fd, width, height, format->bpp, buffer);
 
 		if (rc < 0)
 			return -1;
 
-		rc = add_framebuffer(drm_fd, buffer, width, height, format, modifier);
+		rc = add_framebuffer(drm_fd, buffer, width, height, format->drm_format, format->drm_modifier);
 		if (rc < 0)
 			return -1;
 
@@ -801,8 +811,6 @@ int display_engine_show(int drm_fd, unsigned int index, struct video_buffer *vid
 {
 	struct video_buffer *video_buffer;
 	struct gem_buffer *buffer;
-	unsigned int destination_size[2];
-	unsigned int size;
 	unsigned int i;
 	int rc;
 
@@ -813,17 +821,8 @@ int display_engine_show(int drm_fd, unsigned int index, struct video_buffer *vid
 	buffer = &buffers[index];
 
 	if (!setup->use_dmabuf) {
-		destination_size[0] = ALIGN(setup->width, 32) * ALIGN(setup->height, 32);
-		destination_size[1] = ALIGN(setup->width, 32) * ALIGN(DIV_ROUND_UP(setup->height, 2), 32);
-
-		size = destination_size[0] + destination_size[1];
-		if (size > buffer->size) {
-			fprintf(stderr, "Display data size is larger than buffer\n");
-			return -1;
-		}
-
-		for (i = 0; i < 2; i++)
-			memcpy((unsigned char *) buffer->data + buffer->offsets[i], video_buffer->destination_data[i], destination_size[i]);
+		for (i = 0; i < buffer->planes_count; i++)
+			memcpy((unsigned char *) buffer->data + buffer->offsets[i], video_buffer->destination_data[i], video_buffer->destination_sizes[i]);
 
 		buffer = index % 2 == 0 ? &buffers[0] : &buffers[1];
 	}
