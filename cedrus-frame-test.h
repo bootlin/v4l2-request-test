@@ -66,9 +66,9 @@ struct format_description {
 
 /* Presets */
 
-enum format_type {
-	FORMAT_TYPE_MPEG2,
-	FORMAT_TYPE_H264,
+enum codec_type {
+	CODEC_TYPE_MPEG2,
+	CODEC_TYPE_H264,
 };
 
 enum pct {
@@ -108,7 +108,7 @@ struct preset {
 	unsigned int height;
 	unsigned int buffers_count;
 
-	enum format_type type;
+	enum codec_type type;
 	struct frame *frames;
 	unsigned int frames_count;
 };
@@ -202,9 +202,9 @@ int frame_gop_schedule(struct preset *preset, unsigned int index);
 /* V4L2 */
 
 bool video_engine_format_test(int video_fd, unsigned int width, unsigned int height, unsigned int format);
-int video_engine_start(int video_fd, int media_fd, unsigned int width, unsigned int height, struct format_description *format, enum format_type type, struct video_buffer **buffers, unsigned int buffers_count);
+int video_engine_start(int video_fd, int media_fd, unsigned int width, unsigned int height, struct format_description *format, enum codec_type type, struct video_buffer **buffers, unsigned int buffers_count);
 int video_engine_stop(int video_fd, struct video_buffer *buffers, unsigned int buffers_count);
-int video_engine_decode(int video_fd, unsigned int index, union controls *frame, enum format_type type, void *source_data, unsigned int source_size, struct video_buffer *buffers);
+int video_engine_decode(int video_fd, unsigned int index, union controls *frame, enum codec_type type, void *source_data, unsigned int source_size, struct video_buffer *buffers);
 
 /* DRM */
 

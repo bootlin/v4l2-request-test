@@ -307,21 +307,21 @@ static int set_stream(int video_fd, unsigned int type, bool enable)
 	return 0;
 }
 
-static int set_format_controls(int video_fd, int request_fd, enum format_type type, union controls *frame)
+static int set_format_controls(int video_fd, int request_fd, enum codec_type type, union controls *frame)
 {
 	struct {
-		enum format_type type;
+		enum codec_type type;
 		char *description;
 		unsigned int id;
 		void *data;
 		unsigned int size;
 	} glue[] = {
-		{ FORMAT_TYPE_MPEG2, "slice parameters", V4L2_CID_MPEG_VIDEO_MPEG2_SLICE_PARAMS, &frame->mpeg2.slice_params, sizeof(frame->mpeg2.slice_params) },
-		{ FORMAT_TYPE_H264, "decode parameters", V4L2_CID_MPEG_VIDEO_H264_DECODE_PARAM, &frame->h264.decode_param, sizeof(frame->h264.decode_param) },
-		{ FORMAT_TYPE_H264, "picture parameter set", V4L2_CID_MPEG_VIDEO_H264_PPS, &frame->h264.pps, sizeof(frame->h264.pps) },
-		{ FORMAT_TYPE_H264, "sequence parameter set", V4L2_CID_MPEG_VIDEO_H264_SPS, &frame->h264.sps, sizeof(frame->h264.sps) },
-		{ FORMAT_TYPE_H264, "scaling matrix", V4L2_CID_MPEG_VIDEO_H264_SCALING_MATRIX, &frame->h264.scaling_matrix, sizeof(frame->h264.scaling_matrix) },
-		{ FORMAT_TYPE_H264, "scaling matrix", V4L2_CID_MPEG_VIDEO_H264_SLICE_PARAM, &frame->h264.slice_param, sizeof(frame->h264.slice_param) },
+		{ CODEC_TYPE_MPEG2, "slice parameters", V4L2_CID_MPEG_VIDEO_MPEG2_SLICE_PARAMS, &frame->mpeg2.slice_params, sizeof(frame->mpeg2.slice_params) },
+		{ CODEC_TYPE_H264, "decode parameters", V4L2_CID_MPEG_VIDEO_H264_DECODE_PARAM, &frame->h264.decode_param, sizeof(frame->h264.decode_param) },
+		{ CODEC_TYPE_H264, "picture parameter set", V4L2_CID_MPEG_VIDEO_H264_PPS, &frame->h264.pps, sizeof(frame->h264.pps) },
+		{ CODEC_TYPE_H264, "sequence parameter set", V4L2_CID_MPEG_VIDEO_H264_SPS, &frame->h264.sps, sizeof(frame->h264.sps) },
+		{ CODEC_TYPE_H264, "scaling matrix", V4L2_CID_MPEG_VIDEO_H264_SCALING_MATRIX, &frame->h264.scaling_matrix, sizeof(frame->h264.scaling_matrix) },
+		{ CODEC_TYPE_H264, "scaling matrix", V4L2_CID_MPEG_VIDEO_H264_SLICE_PARAM, &frame->h264.slice_param, sizeof(frame->h264.slice_param) },
 	};
 	unsigned int glue_count = sizeof(glue) / sizeof(glue[0]);
 	unsigned int i;
@@ -341,12 +341,12 @@ static int set_format_controls(int video_fd, int request_fd, enum format_type ty
 	return 0;
 }
 
-static int source_pixel_format(enum format_type type)
+static int source_pixel_format(enum codec_type type)
 {
 	switch (type) {
-	case FORMAT_TYPE_MPEG2:
+	case CODEC_TYPE_MPEG2:
 		return V4L2_PIX_FMT_MPEG2_SLICE;
-	case FORMAT_TYPE_H264:
+	case CODEC_TYPE_H264:
 		return V4L2_PIX_FMT_H264_SLICE;
 	default:
 		fprintf(stderr, "Invalid format type\n");
@@ -363,7 +363,7 @@ bool video_engine_format_test(int video_fd, unsigned int width, unsigned int hei
 	return rc >= 0;
 }
 
-int video_engine_start(int video_fd, int media_fd, unsigned int width, unsigned int height, struct format_description *format, enum format_type type, struct video_buffer **buffers, unsigned int buffers_count)
+int video_engine_start(int video_fd, int media_fd, unsigned int width, unsigned int height, struct format_description *format, enum codec_type type, struct video_buffer **buffers, unsigned int buffers_count)
 {
 	struct media_request_alloc request_alloc;
 	struct video_buffer *buffer;
@@ -569,7 +569,7 @@ int video_engine_stop(int video_fd, struct video_buffer *buffers, unsigned int b
 	return 0;
 }
 
-int video_engine_decode(int video_fd, unsigned int index, union controls *frame, enum format_type type, void *source_data, unsigned int source_size, struct video_buffer *buffers)
+int video_engine_decode(int video_fd, unsigned int index, union controls *frame, enum codec_type type, void *source_data, unsigned int source_size, struct video_buffer *buffers)
 {
 	struct timeval tv = { 0, 300000 };
 	int request_fd = -1;

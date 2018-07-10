@@ -49,7 +49,7 @@ static struct preset presets[] = {
 		.attribution = "Blender Foundation | www.blender.org",
 		.width = 854,
 		.height = 480,
-		.type = FORMAT_TYPE_MPEG2,
+		.type = CODEC_TYPE_MPEG2,
 		.buffers_count = 6,
 		.frames = bbb_mpeg2_frames,
 		.frames_count = sizeof(bbb_mpeg2_frames) / sizeof(bbb_mpeg2_frames[0]),
@@ -61,7 +61,7 @@ static struct preset presets[] = {
 		.attribution = "Blender Foundation | www.blender.org",
 		.width = 1280,
 		.height = 720,
-		.type = FORMAT_TYPE_MPEG2,
+		.type = CODEC_TYPE_MPEG2,
 		.buffers_count = 6,
 		.frames = ed_mpeg2_frames,
 		.frames_count = sizeof(ed_mpeg2_frames) / sizeof(ed_mpeg2_frames[0]),
@@ -73,7 +73,7 @@ static struct preset presets[] = {
 		.attribution = "Blender Foundation | www.blender.org",
 		.width = 854,
 		.height = 480,
-		.type = FORMAT_TYPE_H264,
+		.type = CODEC_TYPE_H264,
 		.buffers_count = 16,
 		.frames = bbb_h264_all_i_32_frames,
 		.frames_count = sizeof(bbb_h264_all_i_32_frames) / sizeof(bbb_h264_all_i_32_frames[0]),
@@ -85,7 +85,7 @@ static struct preset presets[] = {
 		.attribution = "Blender Foundation | www.blender.org",
 		.width = 854,
 		.height = 480,
-		.type = FORMAT_TYPE_H264,
+		.type = CODEC_TYPE_H264,
 		.buffers_count = 16,
 		.frames = bbb_h264_32_frames,
 		.frames_count = sizeof(bbb_h264_32_frames) / sizeof(bbb_h264_32_frames[0]),
@@ -143,7 +143,7 @@ int frame_controls_fill(union controls *frame, struct preset *preset, unsigned i
 	memcpy(frame, &preset->frames[index].frame, sizeof(*frame));
 
 	switch (preset->type) {
-	case FORMAT_TYPE_MPEG2:
+	case CODEC_TYPE_MPEG2:
 		frame->mpeg2.slice_params.slice_pos = 0;
 		frame->mpeg2.slice_params.slice_len = slice_size * 8;
 
@@ -153,7 +153,7 @@ int frame_controls_fill(union controls *frame, struct preset *preset, unsigned i
 		frame->mpeg2.slice_params.forward_ref_index %= buffers_count;
 		frame->mpeg2.slice_params.backward_ref_index %= buffers_count;
 		break;
-	case FORMAT_TYPE_H264:
+	case CODEC_TYPE_H264:
 		for (i = 0; i < 16; i++) {
 			decode_param = &frame->h264.decode_param;
 			dpb = &decode_param->dpb[i];
@@ -174,7 +174,7 @@ unsigned int frame_pct(struct preset *preset, unsigned int index)
 		return PCT_I;
 
 	switch (preset->type) {
-	case FORMAT_TYPE_MPEG2:
+	case CODEC_TYPE_MPEG2:
 		switch (preset->frames[index].frame.mpeg2.slice_params.slice_type) {
 		case V4L2_MPEG2_SLICE_TYPE_I: return PCT_I;
 		case V4L2_MPEG2_SLICE_TYPE_P: return PCT_P;
@@ -192,7 +192,7 @@ unsigned int frame_backward_ref_index(struct preset *preset, unsigned int index)
 		return 0;
 
 	switch (preset->type) {
-	case FORMAT_TYPE_MPEG2:
+	case CODEC_TYPE_MPEG2:
 		return preset->frames[index].frame.mpeg2.slice_params.backward_ref_index;
 	default:
 		return 0;

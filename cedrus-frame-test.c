@@ -102,8 +102,8 @@ static void print_summary(struct config *config, struct preset *preset)
 	printf(" Format: ");
 
 	switch (preset->type) {
-	case FORMAT_TYPE_MPEG2: printf("MPEG2"); break;
-	case FORMAT_TYPE_H264: printf("H264"); break;
+	case CODEC_TYPE_MPEG2: printf("MPEG2"); break;
+	case CODEC_TYPE_H264: printf("H264"); break;
 	default: printf("Invalid"); break;
 	}
 
