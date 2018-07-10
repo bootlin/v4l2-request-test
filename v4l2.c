@@ -341,7 +341,7 @@ static int set_format_controls(int video_fd, int request_fd, enum codec_type typ
 	return 0;
 }
 
-static int source_pixel_format(enum codec_type type)
+static int codec_source_format(enum codec_type type)
 {
 	switch (type) {
 	case CODEC_TYPE_MPEG2:
@@ -384,7 +384,7 @@ int video_engine_start(int video_fd, int media_fd, unsigned int width, unsigned 
 	*buffers = malloc(buffers_count * sizeof(**buffers));
 	memset(*buffers, 0, buffers_count * sizeof(**buffers));
 
-	source_format = source_pixel_format(type);
+	source_format = codec_source_format(type);
 
 	rc = set_format(video_fd, V4L2_BUF_TYPE_VIDEO_OUTPUT_MPLANE, width, height, source_format);
 	if (rc < 0) {
