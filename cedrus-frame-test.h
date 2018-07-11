@@ -127,8 +127,8 @@ struct video_buffer {
 	unsigned int destination_offsets[VIDEO_MAX_PLANES];
 	unsigned int destination_bytesperlines[VIDEO_MAX_PLANES];
 	unsigned int destination_planes_count;
+	unsigned int destination_buffers_count;
 
-	unsigned int buffers_count;
 	int export_fds[VIDEO_MAX_PLANES];
 	int request_fd;
 };

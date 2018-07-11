@@ -503,7 +503,7 @@ int video_engine_start(int video_fd, int media_fd, unsigned int width, unsigned 
 		}
 
 		buffer->destination_planes_count = destination_planes_count;
-		buffer->buffers_count = format->v4l2_buffers_count;
+		buffer->destination_buffers_count = format->v4l2_buffers_count;
 		export_fds_count = format->v4l2_buffers_count;
 
 		for (j = 0; j < export_fds_count; j++)
@@ -567,7 +567,7 @@ int video_engine_stop(int video_fd, struct video_buffer *buffers, unsigned int b
 	for (i = 0; i < buffers_count; i++) {
 		munmap(buffers[i].source_data, buffers[i].source_size);
 
-		for (j = 0; j < buffers[i].buffers_count; j++) {
+		for (j = 0; j < buffers[i].destination_buffers_count; j++) {
 			if (buffers[i].destination_map[j] == NULL)
 				break;
 
@@ -577,7 +577,7 @@ int video_engine_stop(int video_fd, struct video_buffer *buffers, unsigned int b
 				close(buffers[i].export_fds[j]);
 		}
 
-		for (j = 0; j < buffers[i].buffers_count; j++) {
+		for (j = 0; j < buffers[i].destination_buffers_count; j++) {
 			if (buffers[i].export_fds[j] < 0)
 				break;
 
@@ -615,7 +615,7 @@ int video_engine_decode(int video_fd, unsigned int index, union controls *frame,
 		return -1;
 	}
 
-	rc = queue_buffer(video_fd, -1, V4L2_BUF_TYPE_VIDEO_CAPTURE_MPLANE, index, 0, buffers[index].buffers_count);
+	rc = queue_buffer(video_fd, -1, V4L2_BUF_TYPE_VIDEO_CAPTURE_MPLANE, index, 0, buffers[index].destination_buffers_count);
 	if (rc < 0) {
 		fprintf(stderr, "Unable to queue destination buffer\n");
 		return -1;
@@ -645,7 +645,7 @@ int video_engine_decode(int video_fd, unsigned int index, union controls *frame,
 		return -1;
 	}
 
-	rc = dequeue_buffer(video_fd, -1, V4L2_BUF_TYPE_VIDEO_CAPTURE_MPLANE, index, buffers[index].buffers_count);
+	rc = dequeue_buffer(video_fd, -1, V4L2_BUF_TYPE_VIDEO_CAPTURE_MPLANE, index, buffers[index].destination_buffers_count);
 	if (rc < 0) {
 		fprintf(stderr, "Unable to dequeue destination buffer\n");
 		return -1;

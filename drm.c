@@ -682,7 +682,7 @@ int display_engine_start(int drm_fd, unsigned int width, unsigned int height, st
 
 	for (i = 0; i < count; i++) {
 		video_buffer = &video_buffers[i];
-		export_fds_count = video_buffer->buffers_count;
+		export_fds_count = video_buffer->destination_buffers_count;
 
 		for (j = 0; j < export_fds_count; j++) {
 			if (video_buffer->export_fds[j] < 0) {
@@ -702,7 +702,7 @@ int display_engine_start(int drm_fd, unsigned int width, unsigned int height, st
 	for (i = 0; i < count; i++) {
 		buffer = &((*buffers)[i]);
 		video_buffer = &video_buffers[i];
-		export_fds_count = video_buffer->buffers_count;
+		export_fds_count = video_buffer->destination_buffers_count;
 
 		if (video_buffer->destination_planes_count < format->drm_planes_count)
 			return -1;
