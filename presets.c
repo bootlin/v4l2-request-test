@@ -41,6 +41,10 @@ static struct frame bbb_h264_32_frames[] = {
 #include "data/bbb-h264-32/frames.h"
 };
 
+static struct frame bbb_h264_high_32_frames[] = {
+#include "data/bbb-h264-high-32/frames.h"
+};
+
 static struct preset presets[] = {
 	{
 		.name = "bbb-mpeg2",
@@ -77,6 +81,18 @@ static struct preset presets[] = {
 		.buffers_count = 16,
 		.frames = bbb_h264_all_i_32_frames,
 		.frames_count = sizeof(bbb_h264_all_i_32_frames) / sizeof(bbb_h264_all_i_32_frames[0]),
+	},
+	{
+		.name = "bbb-h264-high-32",
+		.description = "big_buck_bunny_480p_H264_AAC_25fps_1800K.MP4",
+		.license = "Creative Commons Attribution 3.0",
+		.attribution = "Blender Foundation | www.blender.org",
+		.width = 854,
+		.height = 480,
+		.type = CODEC_TYPE_H264,
+		.buffers_count = 16,
+		.frames = bbb_h264_high_32_frames,
+		.frames_count = sizeof(bbb_h264_high_32_frames) / sizeof(bbb_h264_high_32_frames[0]),
 	},
 	{
 		.name = "bbb-h264-32",
