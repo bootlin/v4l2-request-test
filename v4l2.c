@@ -34,6 +34,29 @@
 
 #define SOURCE_SIZE_MAX						(1024 * 1024)
 
+static bool find_format(int video_fd, unsigned int type, unsigned int pixelformat)
+{
+	struct v4l2_fmtdesc fmtdesc;
+	int rc;
+
+	memset(&fmtdesc, 0, sizeof(fmtdesc));
+	fmtdesc.type = type;
+	fmtdesc.index = 0;
+
+	do {
+		rc = ioctl(video_fd, VIDIOC_ENUM_FMT, &fmtdesc);
+		if (rc < 0)
+			break;
+
+		if (fmtdesc.pixelformat == pixelformat)
+			return true;
+
+		fmtdesc.index++;
+	} while (rc >= 0);
+
+	return false;
+}
+
 static int try_format(int video_fd, unsigned int type, unsigned int width, unsigned int height, unsigned int pixelformat)
 {
 	struct v4l2_format format;
