@@ -32,7 +32,7 @@
 
 #include "cedrus-frame-test.h"
 
-#define DESTINATION_SIZE_MAX					(1024 * 1024)
+#define SOURCE_SIZE_MAX						(1024 * 1024)
 
 static int try_format(int video_fd, unsigned int type, unsigned int width, unsigned int height, unsigned int pixelformat)
 {
@@ -43,7 +43,7 @@ static int try_format(int video_fd, unsigned int type, unsigned int width, unsig
 	format.type = type;
 	format.fmt.pix_mp.width = width;
 	format.fmt.pix_mp.height = height;
-	format.fmt.pix_mp.plane_fmt[0].sizeimage = type == V4L2_BUF_TYPE_VIDEO_OUTPUT_MPLANE ? DESTINATION_SIZE_MAX : 0;
+	format.fmt.pix_mp.plane_fmt[0].sizeimage = type == V4L2_BUF_TYPE_VIDEO_OUTPUT_MPLANE ? SOURCE_SIZE_MAX : 0;
 	format.fmt.pix_mp.pixelformat = pixelformat;
 
 	rc = ioctl(video_fd, VIDIOC_TRY_FMT, &format);
@@ -64,7 +64,7 @@ static int set_format(int video_fd, unsigned int type, unsigned int width, unsig
 	format.type = type;
 	format.fmt.pix_mp.width = width;
 	format.fmt.pix_mp.height = height;
-	format.fmt.pix_mp.plane_fmt[0].sizeimage = type == V4L2_BUF_TYPE_VIDEO_OUTPUT_MPLANE ? DESTINATION_SIZE_MAX : 0;
+	format.fmt.pix_mp.plane_fmt[0].sizeimage = type == V4L2_BUF_TYPE_VIDEO_OUTPUT_MPLANE ? SOURCE_SIZE_MAX : 0;
 	format.fmt.pix_mp.pixelformat = pixelformat;
 
 	rc = ioctl(video_fd, VIDIOC_S_FMT, &format);
