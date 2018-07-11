@@ -25,13 +25,6 @@
 #include <linux/videodev2.h>
 
 /*
- * Macros
- */
-
-#define ALIGN(x, y) ((x + (y - 1)) & ~(y - 1))
-#define DIV_ROUND_UP(x, y) ((x + (y - 1)) / y)
-
-/*
  * Structures
  */
 
