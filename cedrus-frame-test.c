@@ -422,7 +422,10 @@ int main(int argc, char *argv[])
 			goto error;
 		}
 
-		v4l2_index = index % config.buffers_count;
+		if (preset->type == CODEC_TYPE_H264)
+			v4l2_index = frame.output_buffer;
+		else
+			v4l2_index = index % config.buffers_count;
 
 		clock_gettime(CLOCK_MONOTONIC, &video_before);
 
@@ -456,7 +459,8 @@ frame_display:
 			goto error;
 		}
 
-		v4l2_index = display_index % config.buffers_count;
+		if (preset->type == CODEC_TYPE_MPEG2)
+			v4l2_index = display_index % config.buffers_count;
 
 		clock_gettime(CLOCK_MONOTONIC, &display_before);
 

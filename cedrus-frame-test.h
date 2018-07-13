@@ -88,6 +88,7 @@ union controls {
 
 struct frame {
 	unsigned int index;
+	unsigned int output_buffer;
 	union controls frame;
 };
 
