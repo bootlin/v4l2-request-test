@@ -210,7 +210,7 @@ int main(int argc, char *argv[])
 	struct gem_buffer *gem_buffers;
 	struct display_setup setup;
 	struct media_device_info device_info;
-	union controls frame;
+	struct frame frame;
 	struct timespec before, after;
 	struct timespec video_before, video_after;
 	struct timespec display_before, display_after;
@@ -426,7 +426,7 @@ int main(int argc, char *argv[])
 
 		clock_gettime(CLOCK_MONOTONIC, &video_before);
 
-		rc = video_engine_decode(video_fd, v4l2_index, &frame, preset->type, slice_data, slice_size, video_buffers);
+		rc = video_engine_decode(video_fd, v4l2_index, &frame.frame, preset->type, slice_data, slice_size, video_buffers);
 		if (rc < 0) {
 			fprintf(stderr, "Unable to decode video frame\n");
 			goto error;

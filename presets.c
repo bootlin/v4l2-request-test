@@ -126,7 +126,7 @@ struct preset *preset_find(char *name)
 	return NULL;
 }
 
-int frame_controls_fill(union controls *frame, struct preset *preset, unsigned int buffers_count, unsigned int index, unsigned int slice_size)
+int frame_controls_fill(struct frame *frame, struct preset *preset, unsigned int buffers_count, unsigned int index, unsigned int slice_size)
 {
 	if (frame == NULL || preset == NULL)
 		return -1;
@@ -136,18 +136,18 @@ int frame_controls_fill(union controls *frame, struct preset *preset, unsigned i
 		return -1;
 	}
 
-	memcpy(frame, &preset->frames[index].frame, sizeof(*frame));
+	memcpy(frame, &preset->frames[index], sizeof(*frame));
 
 	switch (preset->type) {
 	case CODEC_TYPE_MPEG2:
-		frame->mpeg2.slice_params.slice_pos = 0;
-		frame->mpeg2.slice_params.slice_len = slice_size * 8;
+		frame->frame.mpeg2.slice_params.slice_pos = 0;
+		frame->frame.mpeg2.slice_params.slice_len = slice_size * 8;
 
-		frame->mpeg2.slice_params.width = preset->width;
-		frame->mpeg2.slice_params.height = preset->height;
+		frame->frame.mpeg2.slice_params.width = preset->width;
+		frame->frame.mpeg2.slice_params.height = preset->height;
 
-		frame->mpeg2.slice_params.forward_ref_index %= buffers_count;
-		frame->mpeg2.slice_params.backward_ref_index %= buffers_count;
+		frame->frame.mpeg2.slice_params.forward_ref_index %= buffers_count;
+		frame->frame.mpeg2.slice_params.backward_ref_index %= buffers_count;
 		break;
 	case CODEC_TYPE_H264:
 		break;
