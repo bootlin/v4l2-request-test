@@ -128,10 +128,6 @@ struct preset *preset_find(char *name)
 
 int frame_controls_fill(union controls *frame, struct preset *preset, unsigned int buffers_count, unsigned int index, unsigned int slice_size)
 {
-	struct v4l2_ctrl_h264_decode_param *decode_param;
-	struct v4l2_h264_dpb_entry *dpb;
-	unsigned int i;
-
 	if (frame == NULL || preset == NULL)
 		return -1;
 
@@ -154,16 +150,10 @@ int frame_controls_fill(union controls *frame, struct preset *preset, unsigned i
 		frame->mpeg2.slice_params.backward_ref_index %= buffers_count;
 		break;
 	case CODEC_TYPE_H264:
-		for (i = 0; i < 16; i++) {
-			decode_param = &frame->h264.decode_param;
-			dpb = &decode_param->dpb[i];
-			dpb->buf_index = dpb->frame_num;
-		}
 		break;
 	default:
 		return -1;
 	}
-
 
 	return 0;
 }
