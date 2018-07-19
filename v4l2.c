@@ -166,7 +166,7 @@ static int create_buffers(int video_fd, unsigned int type, unsigned int buffers_
 	return 0;
 }
 
-static int request_buffer(int video_fd, unsigned int type, unsigned int index, unsigned int *lengths, unsigned int *offsets, unsigned int buffers_count)
+static int query_buffer(int video_fd, unsigned int type, unsigned int index, unsigned int *lengths, unsigned int *offsets, unsigned int buffers_count)
 {
 	struct v4l2_plane planes[buffers_count];
 	struct v4l2_buffer buffer;
@@ -440,7 +440,7 @@ int video_engine_start(int video_fd, int media_fd, unsigned int width, unsigned 
 	for (i = 0; i < buffers_count; i++) {
 		buffer = &((*buffers)[i]);
 
-		rc = request_buffer(video_fd, V4L2_BUF_TYPE_VIDEO_OUTPUT_MPLANE, i, &source_length, &source_map_offset, 1);
+		rc = query_buffer(video_fd, V4L2_BUF_TYPE_VIDEO_OUTPUT_MPLANE, i, &source_length, &source_map_offset, 1);
 		if (rc < 0) {
 			fprintf(stderr, "Unable to request source buffer\n");
 			goto error;
@@ -465,7 +465,7 @@ int video_engine_start(int video_fd, int media_fd, unsigned int width, unsigned 
 	for (i = 0; i < buffers_count; i++) {
 		buffer = &((*buffers)[i]);
 
-		rc = request_buffer(video_fd, V4L2_BUF_TYPE_VIDEO_CAPTURE_MPLANE, i, destination_map_lengths, destination_map_offsets, format->v4l2_buffers_count);
+		rc = query_buffer(video_fd, V4L2_BUF_TYPE_VIDEO_CAPTURE_MPLANE, i, destination_map_lengths, destination_map_offsets, format->v4l2_buffers_count);
 		if (rc < 0) {
 			fprintf(stderr, "Unable to request destination buffer\n");
 			goto error;
