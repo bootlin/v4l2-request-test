@@ -15,8 +15,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _CEDRUS_FRAME_TEST_H_
-#define _CEDRUS_FRAME_TEST_H_
+#ifndef _V4L2_REQUEST_TEST_H_
+#define _V4L2_REQUEST_TEST_H_
 
 #include <stdbool.h>
 
@@ -27,8 +27,6 @@
 /*
  * Structures
  */
-
-/* Cedrus Frame Test */
 
 struct config {
 	char *video_path;

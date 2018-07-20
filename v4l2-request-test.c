@@ -34,7 +34,7 @@
 #include <xf86drm.h>
 #include <drm_fourcc.h>
 
-#include "cedrus-frame-test.h"
+#include "v4l2-request-test.h"
 
 struct format_description formats[] = {
 	{
@@ -61,7 +61,7 @@ unsigned int formats_count = sizeof(formats) / sizeof(formats[0]);
 
 static void print_help(void)
 {
-	printf("Usage: cedrus-frame-test [OPTIONS] [SLICES PATH]\n\n"
+	printf("Usage: v4l2-request-test [OPTIONS] [SLICES PATH]\n\n"
 		"Options:\n"
 		" -v [video path]                path for the video node\n"
 		" -m [media path]                path for the media node\n"

@@ -1,12 +1,13 @@
-# cedrus-frame-test
+# v4l2-request-test
 
-This standalone tool is designed to help with development and testing of the
-Sunxi-Cedrus VPU driver, that supports the Video Engine found on most Allwinner
-SoCs.
+This standalone tool was designed to help with development and testing of the
+Cedrus driver, that supports the Video Engine found on most Allwinner SoCs. It
+implements the Linux v4l2 Request API, so it can help to test any driver being
+developed using that API.
 
-It currently supports decoding MPEG2 frames from their slice data (stored as
-files) and associated metadata, as well as displaying the decoded frames through
-a dedicated DRM plane, using the sun4i-drm display driver.
+It currently supports decoding MPEG2 and H264 frames from their slice data
+(stored as files) and associated metadata, as well as displaying the decoded
+frames through a dedicated DRM plane.
 
 The behavior of the tool can be configured through command line arguments, that
 are precised by its usage help.

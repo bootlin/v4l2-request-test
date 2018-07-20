@@ -20,7 +20,7 @@ CC = gcc
 
 # Project
 
-NAME = cedrus-frame-test
+NAME = v4l2-request-test
 
 # Directories
 
@@ -29,7 +29,7 @@ OUTPUT = .
 
 # Sources
 
-SOURCES = cedrus-frame-test.c v4l2.c drm.c presets.c
+SOURCES = v4l2-request-test.c v4l2.c drm.c presets.c
 OBJECTS = $(SOURCES:.c=.o)
 DEPS = $(SOURCES:.c=.d)
 

@@ -23,7 +23,7 @@
 #include <linux/videodev2.h>
 #include <linux/media.h>
 
-#include "cedrus-frame-test.h"
+#include "v4l2-request-test.h"
 
 static struct frame bbb_mpeg2_frames[] = {
 #include "data/bbb-mpeg2/frames.h"

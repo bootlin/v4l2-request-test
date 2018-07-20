@@ -34,7 +34,7 @@
 #include <sun4i_drm.h>
 #include <drm_fourcc.h>
 
-#include "cedrus-frame-test.h"
+#include "v4l2-request-test.h"
 
 static int create_dumb_buffer(int drm_fd, unsigned int width, unsigned int height, unsigned int bpp, struct gem_buffer *buffer)
 {
