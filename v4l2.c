@@ -389,11 +389,10 @@ static int set_format_controls(int video_fd, int request_fd,
 		  V4L2_CID_MPEG_VIDEO_H264_SLICE_PARAMS,
 		  &frame->h264.slice_param, sizeof(frame->h264.slice_param) },
 	};
-	unsigned int glue_count = sizeof(glue) / sizeof(glue[0]);
 	unsigned int i;
 	int rc;
 
-	for (i = 0; i < glue_count; i++) {
+	for (i = 0; i < ARRAY_SIZE(glue); i++) {
 		if (glue[i].type != type)
 			continue;
 

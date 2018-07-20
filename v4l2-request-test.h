@@ -24,6 +24,8 @@
 #include <linux/v4l2-controls.h>
 #include <linux/videodev2.h>
 
+#define ARRAY_SIZE(arr) (sizeof(arr) / sizeof((arr)[0]))
+
 /*
  * Structures
  */

@@ -57,8 +57,6 @@ struct format_description formats[] = {
 	},
 };
 
-unsigned int formats_count = sizeof(formats) / sizeof(formats[0]);
-
 static void print_help(void)
 {
 	printf("Usage: v4l2-request-test [OPTIONS] [SLICES PATH]\n\n"
@@ -349,7 +347,7 @@ int main(int argc, char *argv[])
 		goto error;
 	}
 
-	for (i = 0; i < formats_count; i++) {
+	for (i = 0; i < ARRAY_SIZE(formats); i++) {
 		test = video_engine_format_test(video_fd, width, height,
 						formats[i].v4l2_format);
 		if (test) {

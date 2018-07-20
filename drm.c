@@ -267,11 +267,10 @@ static int discover_properties(int drm_fd, int connector_id, int crtc_id,
 		{ DRM_MODE_OBJECT_PLANE, plane_id, "CRTC_H", &ids->plane_crtc_h },
 		{ DRM_MODE_OBJECT_PLANE, plane_id, "zpos", &ids->plane_zpos },
 	};
-	unsigned int glue_count = sizeof(glue) / sizeof(glue[0]);
 	unsigned int i, j;
 	int rc;
 
-	for (i = 0; i < glue_count; i++) {
+	for (i = 0; i < ARRAY_SIZE(glue); i++) {
 		properties = drmModeObjectGetProperties(drm_fd,
 							glue[i].object_id,
 							glue[i].object_type);

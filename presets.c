@@ -56,7 +56,7 @@ static struct preset presets[] = {
 		.type = CODEC_TYPE_MPEG2,
 		.buffers_count = 6,
 		.frames = bbb_mpeg2_frames,
-		.frames_count = sizeof(bbb_mpeg2_frames) / sizeof(bbb_mpeg2_frames[0]),
+		.frames_count = ARRAY_SIZE(bbb_mpeg2_frames),
 	},
 	{
 		.name = "ed-mpeg2",
@@ -68,7 +68,7 @@ static struct preset presets[] = {
 		.type = CODEC_TYPE_MPEG2,
 		.buffers_count = 6,
 		.frames = ed_mpeg2_frames,
-		.frames_count = sizeof(ed_mpeg2_frames) / sizeof(ed_mpeg2_frames[0]),
+		.frames_count = ARRAY_SIZE(ed_mpeg2_frames),
 	},
 	{
 		.name = "bbb-h264-all-i-32",
@@ -80,7 +80,7 @@ static struct preset presets[] = {
 		.type = CODEC_TYPE_H264,
 		.buffers_count = 16,
 		.frames = bbb_h264_all_i_32_frames,
-		.frames_count = sizeof(bbb_h264_all_i_32_frames) / sizeof(bbb_h264_all_i_32_frames[0]),
+		.frames_count = ARRAY_SIZE(bbb_h264_all_i_32_frames),
 	},
 	{
 		.name = "bbb-h264-high-32",
@@ -92,7 +92,7 @@ static struct preset presets[] = {
 		.type = CODEC_TYPE_H264,
 		.buffers_count = 16,
 		.frames = bbb_h264_high_32_frames,
-		.frames_count = sizeof(bbb_h264_high_32_frames) / sizeof(bbb_h264_high_32_frames[0]),
+		.frames_count = ARRAY_SIZE(bbb_h264_high_32_frames),
 	},
 	{
 		.name = "bbb-h264-32",
@@ -104,14 +104,14 @@ static struct preset presets[] = {
 		.type = CODEC_TYPE_H264,
 		.buffers_count = 16,
 		.frames = bbb_h264_32_frames,
-		.frames_count = sizeof(bbb_h264_32_frames) / sizeof(bbb_h264_32_frames[0]),
+		.frames_count = ARRAY_SIZE(bbb_h264_32_frames),
 	},
 };
 
-static unsigned int presets_count = sizeof(presets) / sizeof(presets[0]);
+static unsigned int presets_count = ARRAY_SIZE(presets);
 
 static unsigned int frame_gop_list[64];
-static unsigned int frame_gop_list_size = sizeof(frame_gop_list) / sizeof(frame_gop_list[0]);
+static unsigned int frame_gop_list_size = ARRAY_SIZE(frame_gop_list);
 static unsigned int frame_gop_count = 0;
 static unsigned int frame_gop_start = 0;
 
