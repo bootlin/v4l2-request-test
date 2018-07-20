@@ -16,23 +16,23 @@
  */
 
 #define _GNU_SOURCE
+#include <errno.h>
+#include <fcntl.h>
+#include <getopt.h>
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <stdbool.h>
-#include <unistd.h>
-#include <fcntl.h>
-#include <errno.h>
 #include <string.h>
-#include <sys/types.h>
 #include <sys/ioctl.h>
 #include <sys/stat.h>
-#include <getopt.h>
+#include <sys/types.h>
 #include <time.h>
+#include <unistd.h>
 
-#include <linux/videodev2.h>
-#include <linux/media.h>
-#include <xf86drm.h>
 #include <drm_fourcc.h>
+#include <linux/media.h>
+#include <linux/videodev2.h>
+#include <xf86drm.h>
 
 #include "v4l2-request-test.h"
 
@@ -62,19 +62,19 @@ unsigned int formats_count = sizeof(formats) / sizeof(formats[0]);
 static void print_help(void)
 {
 	printf("Usage: v4l2-request-test [OPTIONS] [SLICES PATH]\n\n"
-		"Options:\n"
-		" -v [video path]                path for the video node\n"
-		" -m [media path]                path for the media node\n"
-		" -d [DRM path]                  path for the DRM node\n"
-		" -D [DRM driver]                DRM driver to use\n"
-		" -s [slices filename format]    format for filenames in the slices path\n"
-		" -f [fps]                       number of frames to display per second\n"
-		" -P [video preset]              video preset to use\n"
-		" -i                             enable interactive mode\n"
-		" -l                             loop preset frames\n"
-		" -q                             enable quiet mode\n"
-		" -h                             help\n\n"
-		"Video presets:\n");
+	       "Options:\n"
+	       " -v [video path]                path for the video node\n"
+	       " -m [media path]                path for the media node\n"
+	       " -d [DRM path]                  path for the DRM node\n"
+	       " -D [DRM driver]                DRM driver to use\n"
+	       " -s [slices filename format]    format for filenames in the slices path\n"
+	       " -f [fps]                       number of frames to display per second\n"
+	       " -P [video preset]              video preset to use\n"
+	       " -i                             enable interactive mode\n"
+	       " -l                             loop preset frames\n"
+	       " -q                             enable quiet mode\n"
+	       " -h                             help\n\n"
+	       "Video presets:\n");
 
 	presets_usage();
 }
@@ -102,9 +102,15 @@ static void print_summary(struct config *config, struct preset *preset)
 	printf(" Format: ");
 
 	switch (preset->type) {
-	case CODEC_TYPE_MPEG2: printf("MPEG2"); break;
-	case CODEC_TYPE_H264: printf("H264"); break;
-	default: printf("Invalid"); break;
+	case CODEC_TYPE_MPEG2:
+		printf("MPEG2");
+		break;
+	case CODEC_TYPE_H264:
+		printf("H264");
+		break;
+	default:
+		printf("Invalid");
+		break;
 	}
 
 	printf("\n\n");
@@ -118,7 +124,8 @@ static long time_diff(struct timespec *before, struct timespec *after)
 	return (after_time - before_time);
 }
 
-static void print_time_diff(struct timespec *before, struct timespec *after, const char *prefix)
+static void print_time_diff(struct timespec *before, struct timespec *after,
+			    const char *prefix)
 {
 	long diff = time_diff(before, after);
 	printf("%s time: %ld us\n", prefix, diff);
@@ -144,13 +151,15 @@ static int load_data(const char *path, void **data, unsigned int *size)
 
 	fd = open(path, O_RDONLY);
 	if (fd < 0) {
-		fprintf(stderr, "Unable to open file path: %s\n", strerror(errno));
+		fprintf(stderr, "Unable to open file path: %s\n",
+			strerror(errno));
 		goto error;
 	}
 
 	rc = read(fd, buffer, length);
 	if (rc < 0) {
-		fprintf(stderr, "Unable to read file data: %s\n", strerror(errno));
+		fprintf(stderr, "Unable to read file data: %s\n",
+			strerror(errno));
 		goto error;
 	}
 
@@ -294,7 +303,8 @@ int main(int argc, char *argv[])
 
 	preset = preset_find(config.preset_name);
 	if (preset == NULL) {
-		fprintf(stderr, "Unable to find preset for name: %s\n", config.preset_name);
+		fprintf(stderr, "Unable to find preset for name: %s\n",
+			config.preset_name);
 		goto error;
 	}
 
@@ -311,19 +321,22 @@ int main(int argc, char *argv[])
 
 	video_fd = open(config.video_path, O_RDWR | O_NONBLOCK, 0);
 	if (video_fd < 0) {
-		fprintf(stderr, "Unable to open video node: %s\n", strerror(errno));
+		fprintf(stderr, "Unable to open video node: %s\n",
+			strerror(errno));
 		goto error;
 	}
 
 	media_fd = open(config.media_path, O_RDWR | O_NONBLOCK, 0);
 	if (video_fd < 0) {
-		fprintf(stderr, "Unable to open video node: %s\n", strerror(errno));
+		fprintf(stderr, "Unable to open video node: %s\n",
+			strerror(errno));
 		goto error;
 	}
 
 	rc = ioctl(media_fd, MEDIA_IOC_DEVICE_INFO, &device_info);
 	if (rc < 0) {
-		fprintf(stderr, "Unable to get media device info: %s\n", strerror(errno));
+		fprintf(stderr, "Unable to get media device info: %s\n",
+			strerror(errno));
 		goto error;
 	}
 
@@ -331,12 +344,14 @@ int main(int argc, char *argv[])
 
 	drm_fd = drmOpen(config.drm_driver, config.drm_path);
 	if (drm_fd < 0) {
-		fprintf(stderr, "Unable to open DRM node: %s\n", strerror(errno));
+		fprintf(stderr, "Unable to open DRM node: %s\n",
+			strerror(errno));
 		goto error;
 	}
 
 	for (i = 0; i < formats_count; i++) {
-		test = video_engine_format_test(video_fd, width, height, formats[i].v4l2_format);
+		test = video_engine_format_test(video_fd, width, height,
+						formats[i].v4l2_format);
 		if (test) {
 			selected_format = &formats[i];
 			break;
@@ -344,19 +359,24 @@ int main(int argc, char *argv[])
 	}
 
 	if (selected_format == NULL) {
-		fprintf(stderr, "Unable to find any supported destination format\n");
+		fprintf(stderr,
+			"Unable to find any supported destination format\n");
 		goto error;
 	}
 
 	printf("Destination format: %s\n", selected_format->description);
 
-	rc = video_engine_start(video_fd, media_fd, width, height, selected_format, preset->type, &video_buffers, config.buffers_count);
+	rc = video_engine_start(video_fd, media_fd, width, height,
+				selected_format, preset->type, &video_buffers,
+				config.buffers_count);
 	if (rc < 0) {
 		fprintf(stderr, "Unable to start video engine\n");
 		goto error;
 	}
 
-	rc = display_engine_start(drm_fd, width, height, selected_format, video_buffers, config.buffers_count, &gem_buffers, &setup);
+	rc = display_engine_start(drm_fd, width, height, selected_format,
+				  video_buffers, config.buffers_count,
+				  &gem_buffers, &setup);
 	if (rc < 0) {
 		fprintf(stderr, "Unable to start display engine\n");
 		goto error;
@@ -371,9 +391,11 @@ int main(int argc, char *argv[])
 
 	while (display_count < preset->frames_count) {
 		if (!config.quiet)
-			printf("\nProcessing frame %d/%d\n", index + 1, preset->frames_count);
+			printf("\nProcessing frame %d/%d\n", index + 1,
+			       preset->frames_count);
 
-		if ((index_origin != index && index < preset->frames_count) || (index == 0 && index == index_origin)) {
+		if ((index_origin != index && index < preset->frames_count) ||
+		    (index == 0 && index == index_origin)) {
 			rc = frame_gop_schedule(preset, index);
 			if (rc < 0) {
 				fprintf(stderr, "Unable to schedule GOP frames order\n");
@@ -399,7 +421,8 @@ int main(int argc, char *argv[])
 			goto frame_display;
 
 		asprintf(&slice_filename, config.slices_filename_format, index);
-		asprintf(&slice_path, "%s/%s", config.slices_path, slice_filename);
+		asprintf(&slice_path, "%s/%s", config.slices_path,
+			 slice_filename);
 
 		free(slice_filename);
 		slice_filename = NULL;
@@ -414,9 +437,11 @@ int main(int argc, char *argv[])
 		slice_path = NULL;
 
 		if (!config.quiet)
-			printf("Loaded %d bytes of video slice data\n", slice_size);
+			printf("Loaded %d bytes of video slice data\n",
+			       slice_size);
 
-		rc = frame_controls_fill(&frame, preset, config.buffers_count, index, slice_size);
+		rc = frame_controls_fill(&frame, preset, config.buffers_count,
+					 index, slice_size);
 		if (rc < 0) {
 			fprintf(stderr, "Unable to fill frame controls\n");
 			goto error;
@@ -429,7 +454,9 @@ int main(int argc, char *argv[])
 
 		clock_gettime(CLOCK_MONOTONIC, &video_before);
 
-		rc = video_engine_decode(video_fd, v4l2_index, &frame.frame, preset->type, slice_data, slice_size, video_buffers);
+		rc = video_engine_decode(video_fd, v4l2_index, &frame.frame,
+					 preset->type, slice_data, slice_size,
+					 video_buffers);
 		if (rc < 0) {
 			fprintf(stderr, "Unable to decode video frame\n");
 			goto error;
@@ -442,7 +469,8 @@ int main(int argc, char *argv[])
 
 		if (!config.quiet) {
 			printf("Decoded video frame successfuly!\n");
-			print_time_diff(&video_before, &video_after, "Frame decode");
+			print_time_diff(&video_before, &video_after,
+					"Frame decode");
 		}
 
 		/* Keep decoding until we can display a frame. */
@@ -455,7 +483,8 @@ int main(int argc, char *argv[])
 frame_display:
 		rc = frame_gop_dequeue();
 		if (rc < 0) {
-			fprintf(stderr, "Unable to dequeue next GOP frame index for display\n");
+			fprintf(stderr,
+				"Unable to dequeue next GOP frame index for display\n");
 			goto error;
 		}
 
@@ -464,7 +493,8 @@ frame_display:
 
 		clock_gettime(CLOCK_MONOTONIC, &display_before);
 
-		rc = display_engine_show(drm_fd, v4l2_index, video_buffers, gem_buffers, &setup);
+		rc = display_engine_show(drm_fd, v4l2_index, video_buffers,
+					 gem_buffers, &setup);
 		if (rc < 0) {
 			fprintf(stderr, "Unable to display video frame\n");
 			goto error;
@@ -474,7 +504,8 @@ frame_display:
 
 		if (!config.quiet) {
 			printf("Displayed video frame successfuly!\n");
-			print_time_diff(&display_before, &display_after, "Frame display");
+			print_time_diff(&display_before, &display_after,
+					"Frame display");
 		}
 
 		clock_gettime(CLOCK_MONOTONIC, &after);
@@ -486,7 +517,9 @@ frame_display:
 		} else if (config.fps > 0) {
 			frame_diff = time_diff(&before, &after);
 			if (frame_diff > frame_time)
-				fprintf(stderr, "Unable to meet %d fps target: %ld us late!\n", config.fps, frame_diff - frame_time);
+				fprintf(stderr,
+					"Unable to meet %d fps target: %ld us late!\n",
+					config.fps, frame_diff - frame_time);
 			else
 				usleep(frame_time - frame_diff);
 		}

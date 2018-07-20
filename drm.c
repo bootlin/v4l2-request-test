@@ -15,28 +15,29 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <errno.h>
+#include <fcntl.h>
+#include <stdbool.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <stdint.h>
-#include <stdbool.h>
-#include <unistd.h>
-#include <fcntl.h>
-#include <errno.h>
 #include <string.h>
-#include <sys/types.h>
-#include <sys/stat.h>
 #include <sys/ioctl.h>
 #include <sys/mman.h>
 #include <sys/stat.h>
+#include <sys/types.h>
+#include <unistd.h>
 
+#include <drm_fourcc.h>
+#include <sun4i_drm.h>
 #include <xf86drm.h>
 #include <xf86drmMode.h>
-#include <sun4i_drm.h>
-#include <drm_fourcc.h>
 
 #include "v4l2-request-test.h"
 
-static int create_dumb_buffer(int drm_fd, unsigned int width, unsigned int height, unsigned int bpp, struct gem_buffer *buffer)
+static int create_dumb_buffer(int drm_fd, unsigned int width,
+			      unsigned int height, unsigned int bpp,
+			      struct gem_buffer *buffer)
 {
 	struct drm_mode_create_dumb create_dumb;
 	int rc;
@@ -48,7 +49,8 @@ static int create_dumb_buffer(int drm_fd, unsigned int width, unsigned int heigh
 
 	rc = drmIoctl(drm_fd, DRM_IOCTL_MODE_CREATE_DUMB, &create_dumb);
 	if (rc < 0) {
-		fprintf(stderr, "Unable to create dumb buffer: %s\n", strerror(errno));
+		fprintf(stderr, "Unable to create dumb buffer: %s\n",
+			strerror(errno));
 		return -1;
 	}
 
@@ -60,7 +62,9 @@ static int create_dumb_buffer(int drm_fd, unsigned int width, unsigned int heigh
 	return 0;
 }
 
-static int create_tiled_buffer(int drm_fd, unsigned int width, unsigned int height, unsigned int format, struct gem_buffer *buffer)
+static int create_tiled_buffer(int drm_fd, unsigned int width,
+			       unsigned int height, unsigned int format,
+			       struct gem_buffer *buffer)
 {
 	struct drm_sun4i_gem_create_tiled create_tiled;
 	unsigned int i;
@@ -76,7 +80,8 @@ static int create_tiled_buffer(int drm_fd, unsigned int width, unsigned int heig
 
 	rc = drmIoctl(drm_fd, DRM_IOCTL_SUN4I_GEM_CREATE_TILED, &create_tiled);
 	if (rc < 0) {
-		fprintf(stderr, "Unable to create tiled buffer: %s\n", strerror(errno));
+		fprintf(stderr, "Unable to create tiled buffer: %s\n",
+			strerror(errno));
 		return -1;
 	}
 
@@ -93,7 +98,10 @@ static int create_tiled_buffer(int drm_fd, unsigned int width, unsigned int heig
 	return 0;
 }
 
-static int create_imported_buffer(int drm_fd, int *import_fds, unsigned int import_fds_count, unsigned int *offsets, unsigned int *pitches, struct gem_buffer *buffer)
+static int create_imported_buffer(int drm_fd, int *import_fds,
+				  unsigned int import_fds_count,
+				  unsigned int *offsets, unsigned int *pitches,
+				  struct gem_buffer *buffer)
 {
 	uint32_t handles[4];
 	unsigned int i;
@@ -106,13 +114,15 @@ static int create_imported_buffer(int drm_fd, int *import_fds, unsigned int impo
 	for (i = 0; i < import_fds_count; i++) {
 		rc = drmPrimeFDToHandle(drm_fd, import_fds[i], &handles[i]);
 		if (rc < 0) {
-			fprintf(stderr, "Unable to create imported buffer: %s\n", strerror(errno));
+			fprintf(stderr, "Unable to create imported buffer: %s\n",
+				strerror(errno));
 			return -1;
 		}
 	}
 
 	for (i = 0; i < buffer->planes_count; i++) {
-		buffer->handles[i] = import_fds_count == 1 ? handles[0] : handles[i];
+		buffer->handles[i] = import_fds_count == 1 ? handles[0] :
+							     handles[i];
 		buffer->pitches[i] = pitches[i];
 		buffer->offsets[i] = offsets[i];
 	}
@@ -133,7 +143,8 @@ static int destroy_buffer(int drm_fd, struct gem_buffer *buffer)
 
 	rc = drmIoctl(drm_fd, DRM_IOCTL_MODE_DESTROY_DUMB, &destroy_dumb);
 	if (rc < 0) {
-		fprintf(stderr, "Unable to destroy buffer: %s\n", strerror(errno));
+		fprintf(stderr, "Unable to destroy buffer: %s\n",
+			strerror(errno));
 		return -1;
 	}
 
@@ -150,7 +161,8 @@ static int close_buffer(int drm_fd, struct gem_buffer *buffer)
 
 	rc = drmIoctl(drm_fd, DRM_IOCTL_GEM_CLOSE, &gem_close);
 	if (rc < 0) {
-		fprintf(stderr, "Unable to close buffer: %s\n", strerror(errno));
+		fprintf(stderr, "Unable to close buffer: %s\n",
+			strerror(errno));
 		return -1;
 	}
 
@@ -175,7 +187,8 @@ static int map_buffer(int drm_fd, struct gem_buffer *buffer)
 		return -1;
 	}
 
-	data = mmap(0, buffer->size, PROT_READ | PROT_WRITE, MAP_SHARED, drm_fd, map_dumb.offset);
+	data = mmap(0, buffer->size, PROT_READ | PROT_WRITE, MAP_SHARED, drm_fd,
+		    map_dumb.offset);
 	if (data == MAP_FAILED) {
 		fprintf(stderr, "Unable to mmap buffer: %s\n", strerror(errno));
 		return -1;
@@ -196,7 +209,9 @@ static int unmap_buffer(int drm_fd, struct gem_buffer *buffer)
 	return 0;
 }
 
-static int add_framebuffer(int drm_fd, struct gem_buffer *buffer, unsigned int width, unsigned int height, unsigned int format, uint64_t modifier)
+static int add_framebuffer(int drm_fd, struct gem_buffer *buffer,
+			   unsigned int width, unsigned int height,
+			   unsigned int format, uint64_t modifier)
 {
 	uint64_t modifiers[4] = { 0, 0, 0, 0 };
 	uint32_t flags = 0;
@@ -205,15 +220,19 @@ static int add_framebuffer(int drm_fd, struct gem_buffer *buffer, unsigned int w
 	int rc;
 
 	for (i = 0; i < buffer->planes_count; i++) {
-		if (buffer->handles[i] != 0 && modifier != DRM_FORMAT_MOD_NONE) {
+		if (buffer->handles[i] != 0 &&
+		    modifier != DRM_FORMAT_MOD_NONE) {
 			flags |= DRM_MODE_FB_MODIFIERS;
 			modifiers[i] = modifier;
 		}
 	}
 
-	rc = drmModeAddFB2WithModifiers(drm_fd, width, height, format, buffer->handles, buffer->pitches, buffer->offsets, modifiers, &id, flags);
+	rc = drmModeAddFB2WithModifiers(drm_fd, width, height, format,
+					buffer->handles, buffer->pitches,
+					buffer->offsets, modifiers, &id, flags);
 	if (rc < 0) {
-		fprintf(stderr, "Unable to add framebuffer for plane: %s\n", strerror(errno));
+		fprintf(stderr, "Unable to add framebuffer for plane: %s\n",
+			strerror(errno));
 		return -1;
 	}
 
@@ -222,7 +241,8 @@ static int add_framebuffer(int drm_fd, struct gem_buffer *buffer, unsigned int w
 	return 0;
 }
 
-static int discover_properties(int drm_fd, int connector_id, int crtc_id, int plane_id, struct display_properties_ids *ids)
+static int discover_properties(int drm_fd, int connector_id, int crtc_id,
+			       int plane_id, struct display_properties_ids *ids)
 {
 	drmModeObjectPropertiesPtr properties = NULL;
 	drmModePropertyPtr property = NULL;
@@ -252,16 +272,21 @@ static int discover_properties(int drm_fd, int connector_id, int crtc_id, int pl
 	int rc;
 
 	for (i = 0; i < glue_count; i++) {
-		properties = drmModeObjectGetProperties(drm_fd, glue[i].object_id, glue[i].object_type);
+		properties = drmModeObjectGetProperties(drm_fd,
+							glue[i].object_id,
+							glue[i].object_type);
 		if (properties == NULL) {
-			fprintf(stderr, "Unable to get DRM properties: %s\n", strerror(errno));
+			fprintf(stderr, "Unable to get DRM properties: %s\n",
+				strerror(errno));
 			goto error;
 		}
 
 		for (j = 0; j < properties->count_props; j++) {
-			property = drmModeGetProperty(drm_fd, properties->props[j]);
+			property = drmModeGetProperty(drm_fd,
+						      properties->props[j]);
 			if (property == NULL) {
-				fprintf(stderr, "Unable to get DRM property: %s\n", strerror(errno));
+				fprintf(stderr, "Unable to get DRM property: %s\n",
+					strerror(errno));
 				goto error;
 			}
 
@@ -275,7 +300,8 @@ static int discover_properties(int drm_fd, int connector_id, int crtc_id, int pl
 		}
 
 		if (j == properties->count_props) {
-			fprintf(stderr, "Unable to find property for %s\n", glue[i].name);
+			fprintf(stderr, "Unable to find property for %s\n",
+				glue[i].name);
 			goto error;
 		}
 
@@ -302,7 +328,13 @@ complete:
 	return rc;
 }
 
-static int commit_atomic_mode(int drm_fd, unsigned int connector_id, unsigned int crtc_id, unsigned int plane_id, struct display_properties_ids *ids, unsigned int framebuffer_id, unsigned int width, unsigned int height, unsigned int x, unsigned int y, unsigned int scaled_width, unsigned int scaled_height, unsigned int zpos)
+static int commit_atomic_mode(int drm_fd, unsigned int connector_id,
+			      unsigned int crtc_id, unsigned int plane_id,
+			      struct display_properties_ids *ids,
+			      unsigned int framebuffer_id, unsigned int width,
+			      unsigned int height, unsigned int x,
+			      unsigned int y, unsigned int scaled_width,
+			      unsigned int scaled_height, unsigned int zpos)
 {
 	drmModeAtomicReqPtr request;
 	uint32_t flags = DRM_MODE_ATOMIC_ALLOW_MODESET;
@@ -310,21 +342,28 @@ static int commit_atomic_mode(int drm_fd, unsigned int connector_id, unsigned in
 
 	request = drmModeAtomicAlloc();
 
-	drmModeAtomicAddProperty(request, plane_id, ids->plane_fb_id, framebuffer_id);
-	drmModeAtomicAddProperty(request, plane_id, ids->plane_crtc_id, crtc_id);
+	drmModeAtomicAddProperty(request, plane_id, ids->plane_fb_id,
+				 framebuffer_id);
+	drmModeAtomicAddProperty(request, plane_id, ids->plane_crtc_id,
+				 crtc_id);
 	drmModeAtomicAddProperty(request, plane_id, ids->plane_src_x, 0);
 	drmModeAtomicAddProperty(request, plane_id, ids->plane_src_y, 0);
-	drmModeAtomicAddProperty(request, plane_id, ids->plane_src_w, width << 16);
-	drmModeAtomicAddProperty(request, plane_id, ids->plane_src_h, height << 16);
+	drmModeAtomicAddProperty(request, plane_id, ids->plane_src_w,
+				 width << 16);
+	drmModeAtomicAddProperty(request, plane_id, ids->plane_src_h,
+				 height << 16);
 	drmModeAtomicAddProperty(request, plane_id, ids->plane_crtc_x, x);
 	drmModeAtomicAddProperty(request, plane_id, ids->plane_crtc_y, y);
-	drmModeAtomicAddProperty(request, plane_id, ids->plane_crtc_w, scaled_width);
-	drmModeAtomicAddProperty(request, plane_id, ids->plane_crtc_h, scaled_height);
+	drmModeAtomicAddProperty(request, plane_id, ids->plane_crtc_w,
+				 scaled_width);
+	drmModeAtomicAddProperty(request, plane_id, ids->plane_crtc_h,
+				 scaled_height);
 	drmModeAtomicAddProperty(request, plane_id, ids->plane_zpos, zpos);
 
 	rc = drmModeAtomicCommit(drm_fd, request, flags, NULL);
 	if (rc < 0) {
-		fprintf(stderr, "Unable to commit atomic mode: %s\n", strerror(errno));
+		fprintf(stderr, "Unable to commit atomic mode: %s\n",
+			strerror(errno));
 		goto error;
 	}
 
@@ -340,7 +379,9 @@ complete:
 	return rc;
 }
 
-static int page_flip(int drm_fd, unsigned int crtc_id, unsigned int plane_id, struct display_properties_ids *ids, unsigned int framebuffer_id)
+static int page_flip(int drm_fd, unsigned int crtc_id, unsigned int plane_id,
+		     struct display_properties_ids *ids,
+		     unsigned int framebuffer_id)
 {
 	drmModeAtomicReqPtr request;
 	uint32_t flags = DRM_MODE_ATOMIC_ALLOW_MODESET;
@@ -348,8 +389,10 @@ static int page_flip(int drm_fd, unsigned int crtc_id, unsigned int plane_id, st
 
 	request = drmModeAtomicAlloc();
 
-	drmModeAtomicAddProperty(request, plane_id, ids->plane_fb_id, framebuffer_id);
-	drmModeAtomicAddProperty(request, plane_id, ids->plane_crtc_id, crtc_id);
+	drmModeAtomicAddProperty(request, plane_id, ids->plane_fb_id,
+				 framebuffer_id);
+	drmModeAtomicAddProperty(request, plane_id, ids->plane_crtc_id,
+				 crtc_id);
 
 	rc = drmModeAtomicCommit(drm_fd, request, flags, NULL);
 	if (rc < 0) {
@@ -369,7 +412,8 @@ complete:
 	return rc;
 }
 
-static int select_connector_encoder(int drm_fd, unsigned int *connector_id, unsigned int *encoder_id)
+static int select_connector_encoder(int drm_fd, unsigned int *connector_id,
+				    unsigned int *encoder_id)
 {
 	drmModeResPtr ressources = NULL;
 	drmModeConnectorPtr connector = NULL;
@@ -378,14 +422,17 @@ static int select_connector_encoder(int drm_fd, unsigned int *connector_id, unsi
 
 	ressources = drmModeGetResources(drm_fd);
 	if (ressources == NULL) {
-		fprintf(stderr, "Unable to get DRM ressources: %s\n", strerror(errno));
+		fprintf(stderr, "Unable to get DRM ressources: %s\n",
+			strerror(errno));
 		goto error;
 	}
 
 	for (i = 0; i < ressources->count_connectors; i++) {
-		connector = drmModeGetConnector(drm_fd, ressources->connectors[i]);
+		connector = drmModeGetConnector(drm_fd,
+						ressources->connectors[i]);
 		if (connector == NULL) {
-			fprintf(stderr, "Unable to get DRM connector %d: %s\n", ressources->connectors[i], strerror(errno));
+			fprintf(stderr, "Unable to get DRM connector %d: %s\n",
+				ressources->connectors[i], strerror(errno));
 			goto error;
 		}
 
@@ -423,7 +470,8 @@ complete:
 	return rc;
 }
 
-static int select_crtc(int drm_fd, unsigned int encoder_id, unsigned int *crtc_id, drmModeModeInfoPtr mode)
+static int select_crtc(int drm_fd, unsigned int encoder_id,
+		       unsigned int *crtc_id, drmModeModeInfoPtr mode)
 {
 	drmModeEncoderPtr encoder = NULL;
 	drmModeCrtcPtr crtc = NULL;
@@ -431,7 +479,8 @@ static int select_crtc(int drm_fd, unsigned int encoder_id, unsigned int *crtc_i
 
 	encoder = drmModeGetEncoder(drm_fd, encoder_id);
 	if (encoder == NULL) {
-		fprintf(stderr, "Unable to get DRM encoder: %s\n", strerror(errno));
+		fprintf(stderr, "Unable to get DRM encoder: %s\n",
+			strerror(errno));
 		goto error;
 	}
 
@@ -440,12 +489,14 @@ static int select_crtc(int drm_fd, unsigned int encoder_id, unsigned int *crtc_i
 
 	crtc = drmModeGetCrtc(drm_fd, encoder->crtc_id);
 	if (crtc == NULL) {
-		fprintf(stderr, "Unable to get CRTC mode: %s\n", strerror(errno));
+		fprintf(stderr, "Unable to get CRTC mode: %s\n",
+			strerror(errno));
 		goto error;
 	}
 
 	if (!crtc->mode_valid) {
-		fprintf(stderr, "Unable to get valid mode for CRTC %d\n", crtc_id);
+		fprintf(stderr, "Unable to get valid mode for CRTC %d\n",
+			crtc_id);
 		goto error;
 	}
 
@@ -468,7 +519,8 @@ complete:
 	return rc;
 }
 
-static int select_plane(int drm_fd, unsigned int crtc_id, unsigned int format, unsigned int *plane_id, unsigned int *zpos)
+static int select_plane(int drm_fd, unsigned int crtc_id, unsigned int format,
+			unsigned int *plane_id, unsigned int *zpos)
 {
 	drmModeResPtr ressources = NULL;
 	drmModePlaneResPtr plane_ressources = NULL;
@@ -485,7 +537,8 @@ static int select_plane(int drm_fd, unsigned int crtc_id, unsigned int format, u
 
 	ressources = drmModeGetResources(drm_fd);
 	if (ressources == NULL) {
-		fprintf(stderr, "Unable to get DRM ressources: %s\n", strerror(errno));
+		fprintf(stderr, "Unable to get DRM ressources: %s\n",
+			strerror(errno));
 		goto error;
 	}
 
@@ -497,20 +550,23 @@ static int select_plane(int drm_fd, unsigned int crtc_id, unsigned int format, u
 	}
 
 	if (i == ressources->count_crtcs) {
-		fprintf(stderr, "Unable to find CRTC index for CRTC %d\n", crtc_id);
+		fprintf(stderr, "Unable to find CRTC index for CRTC %d\n",
+			crtc_id);
 		goto error;
 	}
 
 	plane_ressources = drmModeGetPlaneResources(drm_fd);
 	if (plane_ressources == NULL) {
-		fprintf(stderr, "Unable to get DRM plane ressources: %s\n", strerror(errno));
+		fprintf(stderr, "Unable to get DRM plane ressources: %s\n",
+			strerror(errno));
 		goto error;
 	}
 
 	for (i = 0; i < plane_ressources->count_planes; i++) {
 		plane = drmModeGetPlane(drm_fd, plane_ressources->planes[i]);
 		if (plane == NULL) {
-			fprintf(stderr, "Unable to get DRM plane %d: %s\n", plane_ressources->planes[i], strerror(errno));
+			fprintf(stderr, "Unable to get DRM plane %d: %s\n",
+				plane_ressources->planes[i], strerror(errno));
 			goto error;
 		}
 
@@ -520,18 +576,26 @@ static int select_plane(int drm_fd, unsigned int crtc_id, unsigned int format, u
 			continue;
 		}
 
-		properties = drmModeObjectGetProperties(drm_fd, plane_ressources->planes[i], DRM_MODE_OBJECT_PLANE);
+		properties = drmModeObjectGetProperties(drm_fd,
+							plane_ressources->planes[i],
+							DRM_MODE_OBJECT_PLANE);
 		if (properties == NULL) {
-			fprintf(stderr, "Unable to get DRM plane %d properties: %s\n", plane_ressources->planes[i], strerror(errno));
+			fprintf(stderr,
+				"Unable to get DRM plane %d properties: %s\n",
+				plane_ressources->planes[i], strerror(errno));
 			goto error;
 		}
 
 		zpos_value = zpos_primary;
 
 		for (j = 0; j < properties->count_props; j++) {
-			property = drmModeGetProperty(drm_fd, properties->props[j]);
+			property = drmModeGetProperty(drm_fd,
+						      properties->props[j]);
 			if (property == NULL) {
-				fprintf(stderr, "Unable to get DRM plane %d property: %s\n", plane_ressources->planes[i], strerror(errno));
+				fprintf(stderr,
+					"Unable to get DRM plane %d property: %s\n",
+					plane_ressources->planes[i],
+					strerror(errno));
 				goto error;
 			}
 
@@ -548,7 +612,9 @@ static int select_plane(int drm_fd, unsigned int crtc_id, unsigned int format, u
 		}
 
 		if (j == properties->count_props) {
-			fprintf(stderr, "Unable to find plane %d type property\n", plane_ressources->planes[i]);
+			fprintf(stderr,
+				"Unable to find plane %d type property\n",
+				plane_ressources->planes[i]);
 			goto error;
 		}
 
@@ -580,7 +646,8 @@ static int select_plane(int drm_fd, unsigned int crtc_id, unsigned int format, u
 	}
 
 	if (plane == NULL || i == plane_ressources->count_planes) {
-		fprintf(stderr, "Unable to find any plane for CRTC %d\n", crtc_id);
+		fprintf(stderr, "Unable to find any plane for CRTC %d\n",
+			crtc_id);
 		goto error;
 	}
 
@@ -616,7 +683,11 @@ complete:
 	return rc;
 }
 
-int display_engine_start(int drm_fd, unsigned int width, unsigned int height, struct format_description *format, struct video_buffer *video_buffers, unsigned int count, struct gem_buffer **buffers, struct display_setup *setup)
+int display_engine_start(int drm_fd, unsigned int width, unsigned int height,
+			 struct format_description *format,
+			 struct video_buffer *video_buffers, unsigned int count,
+			 struct gem_buffer **buffers,
+			 struct display_setup *setup)
 {
 	struct video_buffer *video_buffer;
 	struct gem_buffer *buffer;
@@ -636,13 +707,16 @@ int display_engine_start(int drm_fd, unsigned int width, unsigned int height, st
 
 	rc = drmSetClientCap(drm_fd, DRM_CLIENT_CAP_ATOMIC, 1);
 	if (rc < 0) {
-		fprintf(stderr, "Unable to set DRM atomic capability: %s\n", strerror(errno));
+		fprintf(stderr, "Unable to set DRM atomic capability: %s\n",
+			strerror(errno));
 		return -1;
 	}
 
 	rc = drmSetClientCap(drm_fd, DRM_CLIENT_CAP_UNIVERSAL_PLANES, 1);
 	if (rc < 0) {
-		fprintf(stderr, "Unable to set DRM universal planes capability: %s\n", strerror(errno));
+		fprintf(stderr,
+			"Unable to set DRM universal planes capability: %s\n",
+			strerror(errno));
 		return -1;
 	}
 
@@ -658,9 +732,11 @@ int display_engine_start(int drm_fd, unsigned int width, unsigned int height, st
 		return -1;
 	}
 
-	rc = select_plane(drm_fd, crtc_id, format->drm_format, &plane_id, &zpos);
+	rc = select_plane(drm_fd, crtc_id, format->drm_format, &plane_id,
+			  &zpos);
 	if (rc < 0) {
-		fprintf(stderr, "Unable to select DRM plane for CRTC %d\n", crtc_id);
+		fprintf(stderr, "Unable to select DRM plane for CRTC %d\n",
+			crtc_id);
 		return -1;
 	}
 
@@ -669,7 +745,8 @@ int display_engine_start(int drm_fd, unsigned int width, unsigned int height, st
 
 	memset(setup, 0, sizeof(*setup));
 
-	rc = discover_properties(drm_fd, connector_id, crtc_id, plane_id, &setup->properties_ids);
+	rc = discover_properties(drm_fd, connector_id, crtc_id, plane_id,
+				 &setup->properties_ids);
 	if (rc < 0) {
 		fprintf(stderr, "Unable to discover DRM properties\n");
 		return -1;
@@ -704,22 +781,31 @@ int display_engine_start(int drm_fd, unsigned int width, unsigned int height, st
 		video_buffer = &video_buffers[i];
 		export_fds_count = video_buffer->destination_buffers_count;
 
-		if (video_buffer->destination_planes_count < format->drm_planes_count)
+		if (video_buffer->destination_planes_count <
+		    format->drm_planes_count)
 			return -1;
 
 		buffer->planes_count = format->drm_planes_count;
 
 		if (use_dmabuf)
-			rc = create_imported_buffer(drm_fd, video_buffer->export_fds, export_fds_count, video_buffer->destination_offsets, video_buffer->destination_bytesperlines, buffer);
+			rc = create_imported_buffer(drm_fd,
+						    video_buffer->export_fds,
+						    export_fds_count,
+						    video_buffer->destination_offsets,
+						    video_buffer->destination_bytesperlines,
+						    buffer);
 		else if (format->drm_modifier == DRM_FORMAT_MOD_ALLWINNER_MB32_TILED)
-			rc = create_tiled_buffer(drm_fd, width, height, format->drm_format, buffer);
+			rc = create_tiled_buffer(drm_fd, width, height,
+						 format->drm_format, buffer);
 		else
-			rc = create_dumb_buffer(drm_fd, width, height, format->bpp, buffer);
+			rc = create_dumb_buffer(drm_fd, width, height,
+						format->bpp, buffer);
 
 		if (rc < 0)
 			return -1;
 
-		rc = add_framebuffer(drm_fd, buffer, width, height, format->drm_format, format->drm_modifier);
+		rc = add_framebuffer(drm_fd, buffer, width, height,
+				     format->drm_format, format->drm_modifier);
 		if (rc < 0)
 			return -1;
 
@@ -745,11 +831,15 @@ int display_engine_start(int drm_fd, unsigned int width, unsigned int height, st
 	y = (crtc_height - scaled_height) / 2;
 
 	if (scaled_width != width || scaled_height != height)
-		printf("Scaling video from %dx%d to %dx%d+%d+%d\n", width, height, scaled_width, scaled_height, x, y);
+		printf("Scaling video from %dx%d to %dx%d+%d+%d\n", width,
+		       height, scaled_width, scaled_height, x, y);
 
 	buffer = &((*buffers)[0]);
 
-	rc = commit_atomic_mode(drm_fd, connector_id, crtc_id, plane_id, &setup->properties_ids, buffer->framebuffer_id, width, height, x, y, scaled_width, scaled_height, zpos);
+	rc = commit_atomic_mode(drm_fd, connector_id, crtc_id, plane_id,
+				&setup->properties_ids, buffer->framebuffer_id,
+				width, height, x, y, scaled_width,
+				scaled_height, zpos);
 	if (rc < 0) {
 		fprintf(stderr, "Unable to commit initial plane\n");
 		return -1;
@@ -771,7 +861,8 @@ int display_engine_start(int drm_fd, unsigned int width, unsigned int height, st
 	return 0;
 }
 
-int display_engine_stop(int drm_fd, struct gem_buffer *buffers, struct display_setup *setup)
+int display_engine_stop(int drm_fd, struct gem_buffer *buffers,
+			struct display_setup *setup)
 {
 	struct gem_buffer *buffer;
 	unsigned int i;
@@ -807,7 +898,9 @@ int display_engine_stop(int drm_fd, struct gem_buffer *buffers, struct display_s
 	return 0;
 }
 
-int display_engine_show(int drm_fd, unsigned int index, struct video_buffer *video_buffers, struct gem_buffer *buffers, struct display_setup *setup)
+int display_engine_show(int drm_fd, unsigned int index,
+			struct video_buffer *video_buffers,
+			struct gem_buffer *buffers, struct display_setup *setup)
 {
 	struct video_buffer *video_buffer;
 	struct gem_buffer *buffer;
@@ -822,14 +915,19 @@ int display_engine_show(int drm_fd, unsigned int index, struct video_buffer *vid
 
 	if (!setup->use_dmabuf) {
 		for (i = 0; i < buffer->planes_count; i++)
-			memcpy((unsigned char *) buffer->data + buffer->offsets[i], video_buffer->destination_data[i], video_buffer->destination_sizes[i]);
+			memcpy((unsigned char *)buffer->data +
+				       buffer->offsets[i],
+			       video_buffer->destination_data[i],
+			       video_buffer->destination_sizes[i]);
 
 		buffer = index % 2 == 0 ? &buffers[0] : &buffers[1];
 	}
 
-	rc = page_flip(drm_fd, setup->crtc_id, setup->plane_id, &setup->properties_ids, buffer->framebuffer_id);
+	rc = page_flip(drm_fd, setup->crtc_id, setup->plane_id,
+		       &setup->properties_ids, buffer->framebuffer_id);
 	if (rc < 0) {
-		fprintf(stderr, "Unable to flip page to framebuffer %d\n", buffer->framebuffer_id);
+		fprintf(stderr, "Unable to flip page to framebuffer %d\n",
+			buffer->framebuffer_id);
 		return -1;
 	}
 

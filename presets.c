@@ -17,11 +17,11 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <unistd.h>
 #include <string.h>
+#include <unistd.h>
 
-#include <linux/videodev2.h>
 #include <linux/media.h>
+#include <linux/videodev2.h>
 
 #include "v4l2-request-test.h"
 
@@ -142,13 +142,17 @@ struct preset *preset_find(char *name)
 	return NULL;
 }
 
-int frame_controls_fill(struct frame *frame, struct preset *preset, unsigned int buffers_count, unsigned int index, unsigned int slice_size)
+int frame_controls_fill(struct frame *frame, struct preset *preset,
+			unsigned int buffers_count, unsigned int index,
+			unsigned int slice_size)
 {
 	if (frame == NULL || preset == NULL)
 		return -1;
 
 	if (index >= preset->frames_count) {
-		fprintf(stderr, "Frame index %d is too big for frames count: %d\n", index, preset->frames_count);
+		fprintf(stderr,
+			"Frame index %d is too big for frames count: %d\n",
+			index, preset->frames_count);
 		return -1;
 	}
 
@@ -162,8 +166,10 @@ int frame_controls_fill(struct frame *frame, struct preset *preset, unsigned int
 		frame->frame.mpeg2.slice_params.width = preset->width;
 		frame->frame.mpeg2.slice_params.height = preset->height;
 
-		frame->frame.mpeg2.slice_params.forward_ref_index %= buffers_count;
-		frame->frame.mpeg2.slice_params.backward_ref_index %= buffers_count;
+		frame->frame.mpeg2.slice_params.forward_ref_index %=
+			buffers_count;
+		frame->frame.mpeg2.slice_params.backward_ref_index %=
+			buffers_count;
 		break;
 	case CODEC_TYPE_H264:
 		break;
@@ -182,10 +188,14 @@ unsigned int frame_pct(struct preset *preset, unsigned int index)
 	switch (preset->type) {
 	case CODEC_TYPE_MPEG2:
 		switch (preset->frames[index].frame.mpeg2.slice_params.slice_type) {
-		case V4L2_MPEG2_SLICE_TYPE_I: return PCT_I;
-		case V4L2_MPEG2_SLICE_TYPE_P: return PCT_P;
-		case V4L2_MPEG2_SLICE_TYPE_B: return PCT_B;
-		default: return PCT_I;
+		case V4L2_MPEG2_SLICE_TYPE_I:
+			return PCT_I;
+		case V4L2_MPEG2_SLICE_TYPE_P:
+			return PCT_P;
+		case V4L2_MPEG2_SLICE_TYPE_B:
+			return PCT_B;
+		default:
+			return PCT_I;
 		}
 	default:
 		return PCT_I;
@@ -254,7 +264,9 @@ int frame_gop_schedule(struct preset *preset, unsigned int index)
 		return -1;
 
 	if (index >= preset->frames_count) {
-		fprintf(stderr, "Frame index %d is too big for frames count: %d\n", index, preset->frames_count);
+		fprintf(stderr,
+			"Frame index %d is too big for frames count: %d\n",
+			index, preset->frames_count);
 		return -1;
 	}
 
@@ -285,7 +297,8 @@ int frame_gop_schedule(struct preset *preset, unsigned int index)
 		/* Queue B frames before their associated backward reference frames. */
 		for (i = (index + 1); i < preset->frames_count; i++) {
 			pct_next = frame_pct(preset, i);
-			backward_ref_index_next = frame_backward_ref_index(preset, i);
+			backward_ref_index_next =
+				frame_backward_ref_index(preset, i);
 
 			if (pct_next != PCT_B)
 				continue;
