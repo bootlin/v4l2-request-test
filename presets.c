@@ -45,6 +45,10 @@ static struct frame bbb_h264_high_32_frames[] = {
 #include "data/bbb-h264-high-32/frames.h"
 };
 
+static struct frame sintel_mpeg2_frames[] = {
+#include "data/sintel-mpeg2/frames.h"
+};
+
 static struct preset presets[] = {
 	{
 		.name = "bbb-mpeg2",
@@ -69,6 +73,18 @@ static struct preset presets[] = {
 		.buffers_count = 6,
 		.frames = ed_mpeg2_frames,
 		.frames_count = ARRAY_SIZE(ed_mpeg2_frames),
+	},
+	{
+		.name = "sintel-mpeg2",
+		.description = "sintel.mpg",
+		.license = "Creative Commons Attribution 3.0",
+		.attribution = "Blender Foundation | www.blender.org",
+		.width = 853,
+		.height = 480,
+		.type = CODEC_TYPE_MPEG2,
+		.buffers_count = 6,
+		.frames = sintel_mpeg2_frames,
+		.frames_count = ARRAY_SIZE(sintel_mpeg2_frames),
 	},
 	{
 		.name = "bbb-h264-all-i-32",
