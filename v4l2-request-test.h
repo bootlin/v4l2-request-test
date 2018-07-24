@@ -75,6 +75,7 @@ enum pct {
 union controls {
 	struct {
 		struct v4l2_ctrl_mpeg2_slice_params slice_params;
+		struct v4l2_ctrl_mpeg2_quantization quantization;
 	} mpeg2;
 	struct {
 		struct v4l2_ctrl_h264_decode_param decode_param;
