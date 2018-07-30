@@ -253,7 +253,8 @@ static int queue_buffer(int video_fd, int request_fd, unsigned int type,
 }
 
 static int dequeue_buffer(int video_fd, int request_fd, unsigned int type,
-			  unsigned int index, unsigned int buffers_count)
+			  unsigned int index, unsigned int buffers_count,
+			  bool *error)
 {
 	struct v4l2_plane planes[buffers_count];
 	struct v4l2_buffer buffer;
@@ -279,6 +280,9 @@ static int dequeue_buffer(int video_fd, int request_fd, unsigned int type,
 			strerror(errno));
 		return -1;
 	}
+
+	if (error != NULL)
+		*error = !!(buffer.flags & V4L2_BUF_FLAG_ERROR);
 
 	return 0;
 }
@@ -694,6 +698,7 @@ int video_engine_decode(int video_fd, unsigned int index, union controls *frame,
 	struct timeval tv = { 0, 300000 };
 	int request_fd = -1;
 	fd_set except_fds;
+	bool source_error, destination_error;
 	int rc;
 
 	request_fd = buffers[index].request_fd;
@@ -742,16 +747,22 @@ int video_engine_decode(int video_fd, unsigned int index, union controls *frame,
 	}
 
 	rc = dequeue_buffer(video_fd, -1, V4L2_BUF_TYPE_VIDEO_OUTPUT_MPLANE,
-			    index, 1);
+			    index, 1, &source_error);
 	if (rc < 0) {
 		fprintf(stderr, "Unable to dequeue source buffer\n");
 		return -1;
 	}
 
 	rc = dequeue_buffer(video_fd, -1, V4L2_BUF_TYPE_VIDEO_CAPTURE_MPLANE,
-			    index, buffers[index].destination_buffers_count);
+			    index, buffers[index].destination_buffers_count,
+			    &destination_error);
 	if (rc < 0) {
 		fprintf(stderr, "Unable to dequeue destination buffer\n");
+		return -1;
+	}
+
+	if (source_error || destination_error) {
+		fprintf(stderr, "Error encountered during decoding\n");
 		return -1;
 	}
 
