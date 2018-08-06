@@ -34,6 +34,27 @@
 
 #define SOURCE_SIZE_MAX						(1024 * 1024)
 
+static int query_capabilities(int video_fd, unsigned int *capabilities)
+{
+	struct v4l2_capability capability;
+	int rc;
+
+	memset(&capability, 0, sizeof(capability));
+
+	rc = ioctl(video_fd, VIDIOC_QUERYCAP, &capability);
+	if (rc < 0)
+		return -1;
+
+	if (capabilities != NULL) {
+		if ((capability.capabilities & V4L2_CAP_DEVICE_CAPS) != 0)
+			*capabilities = capability.device_caps;
+		else
+			*capabilities = capability.capabilities;
+	}
+
+	return 0;
+}
+
 static bool find_format(int video_fd, unsigned int type,
 			unsigned int pixelformat)
 {
