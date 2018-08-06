@@ -347,6 +347,14 @@ int main(int argc, char *argv[])
 		goto error;
 	}
 
+	test = video_engine_capabilities_test(video_fd,
+					      V4L2_CAP_VIDEO_M2M_MPLANE |
+					      V4L2_CAP_STREAMING);
+	if (!test) {
+		fprintf(stderr, "Missing required driver capabilities\n");
+		goto error;
+	}
+
 	for (i = 0; i < ARRAY_SIZE(formats); i++) {
 		test = video_engine_format_test(video_fd, width, height,
 						formats[i].v4l2_format);

@@ -198,6 +198,8 @@ int frame_gop_schedule(struct preset *preset, unsigned int index);
 
 /* V4L2 */
 
+bool video_engine_capabilities_test(int video_fd,
+				    unsigned int capabilities_required);
 bool video_engine_format_test(int video_fd, unsigned int width,
 			      unsigned int height, unsigned int format);
 int video_engine_start(int video_fd, int media_fd, unsigned int width,

@@ -450,6 +450,25 @@ static int codec_source_format(enum codec_type type)
 	}
 }
 
+bool video_engine_capabilities_test(int video_fd,
+				    unsigned int capabilities_required)
+{
+	unsigned int capabilities;
+	int rc;
+
+	rc = query_capabilities(video_fd, &capabilities);
+	if (rc < 0) {
+		fprintf(stderr, "Unable to query video capabilities: %s\n",
+			strerror(errno));
+		return false;
+	}
+
+	if ((capabilities & capabilities_required) != capabilities_required)
+		return false;
+
+	return true;
+}
+
 bool video_engine_format_test(int video_fd, unsigned int width,
 			      unsigned int height, unsigned int format)
 {
