@@ -176,12 +176,6 @@ int frame_controls_fill(struct frame *frame, struct preset *preset,
 
 	switch (preset->type) {
 	case CODEC_TYPE_MPEG2:
-		frame->frame.mpeg2.slice_params.slice_pos = 0;
-		frame->frame.mpeg2.slice_params.slice_len = slice_size * 8;
-
-		frame->frame.mpeg2.slice_params.width = preset->width;
-		frame->frame.mpeg2.slice_params.height = preset->height;
-
 		frame->frame.mpeg2.slice_params.forward_ref_index %=
 			buffers_count;
 		frame->frame.mpeg2.slice_params.backward_ref_index %=
@@ -203,12 +197,12 @@ unsigned int frame_pct(struct preset *preset, unsigned int index)
 
 	switch (preset->type) {
 	case CODEC_TYPE_MPEG2:
-		switch (preset->frames[index].frame.mpeg2.slice_params.slice_type) {
-		case V4L2_MPEG2_SLICE_TYPE_I:
+		switch (preset->frames[index].frame.mpeg2.slice_params.picture.picture_coding_type) {
+		case V4L2_MPEG2_PICTURE_CODING_TYPE_I:
 			return PCT_I;
-		case V4L2_MPEG2_SLICE_TYPE_P:
+		case V4L2_MPEG2_PICTURE_CODING_TYPE_P:
 			return PCT_P;
-		case V4L2_MPEG2_SLICE_TYPE_B:
+		case V4L2_MPEG2_PICTURE_CODING_TYPE_B:
 			return PCT_B;
 		default:
 			return PCT_I;
