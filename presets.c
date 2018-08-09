@@ -29,6 +29,10 @@ static struct frame bbb_mpeg2_frames[] = {
 #include "data/bbb-mpeg2/frames.h"
 };
 
+static struct frame bbb_happy_mpeg2_frames[] = {
+#include "data/bbb-happy-mpeg2/frames.h"
+};
+
 static struct frame ed_mpeg2_frames[] = {
 #include "data/ed-mpeg2/frames.h"
 };
@@ -57,6 +61,18 @@ static struct preset presets[] = {
 		.buffers_count = 6,
 		.frames = bbb_mpeg2_frames,
 		.frames_count = ARRAY_SIZE(bbb_mpeg2_frames),
+	},
+	{
+		.name = "bbb-happy-mpeg2",
+		.description = "big_buck_bunny_1080p_MPEG2_MP2_25fps_6600K.MPG",
+		.license = "Creative Commons Attribution 3.0",
+		.attribution = "Blender Foundation | www.blender.org",
+		.width = 1080,
+		.height = 1080,
+		.type = CODEC_TYPE_MPEG2,
+		.buffers_count = 6,
+		.frames = bbb_happy_mpeg2_frames,
+		.frames_count = ARRAY_SIZE(bbb_happy_mpeg2_frames),
 	},
 	{
 		.name = "ed-mpeg2",
