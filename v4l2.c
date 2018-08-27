@@ -485,7 +485,6 @@ int video_engine_start(int video_fd, int media_fd, unsigned int width,
 		       enum codec_type type, struct video_buffer **buffers,
 		       unsigned int buffers_count)
 {
-	struct media_request_alloc request_alloc;
 	struct video_buffer *buffer;
 	unsigned int source_format;
 	unsigned int source_length;
@@ -499,6 +498,7 @@ int video_engine_start(int video_fd, int media_fd, unsigned int width,
 	unsigned int destination_planes_count;
 	unsigned int export_fds_count;
 	unsigned int i, j;
+	int request_fd;
 	int rc;
 
 	*buffers = malloc(buffers_count * sizeof(**buffers));
@@ -650,7 +650,7 @@ int video_engine_start(int video_fd, int media_fd, unsigned int width,
 			goto error;
 		}
 
-		rc = ioctl(media_fd, MEDIA_IOC_REQUEST_ALLOC, &request_alloc);
+		rc = ioctl(media_fd, MEDIA_IOC_REQUEST_ALLOC, &request_fd);
 		if (rc < 0) {
 			fprintf(stderr,
 				"Unable to allocate media request: %s\n",
@@ -658,7 +658,7 @@ int video_engine_start(int video_fd, int media_fd, unsigned int width,
 			goto error;
 		}
 
-		buffer->request_fd = request_alloc.fd;
+		buffer->request_fd = request_fd;
 	}
 
 	rc = set_stream(video_fd, V4L2_BUF_TYPE_VIDEO_OUTPUT_MPLANE, true);
