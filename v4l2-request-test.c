@@ -106,6 +106,9 @@ static void print_summary(struct config *config, struct preset *preset)
 	case CODEC_TYPE_H264:
 		printf("H264");
 		break;
+	case CODEC_TYPE_H265:
+		printf("H265");
+		break;
 	default:
 		printf("Invalid");
 		break;
@@ -395,7 +398,13 @@ int main(int argc, char *argv[])
 	display_index = 0;
 	index_origin = index = 0;
 
-	while (display_count < preset->frames_count) {
+	/*
+	 * Display count might be lower than frames count due to potentially
+	 * missing predicted frames. Adapt at GOP scheduling time.
+	 */
+	preset->display_count = preset->frames_count;
+
+	while (display_count < preset->display_count) {
 		if (!config.quiet)
 			printf("\nProcessing frame %d/%d\n", index + 1,
 			       preset->frames_count);
@@ -494,7 +503,7 @@ frame_display:
 			goto error;
 		}
 
-		if (preset->type == CODEC_TYPE_MPEG2)
+		if (preset->type != CODEC_TYPE_H264)
 			v4l2_index = display_index % config.buffers_count;
 
 		clock_gettime(CLOCK_MONOTONIC, &display_before);
@@ -533,7 +542,7 @@ frame_display:
 		if (display_index >= index)
 			index++;
 
-		if (config.loop && display_count == preset->frames_count) {
+		if (config.loop && display_count == preset->display_count) {
 			display_count = 0;
 			display_index = 0;
 			index_origin = index = 0;

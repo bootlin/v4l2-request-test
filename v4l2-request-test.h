@@ -62,6 +62,7 @@ struct format_description {
 enum codec_type {
 	CODEC_TYPE_MPEG2,
 	CODEC_TYPE_H264,
+	CODEC_TYPE_H265,
 };
 
 enum pct {
@@ -85,6 +86,11 @@ union controls {
 		struct v4l2_ctrl_h264_slice_param slice_param;
 		struct v4l2_ctrl_h264_sps sps;
 	} h264;
+	struct {
+		struct v4l2_ctrl_hevc_sps sps;
+		struct v4l2_ctrl_hevc_pps pps;
+		struct v4l2_ctrl_hevc_slice_params slice_params;
+	} h265;
 };
 
 struct frame {
@@ -106,6 +112,7 @@ struct preset {
 	enum codec_type type;
 	struct frame *frames;
 	unsigned int frames_count;
+	unsigned int display_count;
 };
 
 /* V4L2 */

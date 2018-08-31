@@ -162,6 +162,9 @@ int frame_controls_fill(struct frame *frame, struct preset *preset,
 			unsigned int buffers_count, unsigned int index,
 			unsigned int slice_size)
 {
+	unsigned int count;
+	unsigned int i;
+
 	if (frame == NULL || preset == NULL)
 		return -1;
 
@@ -183,6 +186,13 @@ int frame_controls_fill(struct frame *frame, struct preset *preset,
 		break;
 	case CODEC_TYPE_H264:
 		break;
+	case CODEC_TYPE_H265:
+		count = frame->frame.h265.slice_params.num_active_dpb_entries;
+
+		for (i = 0; i < count; i++)
+			frame->frame.h265.slice_params.dpb[i].buffer_index %=
+				buffers_count;
+		break;
 	default:
 		return -1;
 	}
@@ -192,12 +202,16 @@ int frame_controls_fill(struct frame *frame, struct preset *preset,
 
 unsigned int frame_pct(struct preset *preset, unsigned int index)
 {
+	unsigned int type;
+
 	if (preset == NULL)
 		return PCT_I;
 
 	switch (preset->type) {
 	case CODEC_TYPE_MPEG2:
-		switch (preset->frames[index].frame.mpeg2.slice_params.picture.picture_coding_type) {
+		type = preset->frames[index].frame.mpeg2.slice_params.picture.picture_coding_type;
+
+		switch (type) {
 		case V4L2_MPEG2_PICTURE_CODING_TYPE_I:
 			return PCT_I;
 		case V4L2_MPEG2_PICTURE_CODING_TYPE_P:
@@ -207,8 +221,31 @@ unsigned int frame_pct(struct preset *preset, unsigned int index)
 		default:
 			return PCT_I;
 		}
+	case CODEC_TYPE_H265:
+		type = preset->frames[index].frame.h265.slice_params.slice_type;
+
+		switch (type) {
+		case V4L2_HEVC_SLICE_TYPE_I:
+			return PCT_I;
+		case V4L2_HEVC_SLICE_TYPE_P:
+			return PCT_P;
+		case V4L2_HEVC_SLICE_TYPE_B:
+			return PCT_B;
+		default:
+			return PCT_I;
+		}
 	default:
 		return PCT_I;
+	}
+}
+
+unsigned int frame_poc(struct preset *preset, unsigned int index)
+{
+	switch (preset->type) {
+	case CODEC_TYPE_H265:
+		return preset->frames[index].frame.h265.slice_params.slice_pic_order_cnt;
+	default:
+		return 0;
 	}
 }
 
@@ -262,7 +299,7 @@ int frame_gop_queue(unsigned int index)
 	return 0;
 }
 
-int frame_gop_schedule(struct preset *preset, unsigned int index)
+int frame_gop_schedule_ref(struct preset *preset, unsigned int index)
 {
 	unsigned int gop_start_index;
 	unsigned int pct, pct_next;
@@ -322,4 +359,57 @@ int frame_gop_schedule(struct preset *preset, unsigned int index)
 	}
 
 	return rc;
+}
+
+int frame_gop_schedule_poc(struct preset *preset, unsigned int index)
+{
+	unsigned int gop_start_index = index + 1;
+	unsigned int pct;
+	unsigned int poc, poc_next;
+	int rc;
+
+	pct = frame_pct(preset, index);
+
+	/* Only perform scheduling at GOP start. */
+	if (pct != PCT_I)
+		return 0;
+
+	poc = frame_poc(preset, index);
+	frame_gop_queue(index);
+
+	rc = 0;
+
+	for (index = gop_start_index; index < preset->frames_count; index++) {
+		pct = frame_pct(preset, index);
+
+		/* I frames mark GOP end. */
+		if (pct == PCT_I)
+			break;
+
+		poc_next = frame_poc(preset, index);
+		if (poc_next == poc + 1) {
+			rc |= frame_gop_queue(index);
+			poc = poc_next;
+
+			index = gop_start_index;
+			continue;
+		}
+	}
+
+	/* We might be missing predicted frames. */
+	if (index == preset->frames_count &&
+	    index != gop_start_index)
+		preset->display_count = poc + 1;
+
+	return rc;
+}
+
+int frame_gop_schedule(struct preset *preset, unsigned int index)
+{
+	switch (preset->type) {
+	case CODEC_TYPE_H265:
+		return frame_gop_schedule_poc(preset, index);
+	default:
+		return frame_gop_schedule_ref(preset, index);
+	}
 }
