@@ -49,6 +49,14 @@ static struct frame bbb_h264_high_32_frames[] = {
 #include "data/bbb-h264-high-32/frames.h"
 };
 
+static struct frame caminandes_h265_frames[] = {
+#include "data/caminandes-h265/frames.h"
+};
+
+static struct frame caminandes_fall_h265_frames[] = {
+#include "data/caminandes-fall-h265/frames.h"
+};
+
 static struct preset presets[] = {
 	{
 		.name = "bbb-mpeg2",
@@ -121,6 +129,30 @@ static struct preset presets[] = {
 		.buffers_count = 16,
 		.frames = bbb_h264_32_frames,
 		.frames_count = ARRAY_SIZE(bbb_h264_32_frames),
+	},
+	{
+		.name = "caminandes-h265",
+		.description = "Caminandes 2: Gran Dillema",
+		.license = "Creative Commons Attribution 3.0",
+		.attribution = "(CC) caminandes.com",
+		.width = 640,
+		.height = 360,
+		.type = CODEC_TYPE_H265,
+		.buffers_count = 16,
+		.frames = caminandes_h265_frames,
+		.frames_count = ARRAY_SIZE(caminandes_h265_frames),
+	},
+	{
+		.name = "caminandes-fall-h265",
+		.description = "Caminandes 2: Gran Dillema",
+		.license = "Creative Commons Attribution 3.0",
+		.attribution = "(CC) caminandes.com",
+		.width = 1280,
+		.height = 720,
+		.type = CODEC_TYPE_H265,
+		.buffers_count = 16,
+		.frames = caminandes_fall_h265_frames,
+		.frames_count = ARRAY_SIZE(caminandes_fall_h265_frames),
 	},
 };
 
