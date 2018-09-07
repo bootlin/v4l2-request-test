@@ -217,8 +217,7 @@ static int get_format(int video_fd, unsigned int type, unsigned int *width,
 			bytesperline[0] = format.fmt.pix.bytesperline;
 
 		if (sizes != NULL)
-			sizes[0] = format.fmt.pix.bytesperline *
-				   format.fmt.pix.height;
+			sizes[0] = format.fmt.pix.sizeimage;
 
 		if (planes_count != NULL)
 			*planes_count = 1;
@@ -574,6 +573,7 @@ int video_engine_start(int video_fd, int media_fd, unsigned int width,
 	unsigned int destination_planes_count;
 	unsigned int export_fds_count;
 	unsigned int output_type, capture_type;
+	unsigned int format_width, format_height;
 	unsigned int i, j;
 	int request_fd;
 	int rc;
@@ -611,7 +611,7 @@ int video_engine_start(int video_fd, int media_fd, unsigned int width,
 
 	destination_planes_count = format->planes_count;
 
-	rc = get_format(video_fd, capture_type, NULL, NULL,
+	rc = get_format(video_fd, capture_type, &format_width, &format_height,
 			destination_bytesperlines, destination_sizes, NULL);
 	if (rc < 0) {
 		fprintf(stderr, "Unable to get destination format\n");
@@ -681,6 +681,10 @@ int video_engine_start(int video_fd, int media_fd, unsigned int width,
 
 		if (format->v4l2_buffers_count == 1) {
 			for (j = 0; j < destination_planes_count; j++) {
+				destination_sizes[j] =
+					destination_bytesperlines[0] *
+					format_height;
+
 				buffer->destination_map[j] =
 					j == 0 ? destination_map[0] : NULL;
 				buffer->destination_map_lengths[j] =
