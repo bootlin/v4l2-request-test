@@ -800,18 +800,25 @@ int display_engine_start(int drm_fd, unsigned int width, unsigned int height,
 			rc = create_dumb_buffer(drm_fd, width, height,
 						format->bpp, buffer);
 
-		if (rc < 0)
+		if (rc < 0) {
+			fprintf(stderr,
+				"Unable to create or import DRM buffer\n");
 			return -1;
+		}
 
 		rc = add_framebuffer(drm_fd, buffer, width, height,
 				     format->drm_format, format->drm_modifier);
-		if (rc < 0)
+		if (rc < 0) {
+			fprintf(stderr, "Unable to add DRM framebuffer\n");
 			return -1;
+		}
 
 		if (!use_dmabuf) {
 			rc = map_buffer(drm_fd, buffer);
-			if (rc < 0)
+			if (rc < 0) {
+				fprintf(stderr, "Unable to map DRM buffer\n");
 				return -1;
+			}
 		}
 	}
 
