@@ -703,12 +703,21 @@ int video_engine_start(int video_fd, int media_fd, unsigned int width,
 			}
 		}
 
-		if (format->v4l2_buffers_count == 1) {
-			for (j = 0; j < destination_planes_count; j++) {
-				destination_sizes[j] =
-					destination_bytesperlines[0] *
-					format_height;
+		/*
+		 * FIXME: Handle this per-pixelformat, trying to generalize it
+		 * is not a reasonable approach. The final description should be
+		 * in terms of (logical) planes.
+		 */
 
+
+		if (format->v4l2_buffers_count == 1) {
+			destination_sizes[0] = destination_bytesperlines[0] *
+					       format_height;
+
+			for (j = 1; j < destination_planes_count; j++)
+				destination_sizes[j] = destination_sizes[0] / 2;
+
+			for (j = 0; j < destination_planes_count; j++) {
 				buffer->destination_map[j] =
 					j == 0 ? destination_map[0] : NULL;
 				buffer->destination_map_lengths[j] =
@@ -720,7 +729,7 @@ int video_engine_start(int video_fd, int media_fd, unsigned int width,
 							 destination_map[0] +
 						 buffer->destination_offsets[j]);
 				buffer->destination_sizes[j] =
-					destination_sizes[0];
+					destination_sizes[j];
 				buffer->destination_bytesperlines[j] =
 					destination_bytesperlines[0];
 			}
