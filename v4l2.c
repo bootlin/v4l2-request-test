@@ -34,6 +34,30 @@
 
 #define SOURCE_SIZE_MAX						(1024 * 1024)
 
+static bool type_is_output(unsigned int type)
+{
+	switch (type) {
+	case V4L2_BUF_TYPE_VIDEO_OUTPUT:
+	case V4L2_BUF_TYPE_VIDEO_OUTPUT_MPLANE:
+		return true;
+
+	default:
+		return false;
+	}
+}
+
+static bool type_is_mplane(unsigned int type)
+{
+	switch (type) {
+	case V4L2_BUF_TYPE_VIDEO_OUTPUT_MPLANE:
+	case V4L2_BUF_TYPE_VIDEO_CAPTURE_MPLANE:
+		return true;
+
+	default:
+		return false;
+	}
+}
+
 static int query_capabilities(int video_fd, unsigned int *capabilities)
 {
 	struct v4l2_capability capability;
@@ -77,30 +101,6 @@ static bool find_format(int video_fd, unsigned int type,
 	} while (rc >= 0);
 
 	return false;
-}
-
-static bool type_is_output(unsigned int type)
-{
-	switch (type) {
-	case V4L2_BUF_TYPE_VIDEO_OUTPUT:
-	case V4L2_BUF_TYPE_VIDEO_OUTPUT_MPLANE:
-		return true;
-
-	default:
-		return false;
-	}
-}
-
-static bool type_is_mplane(unsigned int type)
-{
-	switch (type) {
-	case V4L2_BUF_TYPE_VIDEO_OUTPUT_MPLANE:
-	case V4L2_BUF_TYPE_VIDEO_CAPTURE_MPLANE:
-		return true;
-
-	default:
-		return false;
-	}
 }
 
 static void setup_format(struct v4l2_format *format, unsigned int type,
