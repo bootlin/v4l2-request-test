@@ -555,6 +555,12 @@ frame_display:
 		goto error;
 	}
 
+	rc = display_engine_stop(drm_fd, gem_buffers, &display_setup);
+	if (rc < 0) {
+		fprintf(stderr, "Unable to stop display engine\n");
+		goto error;
+	}
+
 	rc = 0;
 	goto complete;
 
