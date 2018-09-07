@@ -227,7 +227,7 @@ static int get_format(int video_fd, unsigned int type, unsigned int *width,
 }
 
 static int create_buffers(int video_fd, unsigned int type,
-			  unsigned int buffers_count)
+			  unsigned int buffers_count, unsigned int *index_base)
 {
 	struct v4l2_create_buffers buffers;
 	int rc;
@@ -250,6 +250,9 @@ static int create_buffers(int video_fd, unsigned int type,
 			type, strerror(errno));
 		return -1;
 	}
+
+	if (index_base != NULL)
+		*index_base = buffers.index;
 
 	return 0;
 }
@@ -293,6 +296,27 @@ static int query_buffer(int video_fd, unsigned int type, unsigned int index,
 
 		if (offsets != NULL)
 			offsets[0] = buffer.m.offset;
+	}
+
+	return 0;
+}
+
+static int request_buffers(int video_fd, unsigned int type,
+			   unsigned int buffers_count)
+{
+	struct v4l2_requestbuffers buffers;
+	int rc;
+
+	memset(&buffers, 0, sizeof(buffers));
+	buffers.type = type;
+	buffers.memory = V4L2_MEMORY_MMAP;
+	buffers.count = buffers_count;
+
+	rc = ioctl(video_fd, VIDIOC_REQBUFS, &buffers);
+	if (rc < 0) {
+		fprintf(stderr, "Unable to request buffers: %s\n",
+			strerror(errno));
+		return -1;
 	}
 
 	return 0;
@@ -618,7 +642,7 @@ int video_engine_start(int video_fd, int media_fd, unsigned int width,
 		goto error;
 	}
 
-	rc = create_buffers(video_fd, output_type, buffers_count);
+	rc = create_buffers(video_fd, output_type, buffers_count, NULL);
 	if (rc < 0) {
 		fprintf(stderr, "Unable to create source buffers\n");
 		goto error;
@@ -646,7 +670,7 @@ int video_engine_start(int video_fd, int media_fd, unsigned int width,
 		buffer->source_size = source_length;
 	}
 
-	rc = create_buffers(video_fd, capture_type, buffers_count);
+	rc = create_buffers(video_fd, capture_type, buffers_count, NULL);
 	if (rc < 0) {
 		fprintf(stderr, "Unable to create destination buffers\n");
 		goto error;
