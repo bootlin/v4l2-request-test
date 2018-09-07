@@ -780,11 +780,7 @@ int display_engine_start(int drm_fd, unsigned int width, unsigned int height,
 		video_buffer = &video_buffers[i];
 		export_fds_count = video_buffer->destination_buffers_count;
 
-		if (video_buffer->destination_planes_count <
-		    format->drm_planes_count)
-			return -1;
-
-		buffer->planes_count = format->drm_planes_count;
+		buffer->planes_count = format->planes_count;
 
 		if (use_dmabuf)
 			rc = create_imported_buffer(drm_fd,

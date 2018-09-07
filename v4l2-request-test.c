@@ -43,7 +43,7 @@ struct format_description formats[] = {
 		.v4l2_buffers_count	= 1,
 		.drm_format		= DRM_FORMAT_NV12,
 		.drm_modifier		= DRM_FORMAT_MOD_NONE,
-		.drm_planes_count	= 2,
+		.planes_count		= 2,
 		.bpp			= 16,
 	},
 	{
@@ -52,7 +52,7 @@ struct format_description formats[] = {
 		.v4l2_buffers_count	= 1,
 		.drm_format		= DRM_FORMAT_NV12,
 		.drm_modifier		= DRM_FORMAT_MOD_ALLWINNER_MB32_TILED,
-		.drm_planes_count	= 2,
+		.planes_count		= 2,
 		.bpp			= 16
 	},
 };
@@ -217,8 +217,9 @@ int main(int argc, char *argv[])
 	struct preset *preset;
 	struct config config;
 	struct video_buffer *video_buffers;
+	struct video_setup video_setup;
 	struct gem_buffer *gem_buffers;
-	struct display_setup setup;
+	struct display_setup display_setup;
 	struct media_device_info device_info;
 	struct frame frame;
 	struct timespec before, after;
@@ -350,17 +351,10 @@ int main(int argc, char *argv[])
 		goto error;
 	}
 
-	test = video_engine_capabilities_test(video_fd,
-					      V4L2_CAP_VIDEO_M2M_MPLANE |
-					      V4L2_CAP_STREAMING);
-	if (!test) {
-		fprintf(stderr, "Missing required driver capabilities\n");
-		goto error;
-	}
-
 	for (i = 0; i < ARRAY_SIZE(formats); i++) {
-		test = video_engine_format_test(video_fd, width, height,
-						formats[i].v4l2_format);
+		test = video_engine_format_test(video_fd,
+						formats[i].v4l2_mplane, width,
+						height, formats[i].v4l2_format);
 		if (test) {
 			selected_format = &formats[i];
 			break;
@@ -375,9 +369,27 @@ int main(int argc, char *argv[])
 
 	printf("Destination format: %s\n", selected_format->description);
 
+	test = video_engine_capabilities_test(video_fd, V4L2_CAP_STREAMING);
+	if (!test) {
+		fprintf(stderr, "Missing required driver streaming capability\n");
+		goto error;
+	}
+
+	if (selected_format->v4l2_mplane)
+		test = video_engine_capabilities_test(video_fd,
+						      V4L2_CAP_VIDEO_M2M_MPLANE);
+	else
+		test = video_engine_capabilities_test(video_fd,
+						      V4L2_CAP_VIDEO_M2M);
+
+	if (!test) {
+		fprintf(stderr, "Missing required driver M2M capability\n");
+		goto error;
+	}
+
 	rc = video_engine_start(video_fd, media_fd, width, height,
 				selected_format, preset->type, &video_buffers,
-				config.buffers_count);
+				config.buffers_count, &video_setup);
 	if (rc < 0) {
 		fprintf(stderr, "Unable to start video engine\n");
 		goto error;
@@ -385,7 +397,7 @@ int main(int argc, char *argv[])
 
 	rc = display_engine_start(drm_fd, width, height, selected_format,
 				  video_buffers, config.buffers_count,
-				  &gem_buffers, &setup);
+				  &gem_buffers, &display_setup);
 	if (rc < 0) {
 		fprintf(stderr, "Unable to start display engine\n");
 		goto error;
@@ -471,7 +483,7 @@ int main(int argc, char *argv[])
 
 		rc = video_engine_decode(video_fd, v4l2_index, &frame.frame,
 					 preset->type, slice_data, slice_size,
-					 video_buffers);
+					 video_buffers, &video_setup);
 		if (rc < 0) {
 			fprintf(stderr, "Unable to decode video frame\n");
 			goto error;
@@ -509,7 +521,7 @@ frame_display:
 		clock_gettime(CLOCK_MONOTONIC, &display_before);
 
 		rc = display_engine_show(drm_fd, v4l2_index, video_buffers,
-					 gem_buffers, &setup);
+					 gem_buffers, &display_setup);
 		if (rc < 0) {
 			fprintf(stderr, "Unable to display video frame\n");
 			goto error;
@@ -549,7 +561,8 @@ frame_display:
 		}
 	}
 
-	rc = video_engine_stop(video_fd, video_buffers, config.buffers_count);
+	rc = video_engine_stop(video_fd, video_buffers, config.buffers_count,
+			       &video_setup);
 	if (rc < 0) {
 		fprintf(stderr, "Unable to start video engine\n");
 		goto error;
