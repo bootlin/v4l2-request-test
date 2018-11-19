@@ -789,7 +789,7 @@ int display_engine_start(int drm_fd, unsigned int width, unsigned int height,
 						    video_buffer->destination_offsets,
 						    video_buffer->destination_bytesperlines,
 						    buffer);
-		else if (format->drm_modifier == DRM_FORMAT_MOD_ALLWINNER_MB32_TILED)
+		else if (format->drm_modifier == DRM_FORMAT_MOD_ALLWINNER_TILED)
 			rc = create_tiled_buffer(drm_fd, width, height,
 						 format->drm_format, buffer);
 		else
