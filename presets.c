@@ -22,6 +22,7 @@
 
 #include <linux/media.h>
 #include <linux/videodev2.h>
+#include <mpeg2-ctrls.h>
 
 #include "v4l2-request-test.h"
 
@@ -219,11 +220,6 @@ int frame_controls_fill(struct frame *frame, struct preset *preset,
 
 	switch (preset->type) {
 	case CODEC_TYPE_MPEG2:
-		frame->frame.mpeg2.slice_params.forward_ref_index %=
-			buffers_count;
-		frame->frame.mpeg2.slice_params.backward_ref_index %=
-			buffers_count;
-		break;
 	case CODEC_TYPE_H264:
 		break;
 #ifdef V4L2_PIX_FMT_HEVC_SLICE
@@ -297,12 +293,15 @@ unsigned int frame_poc(struct preset *preset, unsigned int index)
 
 unsigned int frame_backward_ref_index(struct preset *preset, unsigned int index)
 {
+	uint64_t ts;
+
 	if (preset == NULL)
 		return 0;
 
 	switch (preset->type) {
 	case CODEC_TYPE_MPEG2:
-		return preset->frames[index].frame.mpeg2.slice_params.backward_ref_index;
+		ts = preset->frames[index].frame.mpeg2.slice_params.backward_ref_ts;
+		return INDEX_REF_TS(ts);
 	default:
 		return 0;
 	}

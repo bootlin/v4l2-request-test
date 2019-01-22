@@ -32,6 +32,7 @@
 #include <drm_fourcc.h>
 #include <linux/media.h>
 #include <linux/videodev2.h>
+#include <mpeg2-ctrls.h>
 #include <xf86drm.h>
 
 #include "v4l2-request-test.h"
@@ -248,6 +249,7 @@ int main(int argc, char *argv[])
 	int video_fd = -1;
 	int media_fd = -1;
 	int drm_fd = -1;
+	uint64_t ts;
 	bool test;
 	int opt;
 	int rc;
@@ -483,11 +485,14 @@ int main(int argc, char *argv[])
 		else
 			v4l2_index = index % config.buffers_count;
 
+		ts = TS_REF_INDEX(index);
+
 		clock_gettime(CLOCK_MONOTONIC, &video_before);
 
 		rc = video_engine_decode(video_fd, v4l2_index, &frame.frame,
-					 preset->type, slice_data, slice_size,
-					 video_buffers, &video_setup);
+					 preset->type, ts, slice_data,
+					 slice_size, video_buffers,
+					 &video_setup);
 		if (rc < 0) {
 			fprintf(stderr, "Unable to decode video frame\n");
 			goto error;

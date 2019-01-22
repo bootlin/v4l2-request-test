@@ -23,8 +23,11 @@
 #include <linux/types.h>
 #include <linux/v4l2-controls.h>
 #include <linux/videodev2.h>
+#include <mpeg2-ctrls.h>
 
 #define ARRAY_SIZE(arr) (sizeof(arr) / sizeof((arr)[0]))
+#define TS_REF_INDEX(index) ((index) * 1000)
+#define INDEX_REF_TS(ts) ((ts) / 1000)
 
 /*
  * Structures
@@ -226,7 +229,7 @@ int video_engine_start(int video_fd, int media_fd, unsigned int width,
 int video_engine_stop(int video_fd, struct video_buffer *buffers,
 		      unsigned int buffers_count, struct video_setup *setup);
 int video_engine_decode(int video_fd, unsigned int index, union controls *frame,
-			enum codec_type type, void *source_data,
+			enum codec_type type, uint64_t ts, void *source_data,
 			unsigned int source_size, struct video_buffer *buffers,
 			struct video_setup *setup);
 
