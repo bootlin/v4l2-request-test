@@ -505,6 +505,15 @@ static int set_format_controls(int video_fd, int request_fd,
 		{ CODEC_TYPE_H264, "scaling matrix",
 		  V4L2_CID_MPEG_VIDEO_H264_SLICE_PARAMS,
 		  &frame->h264.slice_param, sizeof(frame->h264.slice_param) },
+		{ CODEC_TYPE_H265, "sequence parameter set",
+		  V4L2_CID_MPEG_VIDEO_HEVC_SPS, &frame->h265.sps,
+		  sizeof(frame->h265.sps) },
+		{ CODEC_TYPE_H265, "picture parameter set",
+		  V4L2_CID_MPEG_VIDEO_HEVC_PPS, &frame->h265.pps,
+		  sizeof(frame->h265.pps) },
+		{ CODEC_TYPE_H265, "slice parameters",
+		  V4L2_CID_MPEG_VIDEO_HEVC_SLICE_PARAMS,
+		  &frame->h265.slice_params, sizeof(frame->h265.slice_params) },
 	};
 	unsigned int i;
 	int rc;
@@ -532,6 +541,8 @@ static int codec_source_format(enum codec_type type)
 		return V4L2_PIX_FMT_MPEG2_SLICE;
 	case CODEC_TYPE_H264:
 		return V4L2_PIX_FMT_H264_SLICE;
+	case CODEC_TYPE_H265:
+		return V4L2_PIX_FMT_HEVC_SLICE;
 	default:
 		fprintf(stderr, "Invalid format type\n");
 		return -1;
