@@ -29,7 +29,6 @@
 #include <unistd.h>
 
 #include <drm_fourcc.h>
-#include <sun4i_drm.h>
 #include <xf86drm.h>
 #include <xf86drmMode.h>
 
@@ -58,42 +57,6 @@ static int create_dumb_buffer(int drm_fd, unsigned int width,
 	buffer->pitches[0] = create_dumb.pitch;
 	buffer->offsets[0] = 0;
 	buffer->handles[0] = create_dumb.handle;
-
-	return 0;
-}
-
-static int create_tiled_buffer(int drm_fd, unsigned int width,
-			       unsigned int height, unsigned int format,
-			       struct gem_buffer *buffer)
-{
-	struct drm_sun4i_gem_create_tiled create_tiled;
-	unsigned int i;
-	int rc;
-
-	if (buffer == NULL)
-		return -1;
-
-	memset(&create_tiled, 0, sizeof(create_tiled));
-	create_tiled.width = width;
-	create_tiled.height = height;
-	create_tiled.format = format;
-
-	rc = drmIoctl(drm_fd, DRM_IOCTL_SUN4I_GEM_CREATE_TILED, &create_tiled);
-	if (rc < 0) {
-		fprintf(stderr, "Unable to create tiled buffer: %s\n",
-			strerror(errno));
-		return -1;
-	}
-
-	buffer->size = create_tiled.size;
-
-	for (i = 0; i < 4; i++) {
-		buffer->pitches[i] = create_tiled.pitches[i];
-		buffer->offsets[i] = create_tiled.offsets[i];
-
-		if (create_tiled.pitches[i] != 0)
-			buffer->handles[i] = create_tiled.handle;
-	}
 
 	return 0;
 }
@@ -789,9 +752,6 @@ int display_engine_start(int drm_fd, unsigned int width, unsigned int height,
 						    video_buffer->destination_offsets,
 						    video_buffer->destination_bytesperlines,
 						    buffer);
-		else if (format->drm_modifier == DRM_FORMAT_MOD_ALLWINNER_TILED)
-			rc = create_tiled_buffer(drm_fd, width, height,
-						 format->drm_format, buffer);
 		else
 			rc = create_dumb_buffer(drm_fd, width, height,
 						format->bpp, buffer);
