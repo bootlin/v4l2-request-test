@@ -37,6 +37,7 @@ static struct frame ed_mpeg2_frames[] = {
 #include "data/ed-mpeg2/frames.h"
 };
 
+#ifdef V4L2_PIX_FMT_H264_SLICE
 static struct frame bbb_h264_all_i_32_frames[] = {
 #include "data/bbb-h264-all-i-32/frames.h"
 };
@@ -48,7 +49,9 @@ static struct frame bbb_h264_32_frames[] = {
 static struct frame bbb_h264_high_32_frames[] = {
 #include "data/bbb-h264-high-32/frames.h"
 };
+#endif
 
+#ifdef V4L2_PIX_FMT_HEVC_SLICE
 static struct frame caminandes_h265_frames[] = {
 #include "data/caminandes-h265/frames.h"
 };
@@ -56,6 +59,7 @@ static struct frame caminandes_h265_frames[] = {
 static struct frame caminandes_fall_h265_frames[] = {
 #include "data/caminandes-fall-h265/frames.h"
 };
+#endif
 
 static struct preset presets[] = {
 	{
@@ -94,6 +98,7 @@ static struct preset presets[] = {
 		.frames = ed_mpeg2_frames,
 		.frames_count = ARRAY_SIZE(ed_mpeg2_frames),
 	},
+#ifdef V4L2_PIX_FMT_H264_SLICE
 	{
 		.name = "bbb-h264-all-i-32",
 		.description = "big_buck_bunny_480p_H264_AAC_25fps_1800K.MP4",
@@ -130,6 +135,8 @@ static struct preset presets[] = {
 		.frames = bbb_h264_32_frames,
 		.frames_count = ARRAY_SIZE(bbb_h264_32_frames),
 	},
+#endif
+#ifdef V4L2_PIX_FMT_H264_SLICE
 	{
 		.name = "caminandes-h265",
 		.description = "Caminandes 2: Gran Dillema",
@@ -154,6 +161,7 @@ static struct preset presets[] = {
 		.frames = caminandes_fall_h265_frames,
 		.frames_count = ARRAY_SIZE(caminandes_fall_h265_frames),
 	},
+#endif
 };
 
 static unsigned int presets_count = ARRAY_SIZE(presets);
@@ -218,6 +226,7 @@ int frame_controls_fill(struct frame *frame, struct preset *preset,
 		break;
 	case CODEC_TYPE_H264:
 		break;
+#ifdef V4L2_PIX_FMT_HEVC_SLICE
 	case CODEC_TYPE_H265:
 		count = frame->frame.h265.slice_params.num_active_dpb_entries;
 
@@ -225,6 +234,7 @@ int frame_controls_fill(struct frame *frame, struct preset *preset,
 			frame->frame.h265.slice_params.dpb[i].buffer_index %=
 				buffers_count;
 		break;
+#endif
 	default:
 		return -1;
 	}
@@ -253,6 +263,7 @@ unsigned int frame_pct(struct preset *preset, unsigned int index)
 		default:
 			return PCT_I;
 		}
+#ifdef V4L2_PIX_FMT_HEVC_SLICE
 	case CODEC_TYPE_H265:
 		type = preset->frames[index].frame.h265.slice_params.slice_type;
 
@@ -266,6 +277,7 @@ unsigned int frame_pct(struct preset *preset, unsigned int index)
 		default:
 			return PCT_I;
 		}
+#endif
 	default:
 		return PCT_I;
 	}
@@ -274,8 +286,10 @@ unsigned int frame_pct(struct preset *preset, unsigned int index)
 unsigned int frame_poc(struct preset *preset, unsigned int index)
 {
 	switch (preset->type) {
+#ifdef V4L2_PIX_FMT_HEVC_SLICE
 	case CODEC_TYPE_H265:
 		return preset->frames[index].frame.h265.slice_params.slice_pic_order_cnt;
+#endif
 	default:
 		return 0;
 	}
