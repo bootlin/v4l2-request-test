@@ -23,6 +23,7 @@
 #include <linux/types.h>
 #include <linux/v4l2-controls.h>
 #include <linux/videodev2.h>
+#include <h264-ctrls.h>
 #include <mpeg2-ctrls.h>
 
 #define ARRAY_SIZE(arr) (sizeof(arr) / sizeof((arr)[0]))
@@ -103,7 +104,6 @@ union controls {
 
 struct frame {
 	unsigned int index;
-	unsigned int output_buffer;
 	union controls frame;
 };
 

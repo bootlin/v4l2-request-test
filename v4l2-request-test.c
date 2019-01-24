@@ -480,13 +480,8 @@ int main(int argc, char *argv[])
 			goto error;
 		}
 
-		if (preset->type == CODEC_TYPE_H264)
-			v4l2_index = frame.output_buffer;
-		else
-			v4l2_index = index % config.buffers_count;
-
+		v4l2_index = index % config.buffers_count;
 		ts = TS_REF_INDEX(index);
-
 		clock_gettime(CLOCK_MONOTONIC, &video_before);
 
 		rc = video_engine_decode(video_fd, v4l2_index, &frame.frame,
@@ -524,9 +519,7 @@ frame_display:
 			goto error;
 		}
 
-		if (preset->type != CODEC_TYPE_H264)
-			v4l2_index = display_index % config.buffers_count;
-
+		v4l2_index = display_index % config.buffers_count;
 		clock_gettime(CLOCK_MONOTONIC, &display_before);
 
 		rc = display_engine_show(drm_fd, v4l2_index, video_buffers,
