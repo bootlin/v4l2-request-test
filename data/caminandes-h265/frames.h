@@ -201,7 +201,7 @@
 				.pic_struct = 0,
 				.dpb = {
 					{
-						.buffer_index = 0,
+						.timestamp = TS_REF_INDEX(0),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 0, 0 },
@@ -359,13 +359,13 @@
 				.pic_struct = 0,
 				.dpb = {
 					{
-						.buffer_index = 0,
+						.timestamp = TS_REF_INDEX(0),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 0, 0 },
 					},
 					{
-						.buffer_index = 1,
+						.timestamp = TS_REF_INDEX(1),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 1, 1 },
@@ -523,19 +523,19 @@
 				.pic_struct = 0,
 				.dpb = {
 					{
-						.buffer_index = 0,
+						.timestamp = TS_REF_INDEX(0),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 0, 0 },
 					},
 					{
-						.buffer_index = 1,
+						.timestamp = TS_REF_INDEX(1),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 1, 1 },
 					},
 					{
-						.buffer_index = 2,
+						.timestamp = TS_REF_INDEX(2),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_AFTER,
 						.field_pic = 0,
 						.pic_order_cnt = { 5, 5 },
@@ -727,25 +727,25 @@
 				.pic_struct = 0,
 				.dpb = {
 					{
-						.buffer_index = 0,
+						.timestamp = TS_REF_INDEX(0),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 0, 0 },
 					},
 					{
-						.buffer_index = 1,
+						.timestamp = TS_REF_INDEX(1),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 1, 1 },
 					},
 					{
-						.buffer_index = 2,
+						.timestamp = TS_REF_INDEX(2),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_AFTER,
 						.field_pic = 0,
 						.pic_order_cnt = { 5, 5 },
 					},
 					{
-						.buffer_index = 3,
+						.timestamp = TS_REF_INDEX(3),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_AFTER,
 						.field_pic = 0,
 						.pic_order_cnt = { 3, 3 },
@@ -937,25 +937,25 @@
 				.pic_struct = 0,
 				.dpb = {
 					{
-						.buffer_index = 0,
+						.timestamp = TS_REF_INDEX(0),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 0, 0 },
 					},
 					{
-						.buffer_index = 1,
+						.timestamp = TS_REF_INDEX(1),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 1, 1 },
 					},
 					{
-						.buffer_index = 2,
+						.timestamp = TS_REF_INDEX(2),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_AFTER,
 						.field_pic = 0,
 						.pic_order_cnt = { 5, 5 },
 					},
 					{
-						.buffer_index = 3,
+						.timestamp = TS_REF_INDEX(3),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 3, 3 },
@@ -1147,25 +1147,25 @@
 				.pic_struct = 0,
 				.dpb = {
 					{
-						.buffer_index = 0,
+						.timestamp = TS_REF_INDEX(0),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 0, 0 },
 					},
 					{
-						.buffer_index = 1,
+						.timestamp = TS_REF_INDEX(1),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 1, 1 },
 					},
 					{
-						.buffer_index = 2,
+						.timestamp = TS_REF_INDEX(2),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 5, 5 },
 					},
 					{
-						.buffer_index = 3,
+						.timestamp = TS_REF_INDEX(3),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 3, 3 },
@@ -1323,25 +1323,25 @@
 				.pic_struct = 0,
 				.dpb = {
 					{
-						.buffer_index = 1,
+						.timestamp = TS_REF_INDEX(1),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 1, 1 },
 					},
 					{
-						.buffer_index = 2,
+						.timestamp = TS_REF_INDEX(2),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 5, 5 },
 					},
 					{
-						.buffer_index = 3,
+						.timestamp = TS_REF_INDEX(3),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 3, 3 },
 					},
 					{
-						.buffer_index = 6,
+						.timestamp = TS_REF_INDEX(6),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_AFTER,
 						.field_pic = 0,
 						.pic_order_cnt = { 9, 9 },
@@ -1533,25 +1533,25 @@
 				.pic_struct = 0,
 				.dpb = {
 					{
-						.buffer_index = 2,
+						.timestamp = TS_REF_INDEX(2),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 5, 5 },
 					},
 					{
-						.buffer_index = 3,
+						.timestamp = TS_REF_INDEX(3),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 3, 3 },
 					},
 					{
-						.buffer_index = 6,
+						.timestamp = TS_REF_INDEX(6),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_AFTER,
 						.field_pic = 0,
 						.pic_order_cnt = { 9, 9 },
 					},
 					{
-						.buffer_index = 7,
+						.timestamp = TS_REF_INDEX(7),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_AFTER,
 						.field_pic = 0,
 						.pic_order_cnt = { 7, 7 },
@@ -1743,25 +1743,25 @@
 				.pic_struct = 0,
 				.dpb = {
 					{
-						.buffer_index = 2,
+						.timestamp = TS_REF_INDEX(2),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 5, 5 },
 					},
 					{
-						.buffer_index = 3,
+						.timestamp = TS_REF_INDEX(3),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 3, 3 },
 					},
 					{
-						.buffer_index = 6,
+						.timestamp = TS_REF_INDEX(6),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_AFTER,
 						.field_pic = 0,
 						.pic_order_cnt = { 9, 9 },
 					},
 					{
-						.buffer_index = 7,
+						.timestamp = TS_REF_INDEX(7),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 7, 7 },
@@ -1953,25 +1953,25 @@
 				.pic_struct = 0,
 				.dpb = {
 					{
-						.buffer_index = 2,
+						.timestamp = TS_REF_INDEX(2),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 5, 5 },
 					},
 					{
-						.buffer_index = 3,
+						.timestamp = TS_REF_INDEX(3),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 3, 3 },
 					},
 					{
-						.buffer_index = 6,
+						.timestamp = TS_REF_INDEX(6),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 9, 9 },
 					},
 					{
-						.buffer_index = 7,
+						.timestamp = TS_REF_INDEX(7),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 7, 7 },
@@ -2129,25 +2129,25 @@
 				.pic_struct = 0,
 				.dpb = {
 					{
-						.buffer_index = 10,
+						.timestamp = TS_REF_INDEX(10),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 10, 10 },
 					},
 					{
-						.buffer_index = 3,
+						.timestamp = TS_REF_INDEX(3),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 3, 3 },
 					},
 					{
-						.buffer_index = 6,
+						.timestamp = TS_REF_INDEX(6),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 9, 9 },
 					},
 					{
-						.buffer_index = 7,
+						.timestamp = TS_REF_INDEX(7),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 7, 7 },
@@ -2305,25 +2305,25 @@
 				.pic_struct = 0,
 				.dpb = {
 					{
-						.buffer_index = 10,
+						.timestamp = TS_REF_INDEX(10),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 10, 10 },
 					},
 					{
-						.buffer_index = 11,
+						.timestamp = TS_REF_INDEX(11),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_AFTER,
 						.field_pic = 0,
 						.pic_order_cnt = { 14, 14 },
 					},
 					{
-						.buffer_index = 6,
+						.timestamp = TS_REF_INDEX(6),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 9, 9 },
 					},
 					{
-						.buffer_index = 7,
+						.timestamp = TS_REF_INDEX(7),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 7, 7 },
@@ -2515,25 +2515,25 @@
 				.pic_struct = 0,
 				.dpb = {
 					{
-						.buffer_index = 10,
+						.timestamp = TS_REF_INDEX(10),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 10, 10 },
 					},
 					{
-						.buffer_index = 11,
+						.timestamp = TS_REF_INDEX(11),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_AFTER,
 						.field_pic = 0,
 						.pic_order_cnt = { 14, 14 },
 					},
 					{
-						.buffer_index = 12,
+						.timestamp = TS_REF_INDEX(12),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_AFTER,
 						.field_pic = 0,
 						.pic_order_cnt = { 12, 12 },
 					},
 					{
-						.buffer_index = 7,
+						.timestamp = TS_REF_INDEX(7),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 7, 7 },
@@ -2725,25 +2725,25 @@
 				.pic_struct = 0,
 				.dpb = {
 					{
-						.buffer_index = 10,
+						.timestamp = TS_REF_INDEX(10),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 10, 10 },
 					},
 					{
-						.buffer_index = 11,
+						.timestamp = TS_REF_INDEX(11),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_AFTER,
 						.field_pic = 0,
 						.pic_order_cnt = { 14, 14 },
 					},
 					{
-						.buffer_index = 12,
+						.timestamp = TS_REF_INDEX(12),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 12, 12 },
 					},
 					{
-						.buffer_index = 7,
+						.timestamp = TS_REF_INDEX(7),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 7, 7 },
@@ -2935,25 +2935,25 @@
 				.pic_struct = 0,
 				.dpb = {
 					{
-						.buffer_index = 10,
+						.timestamp = TS_REF_INDEX(10),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 10, 10 },
 					},
 					{
-						.buffer_index = 11,
+						.timestamp = TS_REF_INDEX(11),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 14, 14 },
 					},
 					{
-						.buffer_index = 12,
+						.timestamp = TS_REF_INDEX(12),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 12, 12 },
 					},
 					{
-						.buffer_index = 7,
+						.timestamp = TS_REF_INDEX(7),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 7, 7 },
@@ -3111,25 +3111,25 @@
 				.pic_struct = 0,
 				.dpb = {
 					{
-						.buffer_index = 10,
+						.timestamp = TS_REF_INDEX(10),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 10, 10 },
 					},
 					{
-						.buffer_index = 11,
+						.timestamp = TS_REF_INDEX(11),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 14, 14 },
 					},
 					{
-						.buffer_index = 12,
+						.timestamp = TS_REF_INDEX(12),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 12, 12 },
 					},
 					{
-						.buffer_index = 15,
+						.timestamp = TS_REF_INDEX(15),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_AFTER,
 						.field_pic = 0,
 						.pic_order_cnt = { 16, 16 },
@@ -3321,25 +3321,25 @@
 				.pic_struct = 0,
 				.dpb = {
 					{
-						.buffer_index = 10,
+						.timestamp = TS_REF_INDEX(10),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 10, 10 },
 					},
 					{
-						.buffer_index = 11,
+						.timestamp = TS_REF_INDEX(11),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 14, 14 },
 					},
 					{
-						.buffer_index = 12,
+						.timestamp = TS_REF_INDEX(12),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 12, 12 },
 					},
 					{
-						.buffer_index = 15,
+						.timestamp = TS_REF_INDEX(15),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 16, 16 },
@@ -3497,25 +3497,25 @@
 				.pic_struct = 0,
 				.dpb = {
 					{
-						.buffer_index = 11,
+						.timestamp = TS_REF_INDEX(11),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 14, 14 },
 					},
 					{
-						.buffer_index = 12,
+						.timestamp = TS_REF_INDEX(12),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 12, 12 },
 					},
 					{
-						.buffer_index = 15,
+						.timestamp = TS_REF_INDEX(15),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 16, 16 },
 					},
 					{
-						.buffer_index = 17,
+						.timestamp = TS_REF_INDEX(17),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_AFTER,
 						.field_pic = 0,
 						.pic_order_cnt = { 20, 20 },
@@ -3707,25 +3707,25 @@
 				.pic_struct = 0,
 				.dpb = {
 					{
-						.buffer_index = 12,
+						.timestamp = TS_REF_INDEX(12),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 12, 12 },
 					},
 					{
-						.buffer_index = 15,
+						.timestamp = TS_REF_INDEX(15),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 16, 16 },
 					},
 					{
-						.buffer_index = 18,
+						.timestamp = TS_REF_INDEX(18),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_AFTER,
 						.field_pic = 0,
 						.pic_order_cnt = { 18, 18 },
 					},
 					{
-						.buffer_index = 17,
+						.timestamp = TS_REF_INDEX(17),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_AFTER,
 						.field_pic = 0,
 						.pic_order_cnt = { 20, 20 },
@@ -3917,25 +3917,25 @@
 				.pic_struct = 0,
 				.dpb = {
 					{
-						.buffer_index = 12,
+						.timestamp = TS_REF_INDEX(12),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 12, 12 },
 					},
 					{
-						.buffer_index = 15,
+						.timestamp = TS_REF_INDEX(15),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 16, 16 },
 					},
 					{
-						.buffer_index = 18,
+						.timestamp = TS_REF_INDEX(18),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 18, 18 },
 					},
 					{
-						.buffer_index = 17,
+						.timestamp = TS_REF_INDEX(17),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_AFTER,
 						.field_pic = 0,
 						.pic_order_cnt = { 20, 20 },
@@ -4127,25 +4127,25 @@
 				.pic_struct = 0,
 				.dpb = {
 					{
-						.buffer_index = 12,
+						.timestamp = TS_REF_INDEX(12),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 12, 12 },
 					},
 					{
-						.buffer_index = 15,
+						.timestamp = TS_REF_INDEX(15),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 16, 16 },
 					},
 					{
-						.buffer_index = 18,
+						.timestamp = TS_REF_INDEX(18),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 18, 18 },
 					},
 					{
-						.buffer_index = 17,
+						.timestamp = TS_REF_INDEX(17),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 20, 20 },
@@ -4303,25 +4303,25 @@
 				.pic_struct = 0,
 				.dpb = {
 					{
-						.buffer_index = 21,
+						.timestamp = TS_REF_INDEX(21),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_AFTER,
 						.field_pic = 0,
 						.pic_order_cnt = { 24, 24 },
 					},
 					{
-						.buffer_index = 15,
+						.timestamp = TS_REF_INDEX(15),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 16, 16 },
 					},
 					{
-						.buffer_index = 18,
+						.timestamp = TS_REF_INDEX(18),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 18, 18 },
 					},
 					{
-						.buffer_index = 17,
+						.timestamp = TS_REF_INDEX(17),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 20, 20 },
@@ -4513,25 +4513,25 @@
 				.pic_struct = 0,
 				.dpb = {
 					{
-						.buffer_index = 21,
+						.timestamp = TS_REF_INDEX(21),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_AFTER,
 						.field_pic = 0,
 						.pic_order_cnt = { 24, 24 },
 					},
 					{
-						.buffer_index = 22,
+						.timestamp = TS_REF_INDEX(22),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_AFTER,
 						.field_pic = 0,
 						.pic_order_cnt = { 22, 22 },
 					},
 					{
-						.buffer_index = 18,
+						.timestamp = TS_REF_INDEX(18),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 18, 18 },
 					},
 					{
-						.buffer_index = 17,
+						.timestamp = TS_REF_INDEX(17),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 20, 20 },
@@ -4723,25 +4723,25 @@
 				.pic_struct = 0,
 				.dpb = {
 					{
-						.buffer_index = 21,
+						.timestamp = TS_REF_INDEX(21),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_AFTER,
 						.field_pic = 0,
 						.pic_order_cnt = { 24, 24 },
 					},
 					{
-						.buffer_index = 22,
+						.timestamp = TS_REF_INDEX(22),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 22, 22 },
 					},
 					{
-						.buffer_index = 18,
+						.timestamp = TS_REF_INDEX(18),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 18, 18 },
 					},
 					{
-						.buffer_index = 17,
+						.timestamp = TS_REF_INDEX(17),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 20, 20 },
@@ -4933,25 +4933,25 @@
 				.pic_struct = 0,
 				.dpb = {
 					{
-						.buffer_index = 21,
+						.timestamp = TS_REF_INDEX(21),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 24, 24 },
 					},
 					{
-						.buffer_index = 22,
+						.timestamp = TS_REF_INDEX(22),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 22, 22 },
 					},
 					{
-						.buffer_index = 18,
+						.timestamp = TS_REF_INDEX(18),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 18, 18 },
 					},
 					{
-						.buffer_index = 17,
+						.timestamp = TS_REF_INDEX(17),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 20, 20 },
@@ -5109,25 +5109,25 @@
 				.pic_struct = 0,
 				.dpb = {
 					{
-						.buffer_index = 21,
+						.timestamp = TS_REF_INDEX(21),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 24, 24 },
 					},
 					{
-						.buffer_index = 22,
+						.timestamp = TS_REF_INDEX(22),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 22, 22 },
 					},
 					{
-						.buffer_index = 25,
+						.timestamp = TS_REF_INDEX(25),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_AFTER,
 						.field_pic = 0,
 						.pic_order_cnt = { 29, 29 },
 					},
 					{
-						.buffer_index = 18,
+						.timestamp = TS_REF_INDEX(18),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 18, 18 },
@@ -5319,25 +5319,25 @@
 				.pic_struct = 0,
 				.dpb = {
 					{
-						.buffer_index = 21,
+						.timestamp = TS_REF_INDEX(21),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 24, 24 },
 					},
 					{
-						.buffer_index = 22,
+						.timestamp = TS_REF_INDEX(22),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 22, 22 },
 					},
 					{
-						.buffer_index = 25,
+						.timestamp = TS_REF_INDEX(25),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_AFTER,
 						.field_pic = 0,
 						.pic_order_cnt = { 29, 29 },
 					},
 					{
-						.buffer_index = 26,
+						.timestamp = TS_REF_INDEX(26),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_AFTER,
 						.field_pic = 0,
 						.pic_order_cnt = { 27, 27 },
@@ -5529,25 +5529,25 @@
 				.pic_struct = 0,
 				.dpb = {
 					{
-						.buffer_index = 21,
+						.timestamp = TS_REF_INDEX(21),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 24, 24 },
 					},
 					{
-						.buffer_index = 22,
+						.timestamp = TS_REF_INDEX(22),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 22, 22 },
 					},
 					{
-						.buffer_index = 25,
+						.timestamp = TS_REF_INDEX(25),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_AFTER,
 						.field_pic = 0,
 						.pic_order_cnt = { 29, 29 },
 					},
 					{
-						.buffer_index = 26,
+						.timestamp = TS_REF_INDEX(26),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_AFTER,
 						.field_pic = 0,
 						.pic_order_cnt = { 27, 27 },
@@ -5739,25 +5739,25 @@
 				.pic_struct = 0,
 				.dpb = {
 					{
-						.buffer_index = 21,
+						.timestamp = TS_REF_INDEX(21),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 24, 24 },
 					},
 					{
-						.buffer_index = 22,
+						.timestamp = TS_REF_INDEX(22),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 22, 22 },
 					},
 					{
-						.buffer_index = 25,
+						.timestamp = TS_REF_INDEX(25),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_AFTER,
 						.field_pic = 0,
 						.pic_order_cnt = { 29, 29 },
 					},
 					{
-						.buffer_index = 26,
+						.timestamp = TS_REF_INDEX(26),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 27, 27 },
@@ -5949,25 +5949,25 @@
 				.pic_struct = 0,
 				.dpb = {
 					{
-						.buffer_index = 21,
+						.timestamp = TS_REF_INDEX(21),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 24, 24 },
 					},
 					{
-						.buffer_index = 22,
+						.timestamp = TS_REF_INDEX(22),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 22, 22 },
 					},
 					{
-						.buffer_index = 25,
+						.timestamp = TS_REF_INDEX(25),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 29, 29 },
 					},
 					{
-						.buffer_index = 26,
+						.timestamp = TS_REF_INDEX(26),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 27, 27 },
@@ -6125,25 +6125,25 @@
 				.pic_struct = 0,
 				.dpb = {
 					{
-						.buffer_index = 22,
+						.timestamp = TS_REF_INDEX(22),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 22, 22 },
 					},
 					{
-						.buffer_index = 25,
+						.timestamp = TS_REF_INDEX(25),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 29, 29 },
 					},
 					{
-						.buffer_index = 26,
+						.timestamp = TS_REF_INDEX(26),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 27, 27 },
 					},
 					{
-						.buffer_index = 30,
+						.timestamp = TS_REF_INDEX(30),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 30, 30 },
@@ -6301,25 +6301,25 @@
 				.pic_struct = 0,
 				.dpb = {
 					{
-						.buffer_index = 25,
+						.timestamp = TS_REF_INDEX(25),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 29, 29 },
 					},
 					{
-						.buffer_index = 26,
+						.timestamp = TS_REF_INDEX(26),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 27, 27 },
 					},
 					{
-						.buffer_index = 30,
+						.timestamp = TS_REF_INDEX(30),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 30, 30 },
 					},
 					{
-						.buffer_index = 31,
+						.timestamp = TS_REF_INDEX(31),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_AFTER,
 						.field_pic = 0,
 						.pic_order_cnt = { 34, 34 },
@@ -6511,25 +6511,25 @@
 				.pic_struct = 0,
 				.dpb = {
 					{
-						.buffer_index = 32,
+						.timestamp = TS_REF_INDEX(32),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_AFTER,
 						.field_pic = 0,
 						.pic_order_cnt = { 32, 32 },
 					},
 					{
-						.buffer_index = 26,
+						.timestamp = TS_REF_INDEX(26),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 27, 27 },
 					},
 					{
-						.buffer_index = 30,
+						.timestamp = TS_REF_INDEX(30),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 30, 30 },
 					},
 					{
-						.buffer_index = 31,
+						.timestamp = TS_REF_INDEX(31),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_AFTER,
 						.field_pic = 0,
 						.pic_order_cnt = { 34, 34 },
@@ -6721,25 +6721,25 @@
 				.pic_struct = 0,
 				.dpb = {
 					{
-						.buffer_index = 32,
+						.timestamp = TS_REF_INDEX(32),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 32, 32 },
 					},
 					{
-						.buffer_index = 26,
+						.timestamp = TS_REF_INDEX(26),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 27, 27 },
 					},
 					{
-						.buffer_index = 30,
+						.timestamp = TS_REF_INDEX(30),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 30, 30 },
 					},
 					{
-						.buffer_index = 31,
+						.timestamp = TS_REF_INDEX(31),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_AFTER,
 						.field_pic = 0,
 						.pic_order_cnt = { 34, 34 },
@@ -6931,25 +6931,25 @@
 				.pic_struct = 0,
 				.dpb = {
 					{
-						.buffer_index = 32,
+						.timestamp = TS_REF_INDEX(32),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 32, 32 },
 					},
 					{
-						.buffer_index = 26,
+						.timestamp = TS_REF_INDEX(26),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 27, 27 },
 					},
 					{
-						.buffer_index = 30,
+						.timestamp = TS_REF_INDEX(30),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 30, 30 },
 					},
 					{
-						.buffer_index = 31,
+						.timestamp = TS_REF_INDEX(31),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 34, 34 },
@@ -7107,25 +7107,25 @@
 				.pic_struct = 0,
 				.dpb = {
 					{
-						.buffer_index = 32,
+						.timestamp = TS_REF_INDEX(32),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 32, 32 },
 					},
 					{
-						.buffer_index = 35,
+						.timestamp = TS_REF_INDEX(35),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_AFTER,
 						.field_pic = 0,
 						.pic_order_cnt = { 38, 38 },
 					},
 					{
-						.buffer_index = 30,
+						.timestamp = TS_REF_INDEX(30),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 30, 30 },
 					},
 					{
-						.buffer_index = 31,
+						.timestamp = TS_REF_INDEX(31),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 34, 34 },
@@ -7317,25 +7317,25 @@
 				.pic_struct = 0,
 				.dpb = {
 					{
-						.buffer_index = 32,
+						.timestamp = TS_REF_INDEX(32),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 32, 32 },
 					},
 					{
-						.buffer_index = 35,
+						.timestamp = TS_REF_INDEX(35),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_AFTER,
 						.field_pic = 0,
 						.pic_order_cnt = { 38, 38 },
 					},
 					{
-						.buffer_index = 36,
+						.timestamp = TS_REF_INDEX(36),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_AFTER,
 						.field_pic = 0,
 						.pic_order_cnt = { 36, 36 },
 					},
 					{
-						.buffer_index = 31,
+						.timestamp = TS_REF_INDEX(31),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 34, 34 },
@@ -7527,25 +7527,25 @@
 				.pic_struct = 0,
 				.dpb = {
 					{
-						.buffer_index = 32,
+						.timestamp = TS_REF_INDEX(32),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 32, 32 },
 					},
 					{
-						.buffer_index = 35,
+						.timestamp = TS_REF_INDEX(35),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_AFTER,
 						.field_pic = 0,
 						.pic_order_cnt = { 38, 38 },
 					},
 					{
-						.buffer_index = 36,
+						.timestamp = TS_REF_INDEX(36),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 36, 36 },
 					},
 					{
-						.buffer_index = 31,
+						.timestamp = TS_REF_INDEX(31),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 34, 34 },
@@ -7737,25 +7737,25 @@
 				.pic_struct = 0,
 				.dpb = {
 					{
-						.buffer_index = 32,
+						.timestamp = TS_REF_INDEX(32),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 32, 32 },
 					},
 					{
-						.buffer_index = 35,
+						.timestamp = TS_REF_INDEX(35),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 38, 38 },
 					},
 					{
-						.buffer_index = 36,
+						.timestamp = TS_REF_INDEX(36),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 36, 36 },
 					},
 					{
-						.buffer_index = 31,
+						.timestamp = TS_REF_INDEX(31),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 34, 34 },
@@ -7913,25 +7913,25 @@
 				.pic_struct = 0,
 				.dpb = {
 					{
-						.buffer_index = 32,
+						.timestamp = TS_REF_INDEX(32),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 32, 32 },
 					},
 					{
-						.buffer_index = 35,
+						.timestamp = TS_REF_INDEX(35),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 38, 38 },
 					},
 					{
-						.buffer_index = 36,
+						.timestamp = TS_REF_INDEX(36),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 36, 36 },
 					},
 					{
-						.buffer_index = 39,
+						.timestamp = TS_REF_INDEX(39),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_AFTER,
 						.field_pic = 0,
 						.pic_order_cnt = { 43, 43 },
@@ -8123,25 +8123,25 @@
 				.pic_struct = 0,
 				.dpb = {
 					{
-						.buffer_index = 35,
+						.timestamp = TS_REF_INDEX(35),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 38, 38 },
 					},
 					{
-						.buffer_index = 36,
+						.timestamp = TS_REF_INDEX(36),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 36, 36 },
 					},
 					{
-						.buffer_index = 39,
+						.timestamp = TS_REF_INDEX(39),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_AFTER,
 						.field_pic = 0,
 						.pic_order_cnt = { 43, 43 },
 					},
 					{
-						.buffer_index = 40,
+						.timestamp = TS_REF_INDEX(40),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_AFTER,
 						.field_pic = 0,
 						.pic_order_cnt = { 41, 41 },
@@ -8333,25 +8333,25 @@
 				.pic_struct = 0,
 				.dpb = {
 					{
-						.buffer_index = 35,
+						.timestamp = TS_REF_INDEX(35),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 38, 38 },
 					},
 					{
-						.buffer_index = 36,
+						.timestamp = TS_REF_INDEX(36),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 36, 36 },
 					},
 					{
-						.buffer_index = 39,
+						.timestamp = TS_REF_INDEX(39),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_AFTER,
 						.field_pic = 0,
 						.pic_order_cnt = { 43, 43 },
 					},
 					{
-						.buffer_index = 40,
+						.timestamp = TS_REF_INDEX(40),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_AFTER,
 						.field_pic = 0,
 						.pic_order_cnt = { 41, 41 },
@@ -8543,25 +8543,25 @@
 				.pic_struct = 0,
 				.dpb = {
 					{
-						.buffer_index = 35,
+						.timestamp = TS_REF_INDEX(35),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 38, 38 },
 					},
 					{
-						.buffer_index = 36,
+						.timestamp = TS_REF_INDEX(36),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 36, 36 },
 					},
 					{
-						.buffer_index = 39,
+						.timestamp = TS_REF_INDEX(39),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_AFTER,
 						.field_pic = 0,
 						.pic_order_cnt = { 43, 43 },
 					},
 					{
-						.buffer_index = 40,
+						.timestamp = TS_REF_INDEX(40),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 41, 41 },
@@ -8753,25 +8753,25 @@
 				.pic_struct = 0,
 				.dpb = {
 					{
-						.buffer_index = 35,
+						.timestamp = TS_REF_INDEX(35),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 38, 38 },
 					},
 					{
-						.buffer_index = 36,
+						.timestamp = TS_REF_INDEX(36),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 36, 36 },
 					},
 					{
-						.buffer_index = 39,
+						.timestamp = TS_REF_INDEX(39),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 43, 43 },
 					},
 					{
-						.buffer_index = 40,
+						.timestamp = TS_REF_INDEX(40),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 41, 41 },
@@ -8929,25 +8929,25 @@
 				.pic_struct = 0,
 				.dpb = {
 					{
-						.buffer_index = 44,
+						.timestamp = TS_REF_INDEX(44),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_AFTER,
 						.field_pic = 0,
 						.pic_order_cnt = { 47, 47 },
 					},
 					{
-						.buffer_index = 36,
+						.timestamp = TS_REF_INDEX(36),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 36, 36 },
 					},
 					{
-						.buffer_index = 39,
+						.timestamp = TS_REF_INDEX(39),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 43, 43 },
 					},
 					{
-						.buffer_index = 40,
+						.timestamp = TS_REF_INDEX(40),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 41, 41 },
@@ -9139,25 +9139,25 @@
 				.pic_struct = 0,
 				.dpb = {
 					{
-						.buffer_index = 44,
+						.timestamp = TS_REF_INDEX(44),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_AFTER,
 						.field_pic = 0,
 						.pic_order_cnt = { 47, 47 },
 					},
 					{
-						.buffer_index = 39,
+						.timestamp = TS_REF_INDEX(39),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 43, 43 },
 					},
 					{
-						.buffer_index = 40,
+						.timestamp = TS_REF_INDEX(40),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 41, 41 },
 					},
 					{
-						.buffer_index = 45,
+						.timestamp = TS_REF_INDEX(45),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_AFTER,
 						.field_pic = 0,
 						.pic_order_cnt = { 45, 45 },
@@ -9349,25 +9349,25 @@
 				.pic_struct = 0,
 				.dpb = {
 					{
-						.buffer_index = 44,
+						.timestamp = TS_REF_INDEX(44),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_AFTER,
 						.field_pic = 0,
 						.pic_order_cnt = { 47, 47 },
 					},
 					{
-						.buffer_index = 39,
+						.timestamp = TS_REF_INDEX(39),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 43, 43 },
 					},
 					{
-						.buffer_index = 40,
+						.timestamp = TS_REF_INDEX(40),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 41, 41 },
 					},
 					{
-						.buffer_index = 45,
+						.timestamp = TS_REF_INDEX(45),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 45, 45 },
@@ -9559,25 +9559,25 @@
 				.pic_struct = 0,
 				.dpb = {
 					{
-						.buffer_index = 44,
+						.timestamp = TS_REF_INDEX(44),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 47, 47 },
 					},
 					{
-						.buffer_index = 39,
+						.timestamp = TS_REF_INDEX(39),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 43, 43 },
 					},
 					{
-						.buffer_index = 40,
+						.timestamp = TS_REF_INDEX(40),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 41, 41 },
 					},
 					{
-						.buffer_index = 45,
+						.timestamp = TS_REF_INDEX(45),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 45, 45 },
@@ -9735,25 +9735,25 @@
 				.pic_struct = 0,
 				.dpb = {
 					{
-						.buffer_index = 44,
+						.timestamp = TS_REF_INDEX(44),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 47, 47 },
 					},
 					{
-						.buffer_index = 48,
+						.timestamp = TS_REF_INDEX(48),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_AFTER,
 						.field_pic = 0,
 						.pic_order_cnt = { 49, 49 },
 					},
 					{
-						.buffer_index = 40,
+						.timestamp = TS_REF_INDEX(40),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 41, 41 },
 					},
 					{
-						.buffer_index = 45,
+						.timestamp = TS_REF_INDEX(45),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 45, 45 },

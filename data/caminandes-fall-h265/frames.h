@@ -1,6 +1,5 @@
 	{
 		.index = 0,
-		.output_buffer = 0,
 		.frame.h265 = {
 			.sps = {
 				.chroma_format_idc = 1,
@@ -107,7 +106,6 @@
 	},
 	{
 		.index = 1,
-		.output_buffer = 1,
 		.frame.h265 = {
 			.sps = {
 				.chroma_format_idc = 1,
@@ -203,7 +201,7 @@
 				.pic_struct = 0,
 				.dpb = {
 					{
-						.buffer_index = 0,
+						.timestamp = TS_REF_INDEX(0),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 0, 0 },
@@ -266,7 +264,6 @@
 	},
 	{
 		.index = 2,
-		.output_buffer = 2,
 		.frame.h265 = {
 			.sps = {
 				.chroma_format_idc = 1,
@@ -362,13 +359,13 @@
 				.pic_struct = 0,
 				.dpb = {
 					{
-						.buffer_index = 0,
+						.timestamp = TS_REF_INDEX(0),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 0, 0 },
 					},
 					{
-						.buffer_index = 1,
+						.timestamp = TS_REF_INDEX(1),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 1, 1 },
@@ -431,7 +428,6 @@
 	},
 	{
 		.index = 3,
-		.output_buffer = 3,
 		.frame.h265 = {
 			.sps = {
 				.chroma_format_idc = 1,
@@ -527,19 +523,19 @@
 				.pic_struct = 0,
 				.dpb = {
 					{
-						.buffer_index = 0,
+						.timestamp = TS_REF_INDEX(0),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 0, 0 },
 					},
 					{
-						.buffer_index = 1,
+						.timestamp = TS_REF_INDEX(1),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 1, 1 },
 					},
 					{
-						.buffer_index = 2,
+						.timestamp = TS_REF_INDEX(2),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_AFTER,
 						.field_pic = 0,
 						.pic_order_cnt = { 5, 5 },
@@ -636,7 +632,6 @@
 	},
 	{
 		.index = 4,
-		.output_buffer = 4,
 		.frame.h265 = {
 			.sps = {
 				.chroma_format_idc = 1,
@@ -732,25 +727,25 @@
 				.pic_struct = 0,
 				.dpb = {
 					{
-						.buffer_index = 0,
+						.timestamp = TS_REF_INDEX(0),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 0, 0 },
 					},
 					{
-						.buffer_index = 1,
+						.timestamp = TS_REF_INDEX(1),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 1, 1 },
 					},
 					{
-						.buffer_index = 2,
+						.timestamp = TS_REF_INDEX(2),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_AFTER,
 						.field_pic = 0,
 						.pic_order_cnt = { 5, 5 },
 					},
 					{
-						.buffer_index = 3,
+						.timestamp = TS_REF_INDEX(3),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_AFTER,
 						.field_pic = 0,
 						.pic_order_cnt = { 3, 3 },
@@ -847,7 +842,6 @@
 	},
 	{
 		.index = 5,
-		.output_buffer = 5,
 		.frame.h265 = {
 			.sps = {
 				.chroma_format_idc = 1,
@@ -943,25 +937,25 @@
 				.pic_struct = 0,
 				.dpb = {
 					{
-						.buffer_index = 0,
+						.timestamp = TS_REF_INDEX(0),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 0, 0 },
 					},
 					{
-						.buffer_index = 1,
+						.timestamp = TS_REF_INDEX(1),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 1, 1 },
 					},
 					{
-						.buffer_index = 2,
+						.timestamp = TS_REF_INDEX(2),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_AFTER,
 						.field_pic = 0,
 						.pic_order_cnt = { 5, 5 },
 					},
 					{
-						.buffer_index = 3,
+						.timestamp = TS_REF_INDEX(3),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 3, 3 },
@@ -1058,7 +1052,6 @@
 	},
 	{
 		.index = 6,
-		.output_buffer = 6,
 		.frame.h265 = {
 			.sps = {
 				.chroma_format_idc = 1,
@@ -1154,25 +1147,25 @@
 				.pic_struct = 0,
 				.dpb = {
 					{
-						.buffer_index = 0,
+						.timestamp = TS_REF_INDEX(0),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 0, 0 },
 					},
 					{
-						.buffer_index = 1,
+						.timestamp = TS_REF_INDEX(1),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 1, 1 },
 					},
 					{
-						.buffer_index = 2,
+						.timestamp = TS_REF_INDEX(2),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 5, 5 },
 					},
 					{
-						.buffer_index = 3,
+						.timestamp = TS_REF_INDEX(3),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 3, 3 },
@@ -1235,7 +1228,6 @@
 	},
 	{
 		.index = 7,
-		.output_buffer = 7,
 		.frame.h265 = {
 			.sps = {
 				.chroma_format_idc = 1,
@@ -1331,25 +1323,25 @@
 				.pic_struct = 0,
 				.dpb = {
 					{
-						.buffer_index = 1,
+						.timestamp = TS_REF_INDEX(1),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 1, 1 },
 					},
 					{
-						.buffer_index = 2,
+						.timestamp = TS_REF_INDEX(2),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 5, 5 },
 					},
 					{
-						.buffer_index = 3,
+						.timestamp = TS_REF_INDEX(3),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 3, 3 },
 					},
 					{
-						.buffer_index = 6,
+						.timestamp = TS_REF_INDEX(6),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_AFTER,
 						.field_pic = 0,
 						.pic_order_cnt = { 10, 10 },
@@ -1446,7 +1438,6 @@
 	},
 	{
 		.index = 8,
-		.output_buffer = 8,
 		.frame.h265 = {
 			.sps = {
 				.chroma_format_idc = 1,
@@ -1542,25 +1533,25 @@
 				.pic_struct = 0,
 				.dpb = {
 					{
-						.buffer_index = 2,
+						.timestamp = TS_REF_INDEX(2),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 5, 5 },
 					},
 					{
-						.buffer_index = 3,
+						.timestamp = TS_REF_INDEX(3),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 3, 3 },
 					},
 					{
-						.buffer_index = 6,
+						.timestamp = TS_REF_INDEX(6),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_AFTER,
 						.field_pic = 0,
 						.pic_order_cnt = { 10, 10 },
 					},
 					{
-						.buffer_index = 7,
+						.timestamp = TS_REF_INDEX(7),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_AFTER,
 						.field_pic = 0,
 						.pic_order_cnt = { 8, 8 },
@@ -1657,7 +1648,6 @@
 	},
 	{
 		.index = 9,
-		.output_buffer = 9,
 		.frame.h265 = {
 			.sps = {
 				.chroma_format_idc = 1,
@@ -1753,25 +1743,25 @@
 				.pic_struct = 0,
 				.dpb = {
 					{
-						.buffer_index = 2,
+						.timestamp = TS_REF_INDEX(2),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 5, 5 },
 					},
 					{
-						.buffer_index = 3,
+						.timestamp = TS_REF_INDEX(3),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 3, 3 },
 					},
 					{
-						.buffer_index = 6,
+						.timestamp = TS_REF_INDEX(6),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_AFTER,
 						.field_pic = 0,
 						.pic_order_cnt = { 10, 10 },
 					},
 					{
-						.buffer_index = 7,
+						.timestamp = TS_REF_INDEX(7),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_AFTER,
 						.field_pic = 0,
 						.pic_order_cnt = { 8, 8 },
@@ -1868,7 +1858,6 @@
 	},
 	{
 		.index = 10,
-		.output_buffer = 10,
 		.frame.h265 = {
 			.sps = {
 				.chroma_format_idc = 1,
@@ -1964,25 +1953,25 @@
 				.pic_struct = 0,
 				.dpb = {
 					{
-						.buffer_index = 2,
+						.timestamp = TS_REF_INDEX(2),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 5, 5 },
 					},
 					{
-						.buffer_index = 3,
+						.timestamp = TS_REF_INDEX(3),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 3, 3 },
 					},
 					{
-						.buffer_index = 6,
+						.timestamp = TS_REF_INDEX(6),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_AFTER,
 						.field_pic = 0,
 						.pic_order_cnt = { 10, 10 },
 					},
 					{
-						.buffer_index = 7,
+						.timestamp = TS_REF_INDEX(7),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 8, 8 },
@@ -2079,7 +2068,6 @@
 	},
 	{
 		.index = 11,
-		.output_buffer = 11,
 		.frame.h265 = {
 			.sps = {
 				.chroma_format_idc = 1,
@@ -2175,25 +2163,25 @@
 				.pic_struct = 0,
 				.dpb = {
 					{
-						.buffer_index = 2,
+						.timestamp = TS_REF_INDEX(2),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 5, 5 },
 					},
 					{
-						.buffer_index = 3,
+						.timestamp = TS_REF_INDEX(3),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 3, 3 },
 					},
 					{
-						.buffer_index = 6,
+						.timestamp = TS_REF_INDEX(6),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 10, 10 },
 					},
 					{
-						.buffer_index = 7,
+						.timestamp = TS_REF_INDEX(7),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 8, 8 },
@@ -2256,7 +2244,6 @@
 	},
 	{
 		.index = 12,
-		.output_buffer = 12,
 		.frame.h265 = {
 			.sps = {
 				.chroma_format_idc = 1,
@@ -2352,25 +2339,25 @@
 				.pic_struct = 0,
 				.dpb = {
 					{
-						.buffer_index = 11,
+						.timestamp = TS_REF_INDEX(11),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_AFTER,
 						.field_pic = 0,
 						.pic_order_cnt = { 14, 14 },
 					},
 					{
-						.buffer_index = 3,
+						.timestamp = TS_REF_INDEX(3),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 3, 3 },
 					},
 					{
-						.buffer_index = 6,
+						.timestamp = TS_REF_INDEX(6),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 10, 10 },
 					},
 					{
-						.buffer_index = 7,
+						.timestamp = TS_REF_INDEX(7),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 8, 8 },
@@ -2467,7 +2454,6 @@
 	},
 	{
 		.index = 13,
-		.output_buffer = 13,
 		.frame.h265 = {
 			.sps = {
 				.chroma_format_idc = 1,
@@ -2563,25 +2549,25 @@
 				.pic_struct = 0,
 				.dpb = {
 					{
-						.buffer_index = 12,
+						.timestamp = TS_REF_INDEX(12),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_AFTER,
 						.field_pic = 0,
 						.pic_order_cnt = { 12, 12 },
 					},
 					{
-						.buffer_index = 11,
+						.timestamp = TS_REF_INDEX(11),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_AFTER,
 						.field_pic = 0,
 						.pic_order_cnt = { 14, 14 },
 					},
 					{
-						.buffer_index = 6,
+						.timestamp = TS_REF_INDEX(6),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 10, 10 },
 					},
 					{
-						.buffer_index = 7,
+						.timestamp = TS_REF_INDEX(7),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 8, 8 },
@@ -2678,7 +2664,6 @@
 	},
 	{
 		.index = 14,
-		.output_buffer = 14,
 		.frame.h265 = {
 			.sps = {
 				.chroma_format_idc = 1,
@@ -2774,25 +2759,25 @@
 				.pic_struct = 0,
 				.dpb = {
 					{
-						.buffer_index = 12,
+						.timestamp = TS_REF_INDEX(12),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 12, 12 },
 					},
 					{
-						.buffer_index = 11,
+						.timestamp = TS_REF_INDEX(11),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_AFTER,
 						.field_pic = 0,
 						.pic_order_cnt = { 14, 14 },
 					},
 					{
-						.buffer_index = 6,
+						.timestamp = TS_REF_INDEX(6),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 10, 10 },
 					},
 					{
-						.buffer_index = 7,
+						.timestamp = TS_REF_INDEX(7),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 8, 8 },
@@ -2889,7 +2874,6 @@
 	},
 	{
 		.index = 15,
-		.output_buffer = 15,
 		.frame.h265 = {
 			.sps = {
 				.chroma_format_idc = 1,
@@ -2985,25 +2969,25 @@
 				.pic_struct = 0,
 				.dpb = {
 					{
-						.buffer_index = 12,
+						.timestamp = TS_REF_INDEX(12),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 12, 12 },
 					},
 					{
-						.buffer_index = 11,
+						.timestamp = TS_REF_INDEX(11),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 14, 14 },
 					},
 					{
-						.buffer_index = 6,
+						.timestamp = TS_REF_INDEX(6),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 10, 10 },
 					},
 					{
-						.buffer_index = 7,
+						.timestamp = TS_REF_INDEX(7),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 8, 8 },
@@ -3066,7 +3050,6 @@
 	},
 	{
 		.index = 16,
-		.output_buffer = 0,
 		.frame.h265 = {
 			.sps = {
 				.chroma_format_idc = 1,
@@ -3162,25 +3145,25 @@
 				.pic_struct = 0,
 				.dpb = {
 					{
-						.buffer_index = 12,
+						.timestamp = TS_REF_INDEX(12),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 12, 12 },
 					},
 					{
-						.buffer_index = 11,
+						.timestamp = TS_REF_INDEX(11),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 14, 14 },
 					},
 					{
-						.buffer_index = 15,
+						.timestamp = TS_REF_INDEX(15),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_AFTER,
 						.field_pic = 0,
 						.pic_order_cnt = { 18, 18 },
 					},
 					{
-						.buffer_index = 7,
+						.timestamp = TS_REF_INDEX(7),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 8, 8 },
@@ -3277,7 +3260,6 @@
 	},
 	{
 		.index = 17,
-		.output_buffer = 1,
 		.frame.h265 = {
 			.sps = {
 				.chroma_format_idc = 1,
@@ -3373,25 +3355,25 @@
 				.pic_struct = 0,
 				.dpb = {
 					{
-						.buffer_index = 12,
+						.timestamp = TS_REF_INDEX(12),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 12, 12 },
 					},
 					{
-						.buffer_index = 11,
+						.timestamp = TS_REF_INDEX(11),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 14, 14 },
 					},
 					{
-						.buffer_index = 15,
+						.timestamp = TS_REF_INDEX(15),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_AFTER,
 						.field_pic = 0,
 						.pic_order_cnt = { 18, 18 },
 					},
 					{
-						.buffer_index = 16,
+						.timestamp = TS_REF_INDEX(16),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_AFTER,
 						.field_pic = 0,
 						.pic_order_cnt = { 16, 16 },
@@ -3488,7 +3470,6 @@
 	},
 	{
 		.index = 18,
-		.output_buffer = 2,
 		.frame.h265 = {
 			.sps = {
 				.chroma_format_idc = 1,
@@ -3584,25 +3565,25 @@
 				.pic_struct = 0,
 				.dpb = {
 					{
-						.buffer_index = 12,
+						.timestamp = TS_REF_INDEX(12),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 12, 12 },
 					},
 					{
-						.buffer_index = 11,
+						.timestamp = TS_REF_INDEX(11),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 14, 14 },
 					},
 					{
-						.buffer_index = 15,
+						.timestamp = TS_REF_INDEX(15),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_AFTER,
 						.field_pic = 0,
 						.pic_order_cnt = { 18, 18 },
 					},
 					{
-						.buffer_index = 16,
+						.timestamp = TS_REF_INDEX(16),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 16, 16 },
@@ -3699,7 +3680,6 @@
 	},
 	{
 		.index = 19,
-		.output_buffer = 3,
 		.frame.h265 = {
 			.sps = {
 				.chroma_format_idc = 1,
@@ -3795,25 +3775,25 @@
 				.pic_struct = 0,
 				.dpb = {
 					{
-						.buffer_index = 12,
+						.timestamp = TS_REF_INDEX(12),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 12, 12 },
 					},
 					{
-						.buffer_index = 11,
+						.timestamp = TS_REF_INDEX(11),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 14, 14 },
 					},
 					{
-						.buffer_index = 15,
+						.timestamp = TS_REF_INDEX(15),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 18, 18 },
 					},
 					{
-						.buffer_index = 16,
+						.timestamp = TS_REF_INDEX(16),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 16, 16 },
@@ -3876,7 +3856,6 @@
 	},
 	{
 		.index = 20,
-		.output_buffer = 4,
 		.frame.h265 = {
 			.sps = {
 				.chroma_format_idc = 1,
@@ -3972,25 +3951,25 @@
 				.pic_struct = 0,
 				.dpb = {
 					{
-						.buffer_index = 12,
+						.timestamp = TS_REF_INDEX(12),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 12, 12 },
 					},
 					{
-						.buffer_index = 15,
+						.timestamp = TS_REF_INDEX(15),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 18, 18 },
 					},
 					{
-						.buffer_index = 16,
+						.timestamp = TS_REF_INDEX(16),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 16, 16 },
 					},
 					{
-						.buffer_index = 19,
+						.timestamp = TS_REF_INDEX(19),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_AFTER,
 						.field_pic = 0,
 						.pic_order_cnt = { 21, 21 },
@@ -4087,7 +4066,6 @@
 	},
 	{
 		.index = 21,
-		.output_buffer = 5,
 		.frame.h265 = {
 			.sps = {
 				.chroma_format_idc = 1,
@@ -4183,25 +4161,25 @@
 				.pic_struct = 0,
 				.dpb = {
 					{
-						.buffer_index = 15,
+						.timestamp = TS_REF_INDEX(15),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 18, 18 },
 					},
 					{
-						.buffer_index = 16,
+						.timestamp = TS_REF_INDEX(16),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 16, 16 },
 					},
 					{
-						.buffer_index = 19,
+						.timestamp = TS_REF_INDEX(19),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_AFTER,
 						.field_pic = 0,
 						.pic_order_cnt = { 21, 21 },
 					},
 					{
-						.buffer_index = 20,
+						.timestamp = TS_REF_INDEX(20),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_AFTER,
 						.field_pic = 0,
 						.pic_order_cnt = { 20, 20 },
@@ -4298,7 +4276,6 @@
 	},
 	{
 		.index = 22,
-		.output_buffer = 6,
 		.frame.h265 = {
 			.sps = {
 				.chroma_format_idc = 1,
@@ -4394,25 +4371,25 @@
 				.pic_struct = 0,
 				.dpb = {
 					{
-						.buffer_index = 15,
+						.timestamp = TS_REF_INDEX(15),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 18, 18 },
 					},
 					{
-						.buffer_index = 16,
+						.timestamp = TS_REF_INDEX(16),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 16, 16 },
 					},
 					{
-						.buffer_index = 19,
+						.timestamp = TS_REF_INDEX(19),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 21, 21 },
 					},
 					{
-						.buffer_index = 20,
+						.timestamp = TS_REF_INDEX(20),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 20, 20 },
@@ -4475,7 +4452,6 @@
 	},
 	{
 		.index = 23,
-		.output_buffer = 7,
 		.frame.h265 = {
 			.sps = {
 				.chroma_format_idc = 1,
@@ -4571,25 +4547,25 @@
 				.pic_struct = 0,
 				.dpb = {
 					{
-						.buffer_index = 22,
+						.timestamp = TS_REF_INDEX(22),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_AFTER,
 						.field_pic = 0,
 						.pic_order_cnt = { 26, 26 },
 					},
 					{
-						.buffer_index = 16,
+						.timestamp = TS_REF_INDEX(16),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 16, 16 },
 					},
 					{
-						.buffer_index = 19,
+						.timestamp = TS_REF_INDEX(19),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 21, 21 },
 					},
 					{
-						.buffer_index = 20,
+						.timestamp = TS_REF_INDEX(20),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 20, 20 },
@@ -4686,7 +4662,6 @@
 	},
 	{
 		.index = 24,
-		.output_buffer = 8,
 		.frame.h265 = {
 			.sps = {
 				.chroma_format_idc = 1,
@@ -4782,25 +4757,25 @@
 				.pic_struct = 0,
 				.dpb = {
 					{
-						.buffer_index = 22,
+						.timestamp = TS_REF_INDEX(22),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_AFTER,
 						.field_pic = 0,
 						.pic_order_cnt = { 26, 26 },
 					},
 					{
-						.buffer_index = 23,
+						.timestamp = TS_REF_INDEX(23),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_AFTER,
 						.field_pic = 0,
 						.pic_order_cnt = { 24, 24 },
 					},
 					{
-						.buffer_index = 19,
+						.timestamp = TS_REF_INDEX(19),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 21, 21 },
 					},
 					{
-						.buffer_index = 20,
+						.timestamp = TS_REF_INDEX(20),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 20, 20 },
@@ -4897,7 +4872,6 @@
 	},
 	{
 		.index = 25,
-		.output_buffer = 9,
 		.frame.h265 = {
 			.sps = {
 				.chroma_format_idc = 1,
@@ -4993,25 +4967,25 @@
 				.pic_struct = 0,
 				.dpb = {
 					{
-						.buffer_index = 22,
+						.timestamp = TS_REF_INDEX(22),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_AFTER,
 						.field_pic = 0,
 						.pic_order_cnt = { 26, 26 },
 					},
 					{
-						.buffer_index = 23,
+						.timestamp = TS_REF_INDEX(23),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_AFTER,
 						.field_pic = 0,
 						.pic_order_cnt = { 24, 24 },
 					},
 					{
-						.buffer_index = 19,
+						.timestamp = TS_REF_INDEX(19),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 21, 21 },
 					},
 					{
-						.buffer_index = 20,
+						.timestamp = TS_REF_INDEX(20),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 20, 20 },
@@ -5108,7 +5082,6 @@
 	},
 	{
 		.index = 26,
-		.output_buffer = 10,
 		.frame.h265 = {
 			.sps = {
 				.chroma_format_idc = 1,
@@ -5204,25 +5177,25 @@
 				.pic_struct = 0,
 				.dpb = {
 					{
-						.buffer_index = 22,
+						.timestamp = TS_REF_INDEX(22),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_AFTER,
 						.field_pic = 0,
 						.pic_order_cnt = { 26, 26 },
 					},
 					{
-						.buffer_index = 23,
+						.timestamp = TS_REF_INDEX(23),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 24, 24 },
 					},
 					{
-						.buffer_index = 19,
+						.timestamp = TS_REF_INDEX(19),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 21, 21 },
 					},
 					{
-						.buffer_index = 20,
+						.timestamp = TS_REF_INDEX(20),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 20, 20 },
@@ -5319,7 +5292,6 @@
 	},
 	{
 		.index = 27,
-		.output_buffer = 11,
 		.frame.h265 = {
 			.sps = {
 				.chroma_format_idc = 1,
@@ -5415,25 +5387,25 @@
 				.pic_struct = 0,
 				.dpb = {
 					{
-						.buffer_index = 22,
+						.timestamp = TS_REF_INDEX(22),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 26, 26 },
 					},
 					{
-						.buffer_index = 23,
+						.timestamp = TS_REF_INDEX(23),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 24, 24 },
 					},
 					{
-						.buffer_index = 19,
+						.timestamp = TS_REF_INDEX(19),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 21, 21 },
 					},
 					{
-						.buffer_index = 20,
+						.timestamp = TS_REF_INDEX(20),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 20, 20 },
@@ -5496,7 +5468,6 @@
 	},
 	{
 		.index = 28,
-		.output_buffer = 12,
 		.frame.h265 = {
 			.sps = {
 				.chroma_format_idc = 1,
@@ -5592,25 +5563,25 @@
 				.pic_struct = 0,
 				.dpb = {
 					{
-						.buffer_index = 22,
+						.timestamp = TS_REF_INDEX(22),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 26, 26 },
 					},
 					{
-						.buffer_index = 23,
+						.timestamp = TS_REF_INDEX(23),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 24, 24 },
 					},
 					{
-						.buffer_index = 27,
+						.timestamp = TS_REF_INDEX(27),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_AFTER,
 						.field_pic = 0,
 						.pic_order_cnt = { 29, 29 },
 					},
 					{
-						.buffer_index = 20,
+						.timestamp = TS_REF_INDEX(20),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 20, 20 },
@@ -5707,7 +5678,6 @@
 	},
 	{
 		.index = 29,
-		.output_buffer = 13,
 		.frame.h265 = {
 			.sps = {
 				.chroma_format_idc = 1,
@@ -5803,25 +5773,25 @@
 				.pic_struct = 0,
 				.dpb = {
 					{
-						.buffer_index = 22,
+						.timestamp = TS_REF_INDEX(22),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 26, 26 },
 					},
 					{
-						.buffer_index = 23,
+						.timestamp = TS_REF_INDEX(23),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 24, 24 },
 					},
 					{
-						.buffer_index = 28,
+						.timestamp = TS_REF_INDEX(28),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_AFTER,
 						.field_pic = 0,
 						.pic_order_cnt = { 28, 28 },
 					},
 					{
-						.buffer_index = 27,
+						.timestamp = TS_REF_INDEX(27),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_AFTER,
 						.field_pic = 0,
 						.pic_order_cnt = { 29, 29 },
@@ -5918,7 +5888,6 @@
 	},
 	{
 		.index = 30,
-		.output_buffer = 14,
 		.frame.h265 = {
 			.sps = {
 				.chroma_format_idc = 1,
@@ -6014,25 +5983,25 @@
 				.pic_struct = 0,
 				.dpb = {
 					{
-						.buffer_index = 22,
+						.timestamp = TS_REF_INDEX(22),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 26, 26 },
 					},
 					{
-						.buffer_index = 23,
+						.timestamp = TS_REF_INDEX(23),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 24, 24 },
 					},
 					{
-						.buffer_index = 28,
+						.timestamp = TS_REF_INDEX(28),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 28, 28 },
 					},
 					{
-						.buffer_index = 27,
+						.timestamp = TS_REF_INDEX(27),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 29, 29 },
@@ -6095,7 +6064,6 @@
 	},
 	{
 		.index = 31,
-		.output_buffer = 15,
 		.frame.h265 = {
 			.sps = {
 				.chroma_format_idc = 1,
@@ -6191,25 +6159,25 @@
 				.pic_struct = 0,
 				.dpb = {
 					{
-						.buffer_index = 23,
+						.timestamp = TS_REF_INDEX(23),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 24, 24 },
 					},
 					{
-						.buffer_index = 28,
+						.timestamp = TS_REF_INDEX(28),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 28, 28 },
 					},
 					{
-						.buffer_index = 27,
+						.timestamp = TS_REF_INDEX(27),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 29, 29 },
 					},
 					{
-						.buffer_index = 30,
+						.timestamp = TS_REF_INDEX(30),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 30, 30 },
@@ -6272,7 +6240,6 @@
 	},
 	{
 		.index = 32,
-		.output_buffer = 0,
 		.frame.h265 = {
 			.sps = {
 				.chroma_format_idc = 1,
@@ -6368,25 +6335,25 @@
 				.pic_struct = 0,
 				.dpb = {
 					{
-						.buffer_index = 28,
+						.timestamp = TS_REF_INDEX(28),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 28, 28 },
 					},
 					{
-						.buffer_index = 27,
+						.timestamp = TS_REF_INDEX(27),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 29, 29 },
 					},
 					{
-						.buffer_index = 31,
+						.timestamp = TS_REF_INDEX(31),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 31, 31 },
 					},
 					{
-						.buffer_index = 30,
+						.timestamp = TS_REF_INDEX(30),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 30, 30 },
@@ -6449,7 +6416,6 @@
 	},
 	{
 		.index = 33,
-		.output_buffer = 1,
 		.frame.h265 = {
 			.sps = {
 				.chroma_format_idc = 1,
@@ -6545,25 +6511,25 @@
 				.pic_struct = 0,
 				.dpb = {
 					{
-						.buffer_index = 32,
+						.timestamp = TS_REF_INDEX(32),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 32, 32 },
 					},
 					{
-						.buffer_index = 28,
+						.timestamp = TS_REF_INDEX(28),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 28, 28 },
 					},
 					{
-						.buffer_index = 31,
+						.timestamp = TS_REF_INDEX(31),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 31, 31 },
 					},
 					{
-						.buffer_index = 30,
+						.timestamp = TS_REF_INDEX(30),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 30, 30 },
@@ -6626,7 +6592,6 @@
 	},
 	{
 		.index = 34,
-		.output_buffer = 2,
 		.frame.h265 = {
 			.sps = {
 				.chroma_format_idc = 1,
@@ -6722,25 +6687,25 @@
 				.pic_struct = 0,
 				.dpb = {
 					{
-						.buffer_index = 32,
+						.timestamp = TS_REF_INDEX(32),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 32, 32 },
 					},
 					{
-						.buffer_index = 33,
+						.timestamp = TS_REF_INDEX(33),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_AFTER,
 						.field_pic = 0,
 						.pic_order_cnt = { 34, 34 },
 					},
 					{
-						.buffer_index = 31,
+						.timestamp = TS_REF_INDEX(31),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 31, 31 },
 					},
 					{
-						.buffer_index = 30,
+						.timestamp = TS_REF_INDEX(30),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 30, 30 },
@@ -6837,7 +6802,6 @@
 	},
 	{
 		.index = 35,
-		.output_buffer = 3,
 		.frame.h265 = {
 			.sps = {
 				.chroma_format_idc = 1,
@@ -6933,25 +6897,25 @@
 				.pic_struct = 0,
 				.dpb = {
 					{
-						.buffer_index = 32,
+						.timestamp = TS_REF_INDEX(32),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 32, 32 },
 					},
 					{
-						.buffer_index = 33,
+						.timestamp = TS_REF_INDEX(33),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 34, 34 },
 					},
 					{
-						.buffer_index = 31,
+						.timestamp = TS_REF_INDEX(31),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 31, 31 },
 					},
 					{
-						.buffer_index = 30,
+						.timestamp = TS_REF_INDEX(30),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 30, 30 },
@@ -7014,7 +6978,6 @@
 	},
 	{
 		.index = 36,
-		.output_buffer = 4,
 		.frame.h265 = {
 			.sps = {
 				.chroma_format_idc = 1,
@@ -7110,25 +7073,25 @@
 				.pic_struct = 0,
 				.dpb = {
 					{
-						.buffer_index = 32,
+						.timestamp = TS_REF_INDEX(32),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 32, 32 },
 					},
 					{
-						.buffer_index = 33,
+						.timestamp = TS_REF_INDEX(33),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 34, 34 },
 					},
 					{
-						.buffer_index = 35,
+						.timestamp = TS_REF_INDEX(35),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 35, 35 },
 					},
 					{
-						.buffer_index = 31,
+						.timestamp = TS_REF_INDEX(31),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 31, 31 },
@@ -7191,7 +7154,6 @@
 	},
 	{
 		.index = 37,
-		.output_buffer = 5,
 		.frame.h265 = {
 			.sps = {
 				.chroma_format_idc = 1,
@@ -7287,25 +7249,25 @@
 				.pic_struct = 0,
 				.dpb = {
 					{
-						.buffer_index = 32,
+						.timestamp = TS_REF_INDEX(32),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 32, 32 },
 					},
 					{
-						.buffer_index = 33,
+						.timestamp = TS_REF_INDEX(33),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 34, 34 },
 					},
 					{
-						.buffer_index = 35,
+						.timestamp = TS_REF_INDEX(35),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 35, 35 },
 					},
 					{
-						.buffer_index = 36,
+						.timestamp = TS_REF_INDEX(36),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_AFTER,
 						.field_pic = 0,
 						.pic_order_cnt = { 39, 39 },
@@ -7402,7 +7364,6 @@
 	},
 	{
 		.index = 38,
-		.output_buffer = 6,
 		.frame.h265 = {
 			.sps = {
 				.chroma_format_idc = 1,
@@ -7498,25 +7459,25 @@
 				.pic_struct = 0,
 				.dpb = {
 					{
-						.buffer_index = 33,
+						.timestamp = TS_REF_INDEX(33),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 34, 34 },
 					},
 					{
-						.buffer_index = 35,
+						.timestamp = TS_REF_INDEX(35),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 35, 35 },
 					},
 					{
-						.buffer_index = 36,
+						.timestamp = TS_REF_INDEX(36),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_AFTER,
 						.field_pic = 0,
 						.pic_order_cnt = { 39, 39 },
 					},
 					{
-						.buffer_index = 37,
+						.timestamp = TS_REF_INDEX(37),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_AFTER,
 						.field_pic = 0,
 						.pic_order_cnt = { 37, 37 },
@@ -7613,7 +7574,6 @@
 	},
 	{
 		.index = 39,
-		.output_buffer = 7,
 		.frame.h265 = {
 			.sps = {
 				.chroma_format_idc = 1,
@@ -7709,25 +7669,25 @@
 				.pic_struct = 0,
 				.dpb = {
 					{
-						.buffer_index = 33,
+						.timestamp = TS_REF_INDEX(33),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 34, 34 },
 					},
 					{
-						.buffer_index = 35,
+						.timestamp = TS_REF_INDEX(35),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 35, 35 },
 					},
 					{
-						.buffer_index = 36,
+						.timestamp = TS_REF_INDEX(36),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_AFTER,
 						.field_pic = 0,
 						.pic_order_cnt = { 39, 39 },
 					},
 					{
-						.buffer_index = 37,
+						.timestamp = TS_REF_INDEX(37),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 37, 37 },
@@ -7824,7 +7784,6 @@
 	},
 	{
 		.index = 40,
-		.output_buffer = 8,
 		.frame.h265 = {
 			.sps = {
 				.chroma_format_idc = 1,
@@ -7920,25 +7879,25 @@
 				.pic_struct = 0,
 				.dpb = {
 					{
-						.buffer_index = 33,
+						.timestamp = TS_REF_INDEX(33),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 34, 34 },
 					},
 					{
-						.buffer_index = 35,
+						.timestamp = TS_REF_INDEX(35),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 35, 35 },
 					},
 					{
-						.buffer_index = 36,
+						.timestamp = TS_REF_INDEX(36),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 39, 39 },
 					},
 					{
-						.buffer_index = 37,
+						.timestamp = TS_REF_INDEX(37),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 37, 37 },
@@ -8001,7 +7960,6 @@
 	},
 	{
 		.index = 41,
-		.output_buffer = 9,
 		.frame.h265 = {
 			.sps = {
 				.chroma_format_idc = 1,
@@ -8097,25 +8055,25 @@
 				.pic_struct = 0,
 				.dpb = {
 					{
-						.buffer_index = 35,
+						.timestamp = TS_REF_INDEX(35),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 35, 35 },
 					},
 					{
-						.buffer_index = 36,
+						.timestamp = TS_REF_INDEX(36),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 39, 39 },
 					},
 					{
-						.buffer_index = 40,
+						.timestamp = TS_REF_INDEX(40),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_AFTER,
 						.field_pic = 0,
 						.pic_order_cnt = { 42, 42 },
 					},
 					{
-						.buffer_index = 37,
+						.timestamp = TS_REF_INDEX(37),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 37, 37 },
@@ -8212,7 +8170,6 @@
 	},
 	{
 		.index = 42,
-		.output_buffer = 10,
 		.frame.h265 = {
 			.sps = {
 				.chroma_format_idc = 1,
@@ -8308,25 +8265,25 @@
 				.pic_struct = 0,
 				.dpb = {
 					{
-						.buffer_index = 41,
+						.timestamp = TS_REF_INDEX(41),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_AFTER,
 						.field_pic = 0,
 						.pic_order_cnt = { 41, 41 },
 					},
 					{
-						.buffer_index = 36,
+						.timestamp = TS_REF_INDEX(36),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 39, 39 },
 					},
 					{
-						.buffer_index = 40,
+						.timestamp = TS_REF_INDEX(40),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_AFTER,
 						.field_pic = 0,
 						.pic_order_cnt = { 42, 42 },
 					},
 					{
-						.buffer_index = 37,
+						.timestamp = TS_REF_INDEX(37),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 37, 37 },
@@ -8423,7 +8380,6 @@
 	},
 	{
 		.index = 43,
-		.output_buffer = 11,
 		.frame.h265 = {
 			.sps = {
 				.chroma_format_idc = 1,
@@ -8519,25 +8475,25 @@
 				.pic_struct = 0,
 				.dpb = {
 					{
-						.buffer_index = 41,
+						.timestamp = TS_REF_INDEX(41),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 41, 41 },
 					},
 					{
-						.buffer_index = 36,
+						.timestamp = TS_REF_INDEX(36),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 39, 39 },
 					},
 					{
-						.buffer_index = 40,
+						.timestamp = TS_REF_INDEX(40),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 42, 42 },
 					},
 					{
-						.buffer_index = 37,
+						.timestamp = TS_REF_INDEX(37),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 37, 37 },
@@ -8600,7 +8556,6 @@
 	},
 	{
 		.index = 44,
-		.output_buffer = 12,
 		.frame.h265 = {
 			.sps = {
 				.chroma_format_idc = 1,
@@ -8696,25 +8651,25 @@
 				.pic_struct = 0,
 				.dpb = {
 					{
-						.buffer_index = 41,
+						.timestamp = TS_REF_INDEX(41),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 41, 41 },
 					},
 					{
-						.buffer_index = 43,
+						.timestamp = TS_REF_INDEX(43),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_AFTER,
 						.field_pic = 0,
 						.pic_order_cnt = { 46, 46 },
 					},
 					{
-						.buffer_index = 40,
+						.timestamp = TS_REF_INDEX(40),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 42, 42 },
 					},
 					{
-						.buffer_index = 37,
+						.timestamp = TS_REF_INDEX(37),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 37, 37 },
@@ -8811,7 +8766,6 @@
 	},
 	{
 		.index = 45,
-		.output_buffer = 13,
 		.frame.h265 = {
 			.sps = {
 				.chroma_format_idc = 1,
@@ -8907,25 +8861,25 @@
 				.pic_struct = 0,
 				.dpb = {
 					{
-						.buffer_index = 41,
+						.timestamp = TS_REF_INDEX(41),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 41, 41 },
 					},
 					{
-						.buffer_index = 44,
+						.timestamp = TS_REF_INDEX(44),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_AFTER,
 						.field_pic = 0,
 						.pic_order_cnt = { 44, 44 },
 					},
 					{
-						.buffer_index = 43,
+						.timestamp = TS_REF_INDEX(43),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_AFTER,
 						.field_pic = 0,
 						.pic_order_cnt = { 46, 46 },
 					},
 					{
-						.buffer_index = 40,
+						.timestamp = TS_REF_INDEX(40),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 42, 42 },
@@ -9022,7 +8976,6 @@
 	},
 	{
 		.index = 46,
-		.output_buffer = 14,
 		.frame.h265 = {
 			.sps = {
 				.chroma_format_idc = 1,
@@ -9118,25 +9071,25 @@
 				.pic_struct = 0,
 				.dpb = {
 					{
-						.buffer_index = 41,
+						.timestamp = TS_REF_INDEX(41),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 41, 41 },
 					},
 					{
-						.buffer_index = 44,
+						.timestamp = TS_REF_INDEX(44),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 44, 44 },
 					},
 					{
-						.buffer_index = 43,
+						.timestamp = TS_REF_INDEX(43),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_AFTER,
 						.field_pic = 0,
 						.pic_order_cnt = { 46, 46 },
 					},
 					{
-						.buffer_index = 40,
+						.timestamp = TS_REF_INDEX(40),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 42, 42 },
@@ -9233,7 +9186,6 @@
 	},
 	{
 		.index = 47,
-		.output_buffer = 15,
 		.frame.h265 = {
 			.sps = {
 				.chroma_format_idc = 1,
@@ -9329,25 +9281,25 @@
 				.pic_struct = 0,
 				.dpb = {
 					{
-						.buffer_index = 41,
+						.timestamp = TS_REF_INDEX(41),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 41, 41 },
 					},
 					{
-						.buffer_index = 44,
+						.timestamp = TS_REF_INDEX(44),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 44, 44 },
 					},
 					{
-						.buffer_index = 43,
+						.timestamp = TS_REF_INDEX(43),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 46, 46 },
 					},
 					{
-						.buffer_index = 40,
+						.timestamp = TS_REF_INDEX(40),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 42, 42 },
@@ -9410,7 +9362,6 @@
 	},
 	{
 		.index = 48,
-		.output_buffer = 0,
 		.frame.h265 = {
 			.sps = {
 				.chroma_format_idc = 1,
@@ -9506,25 +9457,25 @@
 				.pic_struct = 0,
 				.dpb = {
 					{
-						.buffer_index = 41,
+						.timestamp = TS_REF_INDEX(41),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 41, 41 },
 					},
 					{
-						.buffer_index = 44,
+						.timestamp = TS_REF_INDEX(44),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 44, 44 },
 					},
 					{
-						.buffer_index = 43,
+						.timestamp = TS_REF_INDEX(43),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 46, 46 },
 					},
 					{
-						.buffer_index = 47,
+						.timestamp = TS_REF_INDEX(47),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_AFTER,
 						.field_pic = 0,
 						.pic_order_cnt = { 50, 50 },
@@ -9621,7 +9572,6 @@
 	},
 	{
 		.index = 49,
-		.output_buffer = 1,
 		.frame.h265 = {
 			.sps = {
 				.chroma_format_idc = 1,
@@ -9717,25 +9667,25 @@
 				.pic_struct = 0,
 				.dpb = {
 					{
-						.buffer_index = 44,
+						.timestamp = TS_REF_INDEX(44),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 44, 44 },
 					},
 					{
-						.buffer_index = 43,
+						.timestamp = TS_REF_INDEX(43),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE,
 						.field_pic = 0,
 						.pic_order_cnt = { 46, 46 },
 					},
 					{
-						.buffer_index = 47,
+						.timestamp = TS_REF_INDEX(47),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_AFTER,
 						.field_pic = 0,
 						.pic_order_cnt = { 50, 50 },
 					},
 					{
-						.buffer_index = 48,
+						.timestamp = TS_REF_INDEX(48),
 						.rps = V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_AFTER,
 						.field_pic = 0,
 						.pic_order_cnt = { 48, 48 },
