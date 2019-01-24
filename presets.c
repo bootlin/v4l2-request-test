@@ -137,7 +137,7 @@ static struct preset presets[] = {
 		.frames_count = ARRAY_SIZE(bbb_h264_32_frames),
 	},
 #endif
-#ifdef V4L2_PIX_FMT_H264_SLICE
+#ifdef V4L2_PIX_FMT_HEVC_SLICE
 	{
 		.name = "caminandes-h265",
 		.description = "Caminandes 2: Gran Dillema",
