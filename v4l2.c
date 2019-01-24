@@ -553,7 +553,7 @@ static int codec_source_format(enum codec_type type)
 	case CODEC_TYPE_H264:
 		return V4L2_PIX_FMT_H264_SLICE;
 #endif
-#ifdef V4L2_PIX_FMT_H265_SLICE
+#ifdef V4L2_PIX_FMT_HEVC_SLICE
 	case CODEC_TYPE_H265:
 		return V4L2_PIX_FMT_HEVC_SLICE;
 #endif
