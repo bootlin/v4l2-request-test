@@ -23,7 +23,12 @@
 #include <linux/types.h>
 #include <linux/v4l2-controls.h>
 #include <linux/videodev2.h>
-#include <h264-ctrls.h>
+#include <linux/media.h>
+
+/*
+ * now in <linux/videodev.h>
+ * #include <h264-ctrls.h>
+ */
 #include <mpeg2-ctrls.h>
 
 #define ARRAY_SIZE(arr) (sizeof(arr) / sizeof((arr)[0]))
