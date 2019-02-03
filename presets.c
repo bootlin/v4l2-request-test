@@ -227,7 +227,7 @@ int frame_controls_fill(struct frame *frame, struct preset *preset,
 		count = frame->frame.h265.slice_params.num_active_dpb_entries;
 
 		for (i = 0; i < count; i++)
-			frame->frame.h265.slice_params.dpb[i].buffer_index %=
+			frame->frame.h265.slice_params.dpb[i].buffer_tag %=
 				buffers_count;
 		break;
 #endif
