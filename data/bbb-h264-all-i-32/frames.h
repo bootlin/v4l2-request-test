@@ -27,7 +27,8 @@
 				.flags = 0 | 0 | V4L2_H264_SPS_FLAG_FRAME_MBS_ONLY | 0 | V4L2_H264_SPS_FLAG_DIRECT_8X8_INFERENCE,
 			},
 			.scaling_matrix = {
-				.scaling_list_4x4 = {
+				/* 4x4[6][16] */
+			        .scaling_list_4x4 = {
 					{ 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, },
 					{ 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, },
 					{ 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, },
@@ -35,6 +36,7 @@
 					{ 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, },
 					{ 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, },
 				},
+				/* 8x8[6][64] */
 				.scaling_list_8x8 = {
 					{ 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, },
 					{ 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, },
@@ -49,6 +51,15 @@
 				.header_bit_size = 32,
 				.first_mb_in_slice = 0,
 				.slice_type = 2,
+				/* .pic_parameter_set_id = 0, */
+				/* .colour_plane_id = 0, */
+				/* .frame_num = 0, */
+				/* .ird_pic_id = 0, */
+				/* .pic_order_cnt_lsb = 0 */
+				/* .delta_pic_order_cnt_bottom = 0, */
+				/* .delta_pic_order_cnt0 = 0, */
+				/* .delta_pic_order_cnt1 = 0, */
+				/* .redundant_pic_cnt = 0, */
 				.pred_weight_table = {
 					.chroma_log2_weight_denom = 0,
 					.luma_log2_weight_denom = 0,
@@ -199,6 +210,20 @@
 					},
 					},
 				},
+				/* .dec_ref_pic_marking_bit_size = 0 */
+				/* .pic_order_cnt_bit_size = 0 */
+				.cabac_init_idc = 0,
+				/* .pic_order_cnt_bit_size = 0 */
+				.slice_qp_delta = -2,
+				/* .slice_qs_delta = -2, */
+				.disable_deblocking_filter_idc = 0,
+				.slice_alpha_c0_offset_div2 = 0,
+				.slice_beta_offset_div2 = 0,
+				/* slice_group_change_cycle = 0, */
+				/* num_ref_idx_l0_active_minus1 = 0, */
+				/* num_ref_idx_l1_active_minus1 = 0, */
+				/* .ref_pic_list0[32] */
+				/* .flags */
 			},
 		},
 	},
