@@ -29,7 +29,7 @@
 #include <time.h>
 #include <unistd.h>
 
-#include <drm_fourcc.h>
+#include <drm/drm_fourcc.h>
 #include <linux/media.h>
 #include <linux/videodev2.h>
 #include <mpeg2-ctrls.h>
@@ -566,7 +566,7 @@ frame_display:
 	rc = video_engine_stop(video_fd, video_buffers, config.buffers_count,
 			       &video_setup);
 	if (rc < 0) {
-		fprintf(stderr, "Unable to stop video engine\n");
+		fprintf(stderr, "Unable to start video engine\n");
 		goto error;
 	}
 
