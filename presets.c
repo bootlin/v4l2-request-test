@@ -26,6 +26,10 @@
 
 #include "v4l2-request-test.h"
 
+/*
+ * frames from 3D Animation: big_buck_bunny
+ * eg: https://peach.blender.org/download/
+ */
 static struct frame bbb_mpeg2_frames[] = {
 #include "data/bbb-mpeg2/frames.h"
 };
@@ -52,6 +56,10 @@ static struct frame bbb_h264_high_32_frames[] = {
 };
 #endif
 
+/*
+ * frames from 3D Animation: Caminades
+ * eg: https://allfortube.com/funny-3d-animation-short-film-caminades-episode-1/
+ */
 #ifdef V4L2_PIX_FMT_HEVC_SLICE
 static struct frame caminandes_h265_frames[] = {
 #include "data/caminandes-h265/frames.h"
