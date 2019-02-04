@@ -566,7 +566,7 @@ frame_display:
 	rc = video_engine_stop(video_fd, video_buffers, config.buffers_count,
 			       &video_setup);
 	if (rc < 0) {
-		fprintf(stderr, "Unable to start video engine\n");
+		fprintf(stderr, "Unable to stop video engine\n");
 		goto error;
 	}
 
