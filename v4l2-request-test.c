@@ -64,19 +64,20 @@ struct format_description formats[] = {
 
 static void print_help(void)
 {
-	printf("Usage: v4l2-request-test [OPTIONS] [SLICES PATH]\n\n"
+	printf("Usage: v4l2-request-test [OPTIONS]\n\n"
 	       "Options:\n"
-	       " -v [video path]                path for the video node\n"
-	       " -m [media path]                path for the media node\n"
-	       " -d [DRM path]                  path for the DRM node\n"
-	       " -D [DRM driver]                DRM driver to use\n"
-	       " -s [slices filename format]    format for filenames in the slices path\n"
-	       " -f [fps]                       number of frames to display per second\n"
-	       " -P [video preset]              video preset to use\n"
-	       " -i                             enable interactive mode\n"
-	       " -l                             loop preset frames\n"
-	       " -q                             enable quiet mode\n"
-	       " -h                             help\n\n"
+	       " -v | --video_path    [video path]       path for the video node\n"
+	       " -m | --media_path    [media path]       path for the media node\n"
+	       " -d | --drm_path      [DRM path]         path for the DRM node\n"
+	       " -D | --drm_driver    [DRM driver]       DRM driver to use\n"
+	       " -s | --slices_path   [slices path]      path to stored video slices\n"
+	       " -S | --slices_format [slices format]    format for filenames in the slices path\n"
+	       " -f | --fps           [fps]              number of frames to display per second\n"
+	       " -P | --preset_name   [video preset]     video preset to use\n"
+	       " -i | --interactive                      enable interactive mode\n"
+	       " -l | --loop                             loop preset frames\n"
+	       " -q | --quiet                            enable quiet mode\n"
+	       " -h | --help                             help\n\n"
 	       "Video presets:\n");
 
 	presets_usage();
@@ -257,11 +258,34 @@ int main(int argc, char *argv[])
 	setup_config(&config);
 
 	while (1) {
-		opt = getopt(argc, argv, "v:m:d:D:s:f:P:ilqh");
+	        int option_index = 0;
+		static struct option long_options[] = {
+						       {"video_path",  required_argument, 0, 'v' },
+						       {"media_path",  required_argument, 0, 'm' },
+						       {"drm_path",    required_argument, 0, 'd' },
+						       {"drm_driver",  required_argument, 0, 'D' },
+						       {"slice_path",  required_argument, 0, 's'},
+						       {"fps",         required_argument, 0, 'f' },
+						       {"preset_name", required_argument, 0, 'P'},
+						       {"interactive", no_argument,       0, 'i'},
+						       {"loop",        no_argument,       0, 'l'},
+						       {"quiet",       no_argument,       0, 'i'},
+						       {"help",        no_argument,       0, 'h'},
+						       {0,             0,                 0,  0 }
+		};
+
+		opt = getopt_long(argc, argv, "v:m:d:D:s:f:P:ilqh",
+			     long_options, &option_index);
 		if (opt == -1)
 			break;
 
 		switch (opt) {
+		case 0:
+			printf("option %s", long_options[option_index].name);
+			if (optarg)
+				printf(" with arg %s", optarg);
+			printf("\n");
+			break;
 		case 'v':
 			free(config.video_path);
 			config.video_path = strdup(optarg);
@@ -306,7 +330,17 @@ int main(int argc, char *argv[])
 		case '?':
 			print_help();
 			goto error;
+		default:
+			printf("?? getopt returned character code 0%o ??\n", opt);
 		}
+	}
+
+	if (optind < argc) {
+		printf("non-option ARGV-elements: ");
+	        while (optind < argc)
+	            printf("%s ", argv[optind++]);
+	        printf("\n");
+		goto error;
 	}
 
 	preset = preset_find(config.preset_name);
