@@ -8,6 +8,7 @@
 				.vertical_size = 1080,
 				.vbv_buffer_size = 1048576,
 				.profile_and_level_indication = 0,
+				.progressive_sequence = 1,
 				.chroma_format = 1,
 			},
 			.picture = {
@@ -49,6 +50,7 @@
 				.vertical_size = 1080,
 				.vbv_buffer_size = 1048576,
 				.profile_and_level_indication = 0,
+				.progressive_sequence = 1,
 				.chroma_format = 1,
 			},
 			.picture = {
@@ -90,6 +92,7 @@
 				.vertical_size = 1080,
 				.vbv_buffer_size = 1048576,
 				.profile_and_level_indication = 0,
+				.progressive_sequence = 1,
 				.chroma_format = 1,
 			},
 			.picture = {
@@ -131,6 +134,7 @@
 				.vertical_size = 1080,
 				.vbv_buffer_size = 1048576,
 				.profile_and_level_indication = 0,
+				.progressive_sequence = 1,
 				.chroma_format = 1,
 			},
 			.picture = {
@@ -172,6 +176,7 @@
 				.vertical_size = 1080,
 				.vbv_buffer_size = 1048576,
 				.profile_and_level_indication = 0,
+				.progressive_sequence = 1,
 				.chroma_format = 1,
 			},
 			.picture = {
@@ -213,6 +218,7 @@
 				.vertical_size = 1080,
 				.vbv_buffer_size = 1048576,
 				.profile_and_level_indication = 0,
+				.progressive_sequence = 1,
 				.chroma_format = 1,
 			},
 			.picture = {
@@ -254,6 +260,7 @@
 				.vertical_size = 1080,
 				.vbv_buffer_size = 1048576,
 				.profile_and_level_indication = 0,
+				.progressive_sequence = 1,
 				.chroma_format = 1,
 			},
 			.picture = {
@@ -295,6 +302,7 @@
 				.vertical_size = 1080,
 				.vbv_buffer_size = 1048576,
 				.profile_and_level_indication = 0,
+				.progressive_sequence = 1,
 				.chroma_format = 1,
 			},
 			.picture = {
@@ -336,6 +344,7 @@
 				.vertical_size = 1080,
 				.vbv_buffer_size = 1048576,
 				.profile_and_level_indication = 0,
+				.progressive_sequence = 1,
 				.chroma_format = 1,
 			},
 			.picture = {
@@ -377,6 +386,7 @@
 				.vertical_size = 1080,
 				.vbv_buffer_size = 1048576,
 				.profile_and_level_indication = 0,
+				.progressive_sequence = 1,
 				.chroma_format = 1,
 			},
 			.picture = {
@@ -418,6 +428,7 @@
 				.vertical_size = 1080,
 				.vbv_buffer_size = 1048576,
 				.profile_and_level_indication = 0,
+				.progressive_sequence = 1,
 				.chroma_format = 1,
 			},
 			.picture = {
@@ -459,6 +470,7 @@
 				.vertical_size = 1080,
 				.vbv_buffer_size = 1048576,
 				.profile_and_level_indication = 0,
+				.progressive_sequence = 1,
 				.chroma_format = 1,
 			},
 			.picture = {
@@ -500,6 +512,7 @@
 				.vertical_size = 1080,
 				.vbv_buffer_size = 1048576,
 				.profile_and_level_indication = 0,
+				.progressive_sequence = 1,
 				.chroma_format = 1,
 			},
 			.picture = {
@@ -541,6 +554,7 @@
 				.vertical_size = 1080,
 				.vbv_buffer_size = 1048576,
 				.profile_and_level_indication = 0,
+				.progressive_sequence = 1,
 				.chroma_format = 1,
 			},
 			.picture = {
@@ -582,6 +596,7 @@
 				.vertical_size = 1080,
 				.vbv_buffer_size = 1048576,
 				.profile_and_level_indication = 0,
+				.progressive_sequence = 1,
 				.chroma_format = 1,
 			},
 			.picture = {
@@ -623,6 +638,7 @@
 				.vertical_size = 1080,
 				.vbv_buffer_size = 1048576,
 				.profile_and_level_indication = 0,
+				.progressive_sequence = 1,
 				.chroma_format = 1,
 			},
 			.picture = {
@@ -664,6 +680,7 @@
 				.vertical_size = 1080,
 				.vbv_buffer_size = 1048576,
 				.profile_and_level_indication = 0,
+				.progressive_sequence = 1,
 				.chroma_format = 1,
 			},
 			.picture = {
@@ -705,6 +722,7 @@
 				.vertical_size = 1080,
 				.vbv_buffer_size = 1048576,
 				.profile_and_level_indication = 0,
+				.progressive_sequence = 1,
 				.chroma_format = 1,
 			},
 			.picture = {
@@ -746,6 +764,7 @@
 				.vertical_size = 1080,
 				.vbv_buffer_size = 1048576,
 				.profile_and_level_indication = 0,
+				.progressive_sequence = 1,
 				.chroma_format = 1,
 			},
 			.picture = {
@@ -787,6 +806,7 @@
 				.vertical_size = 1080,
 				.vbv_buffer_size = 1048576,
 				.profile_and_level_indication = 0,
+				.progressive_sequence = 1,
 				.chroma_format = 1,
 			},
 			.picture = {
@@ -828,6 +848,7 @@
 				.vertical_size = 1080,
 				.vbv_buffer_size = 1048576,
 				.profile_and_level_indication = 0,
+				.progressive_sequence = 1,
 				.chroma_format = 1,
 			},
 			.picture = {
@@ -869,6 +890,7 @@
 				.vertical_size = 1080,
 				.vbv_buffer_size = 1048576,
 				.profile_and_level_indication = 0,
+				.progressive_sequence = 1,
 				.chroma_format = 1,
 			},
 			.picture = {
@@ -910,6 +932,7 @@
 				.vertical_size = 1080,
 				.vbv_buffer_size = 1048576,
 				.profile_and_level_indication = 0,
+				.progressive_sequence = 1,
 				.chroma_format = 1,
 			},
 			.picture = {
@@ -951,6 +974,7 @@
 				.vertical_size = 1080,
 				.vbv_buffer_size = 1048576,
 				.profile_and_level_indication = 0,
+				.progressive_sequence = 1,
 				.chroma_format = 1,
 			},
 			.picture = {
@@ -992,6 +1016,7 @@
 				.vertical_size = 1080,
 				.vbv_buffer_size = 1048576,
 				.profile_and_level_indication = 0,
+				.progressive_sequence = 1,
 				.chroma_format = 1,
 			},
 			.picture = {
