@@ -28,8 +28,8 @@
 #include <hevc-ctrls.h>
 
 #define ARRAY_SIZE(arr) (sizeof(arr) / sizeof((arr)[0]))
-#define TS_REF_INDEX(index) ((index) * 1000)
-#define INDEX_REF_TS(ts) ((ts) / 1000)
+#define TS_REF_INDEX(index) ((index + 1) * 1000)
+#define INDEX_REF_TS(ts) (((ts) / 1000) - 1)
 
 /*
  * Structures
