@@ -335,8 +335,8 @@ int main(int argc, char *argv[])
 	}
 
 	media_fd = open(config.media_path, O_RDWR | O_NONBLOCK, 0);
-	if (video_fd < 0) {
-		fprintf(stderr, "Unable to open video node: %s\n",
+	if (media_fd < 0) {
+		fprintf(stderr, "Unable to open media node: %s\n",
 			strerror(errno));
 		goto error;
 	}
