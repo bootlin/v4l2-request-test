@@ -149,7 +149,8 @@ static int try_format(int video_fd, unsigned int type, unsigned int width,
 }
 
 static int set_format(int video_fd, unsigned int type, unsigned int width,
-		      unsigned int height, unsigned int pixelformat)
+		      unsigned int height, unsigned int pixelformat,
+		      bool quiet)
 {
 	struct v4l2_format format;
 	int rc;
@@ -431,7 +432,7 @@ static int export_buffer(int video_fd, unsigned int type, unsigned int index,
 }
 
 static int set_control(int video_fd, int request_fd, unsigned int id,
-		       void *data, unsigned int size)
+		       void *data, unsigned int size, bool quiet)
 {
 	struct v4l2_ext_control control;
 	struct v4l2_ext_controls controls;
@@ -451,6 +452,10 @@ static int set_control(int video_fd, int request_fd, unsigned int id,
 		controls.which = V4L2_CTRL_WHICH_REQUEST_VAL;
 		controls.request_fd = request_fd;
 	}
+
+	if (!quiet)
+		fprintf(stderr, "Initialized structure 'controls': (control.id: %d, size: %d)\n",
+			control.id, control.size);
 
 	rc = ioctl(video_fd, VIDIOC_S_EXT_CTRLS, &controls);
 	if (rc < 0) {
@@ -478,7 +483,8 @@ static int set_stream(int video_fd, unsigned int type, bool enable)
 }
 
 static int set_format_controls(int video_fd, int request_fd,
-			       enum codec_type type, union controls *frame)
+			       enum codec_type type, union controls *frame,
+			       bool quiet)
 {
 	struct {
 		enum codec_type type;
@@ -509,7 +515,7 @@ static int set_format_controls(int video_fd, int request_fd,
 		  V4L2_CID_MPEG_VIDEO_H264_SCALING_MATRIX,
 		  &frame->h264.scaling_matrix,
 		  sizeof(frame->h264.scaling_matrix) },
-		{ CODEC_TYPE_H264, "scaling matrix",
+		{ CODEC_TYPE_H264, "slice parameters",
 		  V4L2_CID_MPEG_VIDEO_H264_SLICE_PARAMS,
 		  &frame->h264.slice_param, sizeof(frame->h264.slice_param) },
 #endif
@@ -525,15 +531,41 @@ static int set_format_controls(int video_fd, int request_fd,
 		  &frame->h265.slice_params, sizeof(frame->h265.slice_params) },
 #endif
 	};
+	struct codec codec[] = {
+		{
+		 .name			= "MPEG-2",
+		 .description		= "Moving Pictures Expert Group Version-4 (MPEG-2)",
+		 .type			= CODEC_TYPE_MPEG2,
+		},
+		{
+		 .name			= "H.264",
+		 .description		= "Moving Pictures Expert Group Version-4 (MPEG-4)",
+		 .type			= CODEC_TYPE_MPEG2,
+		},
+		{
+		 .name			= "H.265",
+		 .description		= "High-Efficiency Video Coding (HEVC)",
+		 .type			= CODEC_TYPE_MPEG2,
+		},
+	};
 	unsigned int i;
 	int rc;
 
 	for (i = 0; i < ARRAY_SIZE(glue); i++) {
-		if (glue[i].type != type)
+		if (glue[i].type != type) {
+		  	if (!quiet)
+				fprintf(stderr, "Skipping codec %s->%s\n",
+					codec[glue[i].type].name, glue[i].description);
 			continue;
+		}
 
+		if (!quiet)
+			fprintf(stderr, "size of decode_params: %d\n",
+					glue[i].size);
+			fprintf(stderr, "data: %d\n",
+					glue[i].data);
 		rc = set_control(video_fd, request_fd, glue[i].id, glue[i].data,
-				 glue[i].size);
+				 glue[i].size, quiet);
 		if (rc < 0) {
 			fprintf(stderr, "Unable to set %s control\n",
 				glue[i].description);
@@ -564,7 +596,8 @@ static int codec_source_format(enum codec_type type)
 }
 
 bool video_engine_capabilities_test(int video_fd,
-				    unsigned int capabilities_required)
+				    unsigned int capabilities_required,
+				    bool quiet)
 {
 	unsigned int capabilities;
 	int rc;
@@ -583,7 +616,8 @@ bool video_engine_capabilities_test(int video_fd,
 }
 
 bool video_engine_format_test(int video_fd, bool mplane, unsigned int width,
-			      unsigned int height, unsigned int format)
+			      unsigned int height, unsigned int format,
+			      bool quiet)
 {
 	unsigned int type;
 	int rc;
@@ -599,7 +633,8 @@ bool video_engine_format_test(int video_fd, bool mplane, unsigned int width,
 int video_engine_start(int video_fd, int media_fd, unsigned int width,
 		       unsigned int height, struct format_description *format,
 		       enum codec_type type, struct video_buffer **buffers,
-		       unsigned int buffers_count, struct video_setup *setup)
+		       unsigned int buffers_count, struct video_setup *setup,
+		       bool quiet)
 {
 	struct video_buffer *buffer;
 	unsigned int source_format;
@@ -635,7 +670,7 @@ int video_engine_start(int video_fd, int media_fd, unsigned int width,
 
 	source_format = codec_source_format(type);
 
-	rc = set_format(video_fd, output_type, width, height, source_format);
+	rc = set_format(video_fd, output_type, width, height, source_format, quiet);
 	if (rc < 0) {
 		fprintf(stderr, "Unable to set source format\n");
 		goto error;
@@ -644,7 +679,7 @@ int video_engine_start(int video_fd, int media_fd, unsigned int width,
 	destination_format = format->v4l2_format;
 
 	rc = set_format(video_fd, capture_type, width, height,
-			destination_format);
+			destination_format, quiet);
 	if (rc < 0) {
 		fprintf(stderr, "Unable to set destination format\n");
 		goto error;
@@ -822,7 +857,8 @@ complete:
 }
 
 int video_engine_stop(int video_fd, struct video_buffer *buffers,
-		      unsigned int buffers_count, struct video_setup *setup)
+		      unsigned int buffers_count, struct video_setup *setup,
+		      bool quiet)
 {
 	unsigned int i, j;
 	int rc;
@@ -871,7 +907,7 @@ int video_engine_stop(int video_fd, struct video_buffer *buffers,
 int video_engine_decode(int video_fd, unsigned int index, union controls *frame,
 			enum codec_type type, uint64_t ts, void *source_data,
 			unsigned int source_size, struct video_buffer *buffers,
-			struct video_setup *setup)
+			struct video_setup *setup, bool quiet)
 {
 	struct timeval tv = { 0, 300000 };
 	int request_fd = -1;
@@ -880,10 +916,16 @@ int video_engine_decode(int video_fd, unsigned int index, union controls *frame,
 	int rc;
 
 	request_fd = buffers[index].request_fd;
+	if(!quiet) {
+		fprintf(stderr, "  video_fd: %d\n",
+			video_fd);
+		fprintf(stderr, "request_fd: %d\n",
+			request_fd);
+	}
 
 	memcpy(buffers[index].source_data, source_data, source_size);
 
-	rc = set_format_controls(video_fd, request_fd, type, frame);
+	rc = set_format_controls(video_fd, request_fd, type, frame, quiet);
 	if (rc < 0) {
 		fprintf(stderr, "Unable to set format controls\n");
 		return -1;

@@ -226,19 +226,23 @@ int frame_gop_schedule(struct preset *preset, unsigned int index);
 /* V4L2 */
 
 bool video_engine_capabilities_test(int video_fd,
-				    unsigned int capabilities_required);
+				    unsigned int capabilities_required,
+				    bool quiet);
 bool video_engine_format_test(int video_fd, bool mplane, unsigned int width,
-			      unsigned int height, unsigned int format);
+			      unsigned int height, unsigned int format,
+			      bool quiet);
 int video_engine_start(int video_fd, int media_fd, unsigned int width,
 		       unsigned int height, struct format_description *format,
 		       enum codec_type type, struct video_buffer **buffers,
-		       unsigned int buffers_count, struct video_setup *setup);
+		       unsigned int buffers_count, struct video_setup *setup,
+		       bool quiet);
 int video_engine_stop(int video_fd, struct video_buffer *buffers,
-		      unsigned int buffers_count, struct video_setup *setup);
+		      unsigned int buffers_count, struct video_setup *setup,
+		      bool quiet);
 int video_engine_decode(int video_fd, unsigned int index, union controls *frame,
 			enum codec_type type, uint64_t ts, void *source_data,
 			unsigned int source_size, struct video_buffer *buffers,
-			struct video_setup *setup);
+			struct video_setup *setup, bool quiet);
 
 /* DRM */
 
@@ -246,12 +250,15 @@ int display_engine_start(int drm_fd, unsigned int width, unsigned int height,
 			 struct format_description *format,
 			 struct video_buffer *video_buffers, unsigned int count,
 			 struct gem_buffer **buffers,
-			 struct display_setup *setup);
+			 struct display_setup *setup,
+			 bool quiet);
 int display_engine_stop(int drm_fd, struct gem_buffer *buffers,
-			struct display_setup *setup);
+			struct display_setup *setup,
+			bool quiet);
 int display_engine_show(int drm_fd, unsigned int index,
 			struct video_buffer *video_buffers,
 			struct gem_buffer *buffers,
-			struct display_setup *setup);
+			struct display_setup *setup,
+			bool quiet);
 
 #endif
