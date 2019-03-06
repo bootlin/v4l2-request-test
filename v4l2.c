@@ -30,8 +30,8 @@
 #include <linux/media.h>
 #include <linux/videodev2.h>
 #include <mpeg2-ctrls.h>
-#include <h264-ctrls.h>
-#include <hevc-ctrls.h>
+//#include <h264-ctrls.h>
+//#include <hevc-ctrls.h>
 
 #include "v4l2-request-test.h"
 
@@ -454,12 +454,16 @@ static int set_control(int video_fd, int request_fd, unsigned int id,
 	}
 
 	if (!quiet)
-		fprintf(stderr, "Initialized structure 'controls': (control.id: %d, size: %d)\n",
+	  	/* Ref: https://www.kernel.org/doc/html/v4.10/media/uapi/v4l/vidioc-g-ext-ctrls.html */
+	  	fprintf(stderr, "Initialized 'controls' structure (ctrl_class: %d, which: %d)\n",
+			controls.ctrl_class, controls.which);
+		fprintf(stderr, " 'control' value (id: %d, size: %d)\n",
 			control.id, control.size);
 
 	rc = ioctl(video_fd, VIDIOC_S_EXT_CTRLS, &controls);
 	if (rc < 0) {
-		fprintf(stderr, "Unable to set control: %s\n", strerror(errno));
+		fprintf(stderr, "Unable to set control: %s (%d)\n",
+			strerror(errno), errno);
 		return -1;
 	}
 
@@ -602,6 +606,9 @@ bool video_engine_capabilities_test(int video_fd,
 	unsigned int capabilities;
 	int rc;
 
+	if(!quiet)
+		fprintf(stderr, "video_engine_capabilities_test ...\n");
+
 	rc = query_capabilities(video_fd, &capabilities);
 	if (rc < 0) {
 		fprintf(stderr, "Unable to query video capabilities: %s\n",
@@ -621,6 +628,9 @@ bool video_engine_format_test(int video_fd, bool mplane, unsigned int width,
 {
 	unsigned int type;
 	int rc;
+
+	if(!quiet)
+		fprintf(stderr, "video_engine_format_test ...\n");
 
 	type = mplane ? V4L2_BUF_TYPE_VIDEO_CAPTURE_MPLANE :
 			V4L2_BUF_TYPE_VIDEO_CAPTURE;
@@ -670,7 +680,11 @@ int video_engine_start(int video_fd, int media_fd, unsigned int width,
 
 	source_format = codec_source_format(type);
 
-	rc = set_format(video_fd, output_type, width, height, source_format, quiet);
+	if(!quiet)
+		fprintf(stderr, "video_engine_start ...\n");
+
+	rc = set_format(video_fd, output_type, width, height,
+			source_format, quiet);
 	if (rc < 0) {
 		fprintf(stderr, "Unable to set source format\n");
 		goto error;
@@ -917,9 +931,10 @@ int video_engine_decode(int video_fd, unsigned int index, union controls *frame,
 
 	request_fd = buffers[index].request_fd;
 	if(!quiet) {
-		fprintf(stderr, "  video_fd: %d\n",
+		fprintf(stderr, "video_engine_decode ...\n");
+		fprintf(stderr, "   video_fd: %d\n",
 			video_fd);
-		fprintf(stderr, "request_fd: %d\n",
+		fprintf(stderr, " request_fd: %d\n",
 			request_fd);
 	}
 

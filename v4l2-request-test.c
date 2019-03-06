@@ -122,20 +122,17 @@ static void print_summary(struct config *config, struct preset *preset)
 	printf(" Height:       %d\n", preset->height);
 	printf(" Frames count: %d\n", preset->frames_count);
 
-	printf(" Format: ");
+	printf(" Codec Type:   ");
 
 	switch (preset->type) {
 	case CODEC_TYPE_MPEG2:
-		printf("MPEG2");
-		break;
 	case CODEC_TYPE_H264:
-		printf("H264");
-		break;
 	case CODEC_TYPE_H265:
-		printf("H265");
+		printf("%s -> %s",
+		       codec[preset->type].name, codec[preset->type].description);
 		break;
 	default:
-		printf("Invalid");
+		printf("Invalid codec type!");
 		break;
 	}
 
