@@ -37,6 +37,24 @@
 
 #include "v4l2-request-test.h"
 
+const struct codec codec[] = {
+	{
+		.name			= "MPEG-2",
+		.description		= "Moving Pictures Expert Group Version-4 (MPEG-2)",
+		.type			= CODEC_TYPE_MPEG2,
+	},
+	{
+		.name			= "H.264",
+		.description		= "Moving Pictures Expert Group Version-4 (MPEG-4)",
+		.type			= CODEC_TYPE_H264,
+	},
+	{
+		.name			= "H.265",
+		.description		= "High-Efficiency Video Coding (HEVC)",
+		.type			= CODEC_TYPE_H265,
+	},
+};
+
 struct format_description formats[] = {
 	{
 		.description		= "NV12 YUV",
