@@ -30,8 +30,8 @@
 #include <linux/media.h>
 #include <linux/videodev2.h>
 #include <mpeg2-ctrls.h>
-#include <h264-ctrls.h>
-#include <hevc-ctrls.h>
+//#include <h264-ctrls.h>
+//#include <hevc-ctrls.h>
 
 #include "v4l2-request-test.h"
 
@@ -453,13 +453,14 @@ static int set_control(int video_fd, int request_fd, unsigned int id,
 		controls.request_fd = request_fd;
 	}
 
-	if (!quiet)
+	if (!quiet) {
 	  	/* Ref: https://www.kernel.org/doc/html/v4.10/media/uapi/v4l/vidioc-g-ext-ctrls.html */
 	  	fprintf(stderr, "Initialized 'controls' structure (ctrl_class: %d, which: %d)\n",
 			controls.ctrl_class, controls.which);
 		fprintf(stderr, " 'control' value (id: %d, size: %d)\n",
 			control.id, control.size);
-
+	}
+	
 	rc = ioctl(video_fd, VIDIOC_S_EXT_CTRLS, &controls);
 	if (rc < 0) {
 		fprintf(stderr, "Unable to set control: %s (%d)\n",
