@@ -1,3 +1,5 @@
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wmissing-braces"
 	{
 		.index = 0,
 		.frame.mpeg2.slice_params = {
@@ -1048,3 +1050,5 @@
 			.chroma_non_intra_quantiser_matrix = { 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, },
 		},
 	},
+#pragma clang diagnostic pop
+
