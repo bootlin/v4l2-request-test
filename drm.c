@@ -457,8 +457,8 @@ static int select_crtc(int drm_fd, unsigned int encoder_id,
 	}
 
 	if (!crtc->mode_valid) {
-		fprintf(stderr, "Unable to get valid mode for CRTC %d\n",
-			crtc_id);
+		fprintf(stderr, "Unable to get valid mode for CRTC %p\n",
+			(void *) &crtc_id);
 		goto error;
 	}
 
