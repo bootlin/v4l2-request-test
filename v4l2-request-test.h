@@ -137,6 +137,11 @@ extern const struct codec {
 	enum codec_type type;
 } codec[];
 
+extern const struct buffer_type {
+	char *name;
+	enum v4l2_buf_type type;
+} buffer_type[];
+
 /* V4L2 */
 
 enum media_gobj_type {
