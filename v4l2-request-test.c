@@ -39,16 +39,17 @@
 
 const struct codec codec[] = {
 	{
-		.name			= "MPEG-2",
-		.type			= CODEC_TYPE_MPEG2,
+		.name	= "MPEG-2",
+		.type	= CODEC_TYPE_MPEG2
 	},
 	{
-		.name			= "H.264",
-		.type			= CODEC_TYPE_H264,
+		.name	= "H.264",
+		.type	= CODEC_TYPE_H264
 	},
 	{
-		.name			= "H.265",
-		.type			= CODEC_TYPE_H265,
+		.name	= "H.265",
+		.type	= CODEC_TYPE_H265
+	}
 	},
 };
 
