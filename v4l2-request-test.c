@@ -335,15 +335,15 @@ static int load_data(const char *path, void **data, unsigned int *size)
 
 	fd = open(path, O_RDONLY);
 	if (fd < 0) {
-		fprintf(stderr, "Unable to open file path: %s\n",
-			strerror(errno));
+		fprintf(stderr, "Unable to open file path: %s (%d)\n",
+			strerror(errno), errno);
 		goto error;
 	}
 
 	rc = read(fd, buffer, length);
 	if (rc < 0) {
-		fprintf(stderr, "Unable to read file data: %s\n",
-			strerror(errno));
+		fprintf(stderr, "Unable to read file data: %s (%d)\n",
+			strerror(errno), errno);
 		goto error;
 	}
 
@@ -544,22 +544,22 @@ int main(int argc, char *argv[])
 
 	video_fd = open(config.video_path, O_RDWR | O_NONBLOCK, 0);
 	if (video_fd < 0) {
-		fprintf(stderr, "Unable to open video node: %s\n",
-			strerror(errno));
+		fprintf(stderr, "Unable to open video node: %s (%d)\n",
+			strerror(errno), errno);
 		goto error;
 	}
 
 	media_fd = open(config.media_path, O_RDWR | O_NONBLOCK, 0);
 	if (media_fd < 0) {
-		fprintf(stderr, "Unable to open media node: %s\n",
-			strerror(errno));
+		fprintf(stderr, "Unable to open media node: %s (%d)\n",
+			strerror(errno), errno);
 		goto error;
 	}
 
 	rc = ioctl(media_fd, MEDIA_IOC_DEVICE_INFO, &device_info);
 	if (rc < 0) {
-		fprintf(stderr, "Unable to get media device info: %s\n",
-			strerror(errno));
+		fprintf(stderr, "Unable to get media device info: %s (%d)\n",
+			strerror(errno), errno);
 		goto error;
 	}
 
@@ -567,8 +567,8 @@ int main(int argc, char *argv[])
 
 	drm_fd = drmOpen(config.drm_driver, config.drm_path);
 	if (drm_fd < 0) {
-		fprintf(stderr, "Unable to open DRM node: %s\n",
-			strerror(errno));
+		fprintf(stderr, "Unable to open DRM node: %s (%d)\n",
+			strerror(errno), errno);
 		goto error;
 	}
 
