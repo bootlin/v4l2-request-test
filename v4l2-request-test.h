@@ -124,6 +124,11 @@ struct preset {
 	unsigned int display_count;
 };
 
+extern const struct buffer_type {
+	char *name;
+	enum v4l2_buf_type type;
+} buffer_type[];
+
 /* V4L2 */
 
 struct video_setup {
