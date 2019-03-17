@@ -19,6 +19,7 @@
 #include <errno.h>
 #include <fcntl.h>
 #include <getopt.h>
+#include <libudev.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -27,6 +28,8 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <time.h>
+#include <dirent.h>
+//#include <fcntl.h>
 #include <unistd.h>
 
 #include <drm_fourcc.h>
@@ -192,7 +195,7 @@ static void print_summary(struct config *config, struct preset *preset)
 	printf("\n\n");
 }
 
-static int scan_udev_subsystem(char *subsystem, struct config *config)
+static int udev_scan_subsystem(char *subsystem, struct config *config)
 {
 	struct udev *udev;
 	struct udev_enumerate *enumerate;
@@ -239,6 +242,7 @@ static int scan_udev_subsystem(char *subsystem, struct config *config)
 		   the device attributes. Strings returned from
 		   udev_device_get_sysattr_value() are UTF-8 encoded.
 		*/
+
 		if (strncmp(node_name, "video", 5) == 0) {
 			driver = udev_device_get_sysattr_value(dev, "name");
 			if (strcmp(driver, V4L2_DRIVER_NAME) == 0) {
@@ -405,10 +409,12 @@ int main(int argc, char *argv[])
 	struct timespec video_before, video_after;
 	struct timespec display_before, display_after;
 	struct format_description *selected_format = NULL;
+	struct media_entities *media_entities = NULL;
 	bool before_taken = false;
 	void *slice_data = NULL;
 	char *slice_filename = NULL;
 	char *slice_path = NULL;
+	char subsystem[16];
 	unsigned int slice_size;
 	unsigned int width;
 	unsigned int height;
@@ -429,6 +435,19 @@ int main(int argc, char *argv[])
 	int rc;
 
 	setup_config(&config);
+
+	fprintf(stderr, "Scanning for suitable v4l2 Video-Decoder ...\n");
+	strcpy(subsystem, "media");
+	fprintf(stderr, "Scanning devices in subsystem '%s' ...\n", subsystem);
+	rc = udev_scan_subsystem(subsystem, &config);
+	if (rc < 0)
+		fprintf(stderr, "Unable to autoscan suitable Media device in subsystem '%s'\n", subsystem);
+
+	strcpy(subsystem, "video4linux");
+	fprintf(stderr, "Scanning devices in subsystem '%s' ...\n", subsystem);
+	rc = udev_scan_subsystem(subsystem, &config);
+	if (rc < 0)
+		fprintf(stderr, "Unable to autoscan suitable Video device in subsystem '%s'\n", subsystem);
 
 	while (1) {
 		int option_index = 0;
@@ -520,6 +539,8 @@ int main(int argc, char *argv[])
 		asprintf(&config.slices_path, "data/%s", config.preset_name);
 
 	print_summary(&config, preset);
+
+	goto complete;
 
 	video_fd = open(config.video_path, O_RDWR | O_NONBLOCK, 0);
 	if (video_fd < 0) {
