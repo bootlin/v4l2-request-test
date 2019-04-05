@@ -37,6 +37,76 @@
 
 #include "v4l2-request-test.h"
 
+const struct codec codec[] = {
+	{
+		.name	= "MPEG-2",
+		.type	= CODEC_TYPE_MPEG2
+	},
+	{
+		.name	= "H.264",
+		.type	= CODEC_TYPE_H264
+	},
+	{
+		.name	= "H.265",
+		.type	= CODEC_TYPE_H265
+	}
+};
+
+const struct buffer_type buffer_type[] = {
+	{
+		.name	= "Video Capture Buffer",
+		.type	= V4L2_BUF_TYPE_VIDEO_CAPTURE
+	},
+	{
+		.name	= "Video Output Buffer",
+		.type	= V4L2_BUF_TYPE_VIDEO_OUTPUT
+	},
+	{
+		.name	= "Video Overlay Buffer",
+		.type	= V4L2_BUF_TYPE_VIDEO_OVERLAY
+	},
+	{
+		.name	= "VBI Capture Buffer",
+		.type	= V4L2_BUF_TYPE_VBI_CAPTURE
+	},
+	{
+		.name	= "VBI Output Buffer",
+		.type	= V4L2_BUF_TYPE_VBI_OUTPUT
+	},
+	{
+		.name	= "Sliced VBI Capture Buffer",
+		.type	= V4L2_BUF_TYPE_SLICED_VBI_CAPTURE
+	},
+	{
+		.name	= "Sliced VBI Output Buffer",
+		.type	= V4L2_BUF_TYPE_SLICED_VBI_OUTPUT
+	},
+	{
+		.name	= "Video Output Overlay Buffer",
+		.type	= V4L2_BUF_TYPE_VIDEO_OUTPUT_OVERLAY
+	},
+	{
+		.name	= "Video Multi-Plane Capture Buffer",
+		.type	= V4L2_BUF_TYPE_VIDEO_CAPTURE_MPLANE
+	},
+	{
+		.name	= "Video Multi-Plane Output Buffer",
+		.type	= V4L2_BUF_TYPE_VIDEO_OUTPUT_MPLANE
+	},
+	{
+		.name	= "SDR Capture Buffer",
+		.type	= V4L2_BUF_TYPE_SDR_CAPTURE
+	},
+	{
+		.name	= "SDR Output Buffer",
+		.type	= V4L2_BUF_TYPE_SDR_OUTPUT
+	},
+	{
+		.name	= "Meta Capture Buffer",
+		.type	= V4L2_BUF_TYPE_META_CAPTURE
+	}
+};
+
 struct format_description formats[] = {
 	{
 		.description		= "NV12 YUV",
@@ -120,6 +190,110 @@ static void print_summary(struct config *config, struct preset *preset)
 	}
 
 	printf("\n\n");
+}
+
+static int scan_udev_subsystem(char *subsystem, struct config *config)
+{
+	struct udev *udev;
+	struct udev_enumerate *enumerate;
+	struct udev_list_entry *devices, *dev_list_entry;
+	struct udev_device *dev;
+	//char subsystem_devtype[32];
+	int rc = 1;
+
+	/* Create the udev object */
+	udev = udev_new();
+	if (!udev) {
+		printf("Can’t create udev\n");
+		exit(1);
+	}
+
+	/* Create a list of the devices */
+	enumerate = udev_enumerate_new(udev);
+	udev_enumerate_add_match_subsystem(enumerate, subsystem);
+	udev_enumerate_scan_devices(enumerate);
+	devices = udev_enumerate_get_list_entry(enumerate);
+
+	/* For each item enumerated, print out its information.
+	   udev_list_entry_foreach is a macro which expands to
+	   a loop. The loop will be executed for each member in
+	   devices, setting dev_list_entry to a list entry
+	   which contains the device’s path in /sys. */
+	udev_list_entry_foreach(dev_list_entry, devices) {
+		const char *path;
+		const char *node_path;
+		const char *node_name;
+		const char *driver;
+
+		/* Get the filename of the /sys entry for the device
+		   and create a udev_device object (dev) representing it */
+		path = udev_list_entry_get_name(dev_list_entry);
+		dev = udev_device_new_from_syspath(udev, path);
+		node_path = udev_device_get_devnode(dev);
+		node_name = udev_device_get_sysname(dev);
+
+		/* From here, we can call get_sysattr_value() for each file
+		   in the device’s /sys entry. The strings passed into these
+		   functions (idProduct, idVendor, serial, etc.) correspond
+		   directly to the files in the directory which represents
+		   the device attributes. Strings returned from
+		   udev_device_get_sysattr_value() are UTF-8 encoded.
+		*/
+		if (strncmp(node_name, "video", 5) == 0) {
+			driver = udev_device_get_sysattr_value(dev, "name");
+			if (strcmp(driver, V4L2_DRIVER_NAME) == 0) {
+				asprintf(&config->video_path, "%s", node_path);
+				printf("Found video-driver %s: %s\n",
+					driver, config->video_path);
+				rc = 0;
+			}
+		}
+		else if (strncmp(node_name, "media", 5) == 0) {
+			printf(" model: %s\n",
+					udev_device_get_sysattr_value(dev, "model"));
+
+			/* media device needs to be a capable video decoder */
+			asprintf(&config->media_path, "%s", node_path);
+			printf(" media-path: %s\n",
+			       config->media_path);
+
+			rc = media_scan_topology(config);
+			if (rc < 0)
+				fprintf(stderr, " model '%s' doesn't offer Video-Decoder\n",
+					udev_device_get_sysattr_value(dev, "model"));
+
+			return 0;
+			/*
+			driver = udev_device_get_sysattr_value(dev, "model");
+			if (strcmp(driver, V4L2_DRIVER_NAME) == 0) {
+				asprintf(&config->media_path, "%s", node_path);
+				printf("Found media-model %s: %s\n",
+					driver, config->media_path);
+				rc = 0;
+			}
+			*/
+		}
+
+		/*
+		printf(" VID/PID: %s %s\n",
+		       udev_device_get_sysattr_value(dev,"idVendor"),
+		       udev_device_get_sysattr_value(dev, "idProduct"));
+		printf(" Manufacturer: %s (product: %s)\n",
+		       udev_device_get_sysattr_value(dev,"manufacturer"),
+		       udev_device_get_sysattr_value(dev,"product"));
+		printf(" serial: %s\n",
+		       udev_device_get_sysattr_value(dev, "serial"));
+		*/
+
+		udev_device_unref(dev);
+	}
+
+	/* Free the enumerator object */
+	udev_enumerate_unref(enumerate);
+
+	udev_unref(udev);
+
+	return rc;
 }
 
 static long time_diff(struct timespec *before, struct timespec *after)
@@ -257,7 +431,27 @@ int main(int argc, char *argv[])
 	setup_config(&config);
 
 	while (1) {
-		opt = getopt(argc, argv, "v:m:d:D:s:f:P:ilqh");
+		int option_index = 0;
+		static struct option long_options[] = {
+			{ "device",        required_argument, 0, 'v' },
+			{ "video-device",  required_argument, 0, 'v' },
+			{ "media-device",  required_argument, 0, 'm' },
+			{ "drm-device",    required_argument, 0, 'd' },
+			{ "drm-driver",    required_argument, 0, 'D' },
+			{ "slices-path",   required_argument, 0, 's' },
+			{ "slices-format", required_argument, 0, 'S' },
+			{ "fps",           required_argument, 0, 'f' },
+			{ "preset-name",   required_argument, 0, 'P' },
+			{ "interactive",   no_argument,       0, 'i' },
+			{ "loop",          no_argument,       0, 'l' },
+			{ "quiet",         no_argument,       0, 'q' },
+			{ "help",          no_argument,       0, 'h' },
+			{ 0,               0,                 0,  0  }
+		};
+
+		opt = getopt_long(argc, argv, "v:m:d:D:s:S:f:P:ilqh",
+			     long_options, &option_index);
+
 		if (opt == -1)
 			break;
 
