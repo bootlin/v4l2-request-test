@@ -39,6 +39,8 @@
 #include <xf86drm.h>
 
 #include "v4l2-request-test.h"
+#include "v4l2-topology.h"
+#include "decoder_vector.h"
 
 const struct codec codec[] = {
 	{
@@ -201,27 +203,55 @@ static int udev_scan_subsystem(char *subsystem, struct config *config)
 	struct udev_enumerate *enumerate;
 	struct udev_list_entry *devices, *dev_list_entry;
 	struct udev_device *dev;
-	//char subsystem_devtype[32];
-	int rc = 1;
+	struct v4l2_decoder *media_entity = NULL;
+	struct v4l2_decoder *decoders = NULL;
+	int rc = -1;
+	int i = 0;
+	int num_devices = 0;
 
 	/* Create the udev object */
 	udev = udev_new();
 	if (!udev) {
 		printf("Can’t create udev\n");
-		exit(1);
+		return -1;
 	}
 
-	/* Create a list of the devices */
+	/* Create a list of sys devices for given subsystem */
 	enumerate = udev_enumerate_new(udev);
-	udev_enumerate_add_match_subsystem(enumerate, subsystem);
-	udev_enumerate_scan_devices(enumerate);
+	rc = udev_enumerate_add_match_subsystem(enumerate, subsystem);
+	if (rc < 0) {
+		fprintf(stderr, " udev error: can't filter sysbsystem %s\n",
+			subsystem);
+		return rc;
+	}
+	rc = udev_enumerate_scan_devices(enumerate);
+	if (rc < 0) {
+		fprintf(stderr, " udev error: can't scan devices\n");
+		return rc;
+	}
 	devices = udev_enumerate_get_list_entry(enumerate);
+
+	/* Calulate available number of subsystem devices */
+	/*
+	  udev_list_entry_foreach(dev_list_entry, devices) {
+		num_devices++;
+	}
+	fprintf(stderr, " udev devices: %i\n", num_devices);
+	*/
+
+	/* declare and initialize a new decoder vector */
+	struct vector decoder_vector;
+	decoder_vector_init(&decoder_vector);
+
+	/* initilize structures and pointer */
+	media_entity = calloc(1, sizeof(struct v4l2_decoder));
 
 	/* For each item enumerated, print out its information.
 	   udev_list_entry_foreach is a macro which expands to
 	   a loop. The loop will be executed for each member in
 	   devices, setting dev_list_entry to a list entry
-	   which contains the device’s path in /sys. */
+	   which contains the device’s path in /sys.
+	*/
 	udev_list_entry_foreach(dev_list_entry, devices) {
 		const char *path;
 		const char *node_path;
@@ -229,7 +259,8 @@ static int udev_scan_subsystem(char *subsystem, struct config *config)
 		const char *driver;
 
 		/* Get the filename of the /sys entry for the device
-		   and create a udev_device object (dev) representing it */
+		   and create a udev_device object (dev) representing it
+		*/
 		path = udev_list_entry_get_name(dev_list_entry);
 		dev = udev_device_new_from_syspath(udev, path);
 		node_path = udev_device_get_devnode(dev);
@@ -253,48 +284,46 @@ static int udev_scan_subsystem(char *subsystem, struct config *config)
 			}
 		}
 		else if (strncmp(node_name, "media", 5) == 0) {
-			printf(" model: %s\n",
-					udev_device_get_sysattr_value(dev, "model"));
+			asprintf(&media_entity->media_path, "%s", node_path);
+			udev_device_get_sysattr_value(dev, "model");
 
-			/* media device needs to be a capable video decoder */
-			asprintf(&config->media_path, "%s", node_path);
-			printf(" media-path: %s\n",
-			       config->media_path);
-
-			rc = media_scan_topology(config);
+			/* media device needs to support a capable video decoder */
+			rc = media_scan_topology(media_entity);
 			if (rc < 0)
 				fprintf(stderr, " model '%s' doesn't offer Video-Decoder\n",
 					udev_device_get_sysattr_value(dev, "model"));
-
-			return 0;
-			/*
-			driver = udev_device_get_sysattr_value(dev, "model");
-			if (strcmp(driver, V4L2_DRIVER_NAME) == 0) {
-				asprintf(&config->media_path, "%s", node_path);
-				printf("Found media-model %s: %s\n",
-					driver, config->media_path);
-				rc = 0;
+			else if (rc == 1) {
+				decoders = calloc(1, sizeof(struct v4l2_decoder));
+				*decoders = *media_entity;
+				decoder_vector_append(&decoder_vector, decoders);
 			}
-			*/
 		}
 
-		/*
-		printf(" VID/PID: %s %s\n",
-		       udev_device_get_sysattr_value(dev,"idVendor"),
-		       udev_device_get_sysattr_value(dev, "idProduct"));
-		printf(" Manufacturer: %s (product: %s)\n",
-		       udev_device_get_sysattr_value(dev,"manufacturer"),
-		       udev_device_get_sysattr_value(dev,"product"));
-		printf(" serial: %s\n",
-		       udev_device_get_sysattr_value(dev, "serial"));
-		*/
-
 		udev_device_unref(dev);
+		i++;
 	}
 
-	/* Free the enumerator object */
-	udev_enumerate_unref(enumerate);
+	/* result structure with suitable video decoder entities */
+	if (decoder_vector_num_entities(&decoder_vector) > 0) {
+		decoder_vector_print(&decoder_vector);
+		/*
+		 * assign first available decoder elements
+		 * to the corresponding config elements
+		 */
+		media_entity = decoder_vector_get(&decoder_vector, 0);
+		asprintf(&config->media_path, "%s", media_entity->media_path);
+		asprintf(&config->video_path, "%s", media_entity->video_path);
+	}
 
+	/* Free unnedded stuctures */
+	if (decoders)
+		free((void *)decoders);
+	if (media_entity)
+		free((void *)media_entity);
+
+	decoder_vector_free(&decoder_vector);
+
+	udev_enumerate_unref(enumerate);
 	udev_unref(udev);
 
 	return rc;
@@ -409,7 +438,6 @@ int main(int argc, char *argv[])
 	struct timespec video_before, video_after;
 	struct timespec display_before, display_after;
 	struct format_description *selected_format = NULL;
-	struct media_entities *media_entities = NULL;
 	bool before_taken = false;
 	void *slice_data = NULL;
 	char *slice_filename = NULL;
@@ -438,16 +466,17 @@ int main(int argc, char *argv[])
 
 	fprintf(stderr, "Scanning for suitable v4l2 Video-Decoder ...\n");
 	strcpy(subsystem, "media");
-	fprintf(stderr, "Scanning devices in subsystem '%s' ...\n", subsystem);
 	rc = udev_scan_subsystem(subsystem, &config);
 	if (rc < 0)
 		fprintf(stderr, "Unable to autoscan suitable Media device in subsystem '%s'\n", subsystem);
 
+	/*
 	strcpy(subsystem, "video4linux");
 	fprintf(stderr, "Scanning devices in subsystem '%s' ...\n", subsystem);
 	rc = udev_scan_subsystem(subsystem, &config);
 	if (rc < 0)
 		fprintf(stderr, "Unable to autoscan suitable Video device in subsystem '%s'\n", subsystem);
+	*/
 
 	while (1) {
 		int option_index = 0;
@@ -539,8 +568,6 @@ int main(int argc, char *argv[])
 		asprintf(&config.slices_path, "data/%s", config.preset_name);
 
 	print_summary(&config, preset);
-
-	goto complete;
 
 	video_fd = open(config.video_path, O_RDWR | O_NONBLOCK, 0);
 	if (video_fd < 0) {

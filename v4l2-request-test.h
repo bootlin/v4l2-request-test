@@ -65,12 +65,6 @@ struct format_description {
 	unsigned int bpp;
 };
 
-struct media_entities {
-	char driver_name[16];
-	char media_path[128];
-	char video_path[128];
-};
-
 /* Presets */
 
 enum codec_type {
@@ -143,13 +137,6 @@ extern const struct buffer_type {
 } buffer_type[];
 
 /* V4L2 */
-
-enum media_gobj_type {
-	MEDIA_GRAPH_ENTITY,
-	MEDIA_GRAPH_PAD,
-	MEDIA_GRAPH_LINK,
-	MEDIA_GRAPH_INTF_DEVNODE,
-};
 
 struct video_setup {
 	unsigned int output_type;
@@ -247,14 +234,6 @@ int frame_gop_schedule(struct preset *preset, unsigned int index);
 
 /* V4L2 */
 
-static inline void *media_get_uptr(__u64 arg);
-static inline const char *media_gobj_type(uint32_t id);
-static inline const char *media_interface_type(uint32_t intf_type);
-static inline uint32_t media_localid(uint32_t id);
-//static char *media_objname(uint32_t id, char delimiter);
-static int media_scan_topology(struct config *config);
-static uint32_t media_type(uint32_t id);
-
 bool video_engine_capabilities_test(int video_fd,
 				    unsigned int capabilities_required);
 bool video_engine_format_test(int video_fd, bool mplane, unsigned int width,
@@ -286,7 +265,6 @@ int display_engine_show(int drm_fd, unsigned int index,
 
 /* udev */
 
-static char *udev_get_devpath(struct media_v2_intf_devnode *devnode);
 //static int udev_scan_subsystem(char *subsystem, struct config *config);
 
 #endif
