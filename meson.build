@@ -73,7 +73,26 @@ v4l2_request_test = executable('v4l2-request-test',
 	include_directories: includes,
 	dependencies: deps)
 
-#tests = test('v4l2-request test',
-#	sources: v4l2_request_test)
+decoder_sources = [
+	'decoder_vector.c',
+	'decoder_test.c'
+]
+
+decoder_headers = [
+	'decoder_vector.h',
+	'decoder_test.h'
+]
+
+decoder_vector = executable('decoder_vector',
+	name_prefix: '',
+	install: true,
+	install_dir: '/usr/bin/',
+	c_args: cflags,
+	sources: [ decoder_sources, decoder_headers ],
+	include_directories: includes,
+	dependencies: deps)
+
+test('decoder_vector test',
+	decoder_vector)
 
 #v4l2_request_test_data = data('v4l2_request_test',)
