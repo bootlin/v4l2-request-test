@@ -132,6 +132,11 @@ struct preset {
 	unsigned int display_count;
 };
 
+extern const struct codec {
+	char *name;
+	enum codec_type type;
+} codec[];
+
 /* V4L2 */
 
 enum media_gobj_type {
