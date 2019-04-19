@@ -498,7 +498,7 @@ static int set_format_controls(int video_fd, int request_fd,
 #ifdef V4L2_PIX_FMT_H264_SLICE
 		{ CODEC_TYPE_H264, "decode parameters",
 		  V4L2_CID_MPEG_VIDEO_H264_DECODE_PARAMS,
-		  &frame->h264.decode_param, sizeof(frame->h264.decode_param) },
+		  &frame->h264.decode_params, sizeof(frame->h264.decode_params) },
 		{ CODEC_TYPE_H264, "picture parameter set",
 		  V4L2_CID_MPEG_VIDEO_H264_PPS, &frame->h264.pps,
 		  sizeof(frame->h264.pps) },
@@ -511,7 +511,7 @@ static int set_format_controls(int video_fd, int request_fd,
 		  sizeof(frame->h264.scaling_matrix) },
 		{ CODEC_TYPE_H264, "scaling matrix",
 		  V4L2_CID_MPEG_VIDEO_H264_SLICE_PARAMS,
-		  &frame->h264.slice_param, sizeof(frame->h264.slice_param) },
+		  &frame->h264.slice_params, sizeof(frame->h264.slice_params) },
 #endif
 #ifdef V4L2_PIX_FMT_HEVC_SLICE
 		{ CODEC_TYPE_H265, "sequence parameter set",
