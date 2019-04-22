@@ -130,11 +130,15 @@ static void setup_format(struct v4l2_format *format, unsigned int type,
 	}
 }
 
-static int try_format(int video_fd, unsigned int type, unsigned int width,
-		      unsigned int height, unsigned int pixelformat)
+static int try_format(int video_fd, unsigned int width, unsigned int height,
+		      unsigned int pixelformat)
 {
+	enum v4l2_buf_type type = V4L2_BUF_TYPE_VIDEO_CAPTURE;
 	struct v4l2_format format;
 	int rc;
+
+	if (video_engine_capabilities_test(video_fd, V4L2_CAP_VIDEO_M2M_MPLANE))
+		type = V4L2_BUF_TYPE_VIDEO_CAPTURE_MPLANE;
 
 	setup_format(&format, type, width, height, pixelformat);
 
@@ -582,16 +586,12 @@ bool video_engine_capabilities_test(int video_fd,
 	return true;
 }
 
-bool video_engine_format_test(int video_fd, bool mplane, unsigned int width,
+bool video_engine_format_test(int video_fd, unsigned int width,
 			      unsigned int height, unsigned int format)
 {
-	unsigned int type;
 	int rc;
 
-	type = mplane ? V4L2_BUF_TYPE_VIDEO_CAPTURE_MPLANE :
-			V4L2_BUF_TYPE_VIDEO_CAPTURE;
-
-	rc = try_format(video_fd, type, width, height, format);
+	rc = try_format(video_fd, width, height, format);
 
 	return rc >= 0;
 }
@@ -622,7 +622,7 @@ int video_engine_start(int video_fd, int media_fd, unsigned int width,
 	*buffers = malloc(buffers_count * sizeof(**buffers));
 	memset(*buffers, 0, buffers_count * sizeof(**buffers));
 
-	if (format->v4l2_mplane) {
+	if (video_engine_capabilities_test(video_fd, V4L2_CAP_VIDEO_M2M_MPLANE)) {
 		output_type = V4L2_BUF_TYPE_VIDEO_OUTPUT_MPLANE;
 		capture_type = V4L2_BUF_TYPE_VIDEO_CAPTURE_MPLANE;
 	} else {
