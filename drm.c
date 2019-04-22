@@ -403,7 +403,8 @@ static int select_connector_encoder(int drm_fd, unsigned int *connector_id,
 			goto error;
 		}
 
-		if (connector->connection == DRM_MODE_CONNECTED)
+		if (connector->count_encoders > 0 &&
+		    connector->connection == DRM_MODE_CONNECTED)
 			break;
 
 		drmModeFreeConnector(connector);
@@ -418,8 +419,12 @@ static int select_connector_encoder(int drm_fd, unsigned int *connector_id,
 	if (connector_id != NULL)
 		*connector_id = connector->connector_id;
 
-	if (encoder_id != NULL)
-		*encoder_id = connector->encoder_id;
+	if (encoder_id != NULL) {
+		if (connector->encoder_id)
+			*encoder_id = connector->encoder_id;
+		else
+			*encoder_id = connector->encoders[0];
+	}
 
 	rc = 0;
 	goto complete;
