@@ -40,7 +40,7 @@ static struct frame ed_mpeg2_frames[] = {
 #include "data/ed-mpeg2/frames.h"
 };
 
-#ifdef V4L2_PIX_FMT_H264_SLICE
+#ifdef V4L2_PIX_FMT_H264_SLICE_RAW
 static struct frame bbb_h264_all_i_32_frames[] = {
 #include "data/bbb-h264-all-i-32/frames.h"
 };
@@ -101,7 +101,7 @@ static struct preset presets[] = {
 		.frames = ed_mpeg2_frames,
 		.frames_count = ARRAY_SIZE(ed_mpeg2_frames),
 	},
-#ifdef V4L2_PIX_FMT_H264_SLICE
+#ifdef V4L2_PIX_FMT_H264_SLICE_RAW
 	{
 		.name = "bbb-h264-all-i-32",
 		.description = "big_buck_bunny_480p_H264_AAC_25fps_1800K.MP4",

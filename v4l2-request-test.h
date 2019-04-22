@@ -84,7 +84,7 @@ union controls {
 		struct v4l2_ctrl_mpeg2_slice_params slice_params;
 		struct v4l2_ctrl_mpeg2_quantization quantization;
 	} mpeg2;
-#ifdef V4L2_PIX_FMT_H264_SLICE
+#ifdef V4L2_PIX_FMT_H264_SLICE_RAW
 	struct {
 		struct v4l2_ctrl_h264_decode_params decode_params;
 		struct v4l2_ctrl_h264_pps pps;
