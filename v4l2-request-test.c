@@ -48,7 +48,7 @@ struct format_description formats[] = {
 		.planes_count		= 2,
 		.bpp			= 16,
 	},
-#ifdef DRM_FORMAT_MOD_ALLWINNER_TILED
+#if defined(DRM_FORMAT_MOD_ALLWINNER_TILED) && defined(V4L2_PIX_FMT_SUNXI_TILED_NV12)
 	{
 		.description		= "Sunxi Tiled NV12 YUV",
 		.v4l2_format		= V4L2_PIX_FMT_SUNXI_TILED_NV12,
