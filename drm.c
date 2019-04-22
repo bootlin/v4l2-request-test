@@ -214,24 +214,27 @@ static int discover_properties(int drm_fd, int connector_id, int crtc_id,
 		uint32_t object_id;
 		char *name;
 		uint32_t *value;
+		bool optional;
 	} glue[] = {
-		{ DRM_MODE_OBJECT_CONNECTOR, connector_id, "CRTC_ID", &ids->connector_crtc_id },
-		{ DRM_MODE_OBJECT_CRTC, crtc_id, "MODE_ID", &ids->crtc_mode_id },
-		{ DRM_MODE_OBJECT_CRTC, crtc_id, "ACTIVE", &ids->crtc_active },
-		{ DRM_MODE_OBJECT_PLANE, plane_id, "FB_ID", &ids->plane_fb_id },
-		{ DRM_MODE_OBJECT_PLANE, plane_id, "CRTC_ID", &ids->plane_crtc_id },
-		{ DRM_MODE_OBJECT_PLANE, plane_id, "SRC_X", &ids->plane_src_x },
-		{ DRM_MODE_OBJECT_PLANE, plane_id, "SRC_Y", &ids->plane_src_y },
-		{ DRM_MODE_OBJECT_PLANE, plane_id, "SRC_W", &ids->plane_src_w },
-		{ DRM_MODE_OBJECT_PLANE, plane_id, "SRC_H", &ids->plane_src_h },
-		{ DRM_MODE_OBJECT_PLANE, plane_id, "CRTC_X", &ids->plane_crtc_x },
-		{ DRM_MODE_OBJECT_PLANE, plane_id, "CRTC_Y", &ids->plane_crtc_y },
-		{ DRM_MODE_OBJECT_PLANE, plane_id, "CRTC_W", &ids->plane_crtc_w },
-		{ DRM_MODE_OBJECT_PLANE, plane_id, "CRTC_H", &ids->plane_crtc_h },
-		{ DRM_MODE_OBJECT_PLANE, plane_id, "zpos", &ids->plane_zpos },
+		{ DRM_MODE_OBJECT_CONNECTOR, connector_id, "CRTC_ID", &ids->connector_crtc_id, false },
+		{ DRM_MODE_OBJECT_CRTC, crtc_id, "MODE_ID", &ids->crtc_mode_id, false },
+		{ DRM_MODE_OBJECT_CRTC, crtc_id, "ACTIVE", &ids->crtc_active, false },
+		{ DRM_MODE_OBJECT_PLANE, plane_id, "FB_ID", &ids->plane_fb_id, false },
+		{ DRM_MODE_OBJECT_PLANE, plane_id, "CRTC_ID", &ids->plane_crtc_id, false },
+		{ DRM_MODE_OBJECT_PLANE, plane_id, "SRC_X", &ids->plane_src_x, false },
+		{ DRM_MODE_OBJECT_PLANE, plane_id, "SRC_Y", &ids->plane_src_y, false },
+		{ DRM_MODE_OBJECT_PLANE, plane_id, "SRC_W", &ids->plane_src_w, false },
+		{ DRM_MODE_OBJECT_PLANE, plane_id, "SRC_H", &ids->plane_src_h, false },
+		{ DRM_MODE_OBJECT_PLANE, plane_id, "CRTC_X", &ids->plane_crtc_x, false },
+		{ DRM_MODE_OBJECT_PLANE, plane_id, "CRTC_Y", &ids->plane_crtc_y, false },
+		{ DRM_MODE_OBJECT_PLANE, plane_id, "CRTC_W", &ids->plane_crtc_w, false },
+		{ DRM_MODE_OBJECT_PLANE, plane_id, "CRTC_H", &ids->plane_crtc_h, false },
+		{ DRM_MODE_OBJECT_PLANE, plane_id, "zpos", &ids->plane_zpos, true },
 	};
 	unsigned int i, j;
 	int rc;
+
+	memset(ids, 0, sizeof(ids));
 
 	for (i = 0; i < ARRAY_SIZE(glue); i++) {
 		properties = drmModeObjectGetProperties(drm_fd,
@@ -261,7 +264,7 @@ static int discover_properties(int drm_fd, int connector_id, int crtc_id,
 			property = NULL;
 		}
 
-		if (j == properties->count_props) {
+		if (j == properties->count_props && !glue[i].optional) {
 			fprintf(stderr, "Unable to find property for %s\n",
 				glue[i].name);
 			goto error;
@@ -320,7 +323,9 @@ static int commit_atomic_mode(int drm_fd, unsigned int connector_id,
 				 scaled_width);
 	drmModeAtomicAddProperty(request, plane_id, ids->plane_crtc_h,
 				 scaled_height);
-	drmModeAtomicAddProperty(request, plane_id, ids->plane_zpos, zpos);
+
+	if (ids->plane_zpos)
+		drmModeAtomicAddProperty(request, plane_id, ids->plane_zpos, zpos);
 
 	rc = drmModeAtomicCommit(drm_fd, request, flags, NULL);
 	if (rc < 0) {
