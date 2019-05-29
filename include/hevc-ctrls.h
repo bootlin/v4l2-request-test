@@ -11,6 +11,8 @@
 #ifndef _HEVC_CTRLS_H_
 #define _HEVC_CTRLS_H_
 
+#include <linux/videodev2.h>
+
 /* The pixel format isn't stable at the moment and will likely be renamed. */
 #define V4L2_PIX_FMT_HEVC_SLICE v4l2_fourcc('S', '2', '6', '5') /* HEVC parsed slices */
 
@@ -27,11 +29,20 @@
 #define V4L2_HEVC_SLICE_TYPE_P	1
 #define V4L2_HEVC_SLICE_TYPE_I	2
 
+#define V4L2_HEVC_SPS_FLAG_SEPARATE_COLOUR_PLANE		(1 << 0)
+#define V4L2_HEVC_SPS_FLAG_SCALING_LIST_ENABLED			(1 << 1)
+#define V4L2_HEVC_SPS_FLAG_AMP_ENABLED				(1 << 2)
+#define V4L2_HEVC_SPS_FLAG_SAMPLE_ADAPTIVE_OFFSET		(1 << 3)
+#define V4L2_HEVC_SPS_FLAG_PCM_ENABLED				(1 << 4)
+#define V4L2_HEVC_SPS_FLAG_PCM_LOOP_FILTER_DISABLED		(1 << 5)
+#define V4L2_HEVC_SPS_FLAG_LONG_TERM_REF_PICS_PRESENT		(1 << 6)
+#define V4L2_HEVC_SPS_FLAG_SPS_TEMPORAL_MVP_ENABLED		(1 << 7)
+#define V4L2_HEVC_SPS_FLAG_STRONG_INTRA_SMOOTHING_ENABLED	(1 << 8)
+
 /* The controls are not stable at the moment and will likely be reworked. */
 struct v4l2_ctrl_hevc_sps {
 	/* ISO/IEC 23008-2, ITU-T Rec. H.265: Sequence parameter set */
 	__u8	chroma_format_idc;
-	__u8	separate_colour_plane_flag;
 	__u16	pic_width_in_luma_samples;
 	__u16	pic_height_in_luma_samples;
 	__u8	bit_depth_luma_minus8;
@@ -46,56 +57,53 @@ struct v4l2_ctrl_hevc_sps {
 	__u8	log2_diff_max_min_luma_transform_block_size;
 	__u8	max_transform_hierarchy_depth_inter;
 	__u8	max_transform_hierarchy_depth_intra;
-	__u8	scaling_list_enabled_flag;
-	__u8	amp_enabled_flag;
-	__u8	sample_adaptive_offset_enabled_flag;
-	__u8	pcm_enabled_flag;
 	__u8	pcm_sample_bit_depth_luma_minus1;
 	__u8	pcm_sample_bit_depth_chroma_minus1;
 	__u8	log2_min_pcm_luma_coding_block_size_minus3;
 	__u8	log2_diff_max_min_pcm_luma_coding_block_size;
-	__u8	pcm_loop_filter_disabled_flag;
 	__u8	num_short_term_ref_pic_sets;
-	__u8	long_term_ref_pics_present_flag;
 	__u8	num_long_term_ref_pics_sps;
-	__u8	sps_temporal_mvp_enabled_flag;
-	__u8	strong_intra_smoothing_enabled_flag;
+
+	__u64	flags;
 };
+
+#define V4L2_HEVC_PPS_FLAG_DEPENDENT_SLICE_SEGMENT		(1 << 0)
+#define V4L2_HEVC_PPS_FLAG_OUTPUT_FLAG_PRESENT			(1 << 1)
+#define V4L2_HEVC_PPS_FLAG_SIGN_DATA_HIDING_ENABLED		(1 << 2)
+#define V4L2_HEVC_PPS_FLAG_CABAC_INIT_PRESENT			(1 << 3)
+#define V4L2_HEVC_PPS_FLAG_CONSTRAINED_INTRA_PRED		(1 << 4)
+#define V4L2_HEVC_PPS_FLAG_TRANSFORM_SKIP_ENABLED		(1 << 5)
+#define V4L2_HEVC_PPS_FLAG_CU_QP_DELTA_ENABLED			(1 << 6)
+#define V4L2_HEVC_PPS_FLAG_PPS_SLICE_CHROMA_QP_OFFSETS_PRESENT	(1 << 7)
+#define V4L2_HEVC_PPS_FLAG_WEIGHTED_PRED			(1 << 8)
+#define V4L2_HEVC_PPS_FLAG_WEIGHTED_BIPRED			(1 << 9)
+#define V4L2_HEVC_PPS_FLAG_TRANSQUANT_BYPASS_ENABLED		(1 << 10)
+#define V4L2_HEVC_PPS_FLAG_TILES_ENABLED			(1 << 11)
+#define V4L2_HEVC_PPS_FLAG_ENTROPY_CODING_SYNC_ENABLED		(1 << 12)
+#define V4L2_HEVC_PPS_FLAG_LOOP_FILTER_ACROSS_TILES_ENABLED	(1 << 13)
+#define V4L2_HEVC_PPS_FLAG_PPS_LOOP_FILTER_ACROSS_SLICES_ENABLED (1 << 14)
+#define V4L2_HEVC_PPS_FLAG_DEBLOCKING_FILTER_OVERRIDE_ENABLED	(1 << 15)
+#define V4L2_HEVC_PPS_FLAG_PPS_DISABLE_DEBLOCKING_FILTER	(1 << 16)
+#define V4L2_HEVC_PPS_FLAG_LISTS_MODIFICATION_PRESENT		(1 << 17)
+#define V4L2_HEVC_PPS_FLAG_SLICE_SEGMENT_HEADER_EXTENSION_PRESENT (1 << 18)
 
 struct v4l2_ctrl_hevc_pps {
 	/* ISO/IEC 23008-2, ITU-T Rec. H.265: Picture parameter set */
-	__u8	dependent_slice_segment_flag;
-	__u8	output_flag_present_flag;
 	__u8	num_extra_slice_header_bits;
-	__u8	sign_data_hiding_enabled_flag;
-	__u8	cabac_init_present_flag;
 	__s8	init_qp_minus26;
-	__u8	constrained_intra_pred_flag;
-	__u8	transform_skip_enabled_flag;
-	__u8	cu_qp_delta_enabled_flag;
 	__u8	diff_cu_qp_delta_depth;
 	__s8	pps_cb_qp_offset;
 	__s8	pps_cr_qp_offset;
-	__u8	pps_slice_chroma_qp_offsets_present_flag;
-	__u8	weighted_pred_flag;
-	__u8	weighted_bipred_flag;
-	__u8	transquant_bypass_enabled_flag;
-	__u8	tiles_enabled_flag;
-	__u8	entropy_coding_sync_enabled_flag;
 	__u8	num_tile_columns_minus1;
 	__u8	num_tile_rows_minus1;
 	__u8	column_width_minus1[20];
 	__u8	row_height_minus1[22];
-	__u8	loop_filter_across_tiles_enabled_flag;
-	__u8	pps_loop_filter_across_slices_enabled_flag;
-	__u8	deblocking_filter_override_enabled_flag;
-	__u8	pps_disable_deblocking_filter_flag;
 	__s8	pps_beta_offset_div2;
 	__s8	pps_tc_offset_div2;
-	__u8	lists_modification_present_flag;
 	__u8	log2_parallel_merge_level_minus2;
-	__u8	slice_segment_header_extension_present_flag;
-	__u8	padding;
+
+	__u8	padding[4];
+	__u64	flags;
 };
 
 #define V4L2_HEVC_DPB_ENTRY_RPS_ST_CURR_BEFORE	0x01
@@ -126,8 +134,18 @@ struct v4l2_hevc_pred_weight_table {
 	__s8	delta_chroma_weight_l1[V4L2_HEVC_DPB_ENTRIES_NUM_MAX][2];
 	__s8	chroma_offset_l1[V4L2_HEVC_DPB_ENTRIES_NUM_MAX][2];
 
-	__u8	padding[2];
+	__u8	padding[6];
 };
+
+#define V4L2_HEVC_SLICE_PARAMS_FLAG_SLICE_SAO_LUMA		(1 << 0)
+#define V4L2_HEVC_SLICE_PARAMS_FLAG_SLICE_SAO_CHROMA		(1 << 1)
+#define V4L2_HEVC_SLICE_PARAMS_FLAG_SLICE_TEMPORAL_MVP_ENABLED	(1 << 2)
+#define V4L2_HEVC_SLICE_PARAMS_FLAG_MVD_L1_ZERO			(1 << 3)
+#define V4L2_HEVC_SLICE_PARAMS_FLAG_CABAC_INIT			(1 << 4)
+#define V4L2_HEVC_SLICE_PARAMS_FLAG_COLLOCATED_FROM_L0		(1 << 5)
+#define V4L2_HEVC_SLICE_PARAMS_FLAG_USE_INTEGER_MV		(1 << 6)
+#define V4L2_HEVC_SLICE_PARAMS_FLAG_SLICE_DEBLOCKING_FILTER_DISABLED (1 << 7)
+#define V4L2_HEVC_SLICE_PARAMS_FLAG_SLICE_LOOP_FILTER_ACROSS_SLICES_ENABLED (1 << 8)
 
 struct v4l2_ctrl_hevc_slice_params {
 	__u32	bit_size;
@@ -141,30 +159,23 @@ struct v4l2_ctrl_hevc_slice_params {
 	__u8	slice_type;
 	__u8	colour_plane_id;
 	__u16	slice_pic_order_cnt;
-	__u8	slice_sao_luma_flag;
-	__u8	slice_sao_chroma_flag;
-	__u8	slice_temporal_mvp_enabled_flag;
 	__u8	num_ref_idx_l0_active_minus1;
 	__u8	num_ref_idx_l1_active_minus1;
-	__u8	mvd_l1_zero_flag;
-	__u8	cabac_init_flag;
-	__u8	collocated_from_l0_flag;
 	__u8	collocated_ref_idx;
 	__u8	five_minus_max_num_merge_cand;
-	__u8	use_integer_mv_flag;
 	__s8	slice_qp_delta;
 	__s8	slice_cb_qp_offset;
 	__s8	slice_cr_qp_offset;
 	__s8	slice_act_y_qp_offset;
 	__s8	slice_act_cb_qp_offset;
 	__s8	slice_act_cr_qp_offset;
-	__u8	slice_deblocking_filter_disabled_flag;
 	__s8	slice_beta_offset_div2;
 	__s8	slice_tc_offset_div2;
-	__u8	slice_loop_filter_across_slices_enabled_flag;
 
 	/* ISO/IEC 23008-2, ITU-T Rec. H.265: Picture timing SEI message */
 	__u8	pic_struct;
+
+	__u8	padding_pre[13];
 
 	/* ISO/IEC 23008-2, ITU-T Rec. H.265: General slice segment header */
 	struct v4l2_hevc_dpb_entry dpb[V4L2_HEVC_DPB_ENTRIES_NUM_MAX];
@@ -179,7 +190,8 @@ struct v4l2_ctrl_hevc_slice_params {
 	/* ISO/IEC 23008-2, ITU-T Rec. H.265: Weighted prediction parameter */
 	struct v4l2_hevc_pred_weight_table pred_weight_table;
 
-	__u8	padding[2];
+	__u8	padding_post[4];
+	__u64	flags;
 };
 
 #endif
