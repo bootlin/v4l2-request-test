@@ -56,7 +56,6 @@ struct format_description {
 	char *description;
 	unsigned int v4l2_format;
 	unsigned int v4l2_buffers_count;
-	bool v4l2_mplane;
 	unsigned int drm_format;
 	uint64_t drm_modifier;
 	unsigned int planes_count;
@@ -84,7 +83,7 @@ union controls {
 		struct v4l2_ctrl_mpeg2_slice_params slice_params;
 		struct v4l2_ctrl_mpeg2_quantization quantization;
 	} mpeg2;
-#ifdef V4L2_PIX_FMT_H264_SLICE
+#ifdef V4L2_PIX_FMT_H264_SLICE_RAW
 	struct {
 		struct v4l2_ctrl_h264_decode_params decode_params;
 		struct v4l2_ctrl_h264_pps pps;
@@ -221,7 +220,7 @@ int frame_gop_schedule(struct preset *preset, unsigned int index);
 
 bool video_engine_capabilities_test(int video_fd,
 				    unsigned int capabilities_required);
-bool video_engine_format_test(int video_fd, bool mplane, unsigned int width,
+bool video_engine_format_test(int video_fd, unsigned int width,
 			      unsigned int height, unsigned int format);
 int video_engine_start(int video_fd, int media_fd, unsigned int width,
 		       unsigned int height, struct format_description *format,
