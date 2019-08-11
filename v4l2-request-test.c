@@ -37,6 +37,61 @@
 
 #include "v4l2-request-test.h"
 
+const struct buffer_type buffer_type[] = {
+	{
+	 	.name	= "Video Capture Buffer",
+	 	.type	= V4L2_BUF_TYPE_VIDEO_CAPTURE
+	},
+	{
+	 	.name	= "Video Output Buffer",
+	 	.type	= V4L2_BUF_TYPE_VIDEO_OUTPUT
+	},
+	{
+	 	.name	= "Video Overlay Buffer",
+	 	.type	= V4L2_BUF_TYPE_VIDEO_OVERLAY
+	},
+	{
+	 	.name	= "VBI Capture Buffer",
+	 	.type	= V4L2_BUF_TYPE_VBI_CAPTURE
+	},
+	{
+	 	.name	= "VBI Output Buffer",
+	 	.type	= V4L2_BUF_TYPE_VBI_OUTPUT
+	},
+	{
+	 	.name	= "Sliced VBI Capture Buffer",
+	 	.type	= V4L2_BUF_TYPE_SLICED_VBI_CAPTURE
+	},
+	{
+	 	.name	= "Sliced VBI Output Buffer",
+	 	.type	= V4L2_BUF_TYPE_SLICED_VBI_OUTPUT
+	},
+	{
+	 	.name	= "Video Output Overlay Buffer",
+	 	.type	= V4L2_BUF_TYPE_VIDEO_OUTPUT_OVERLAY
+	},
+	{
+	 	.name	= "Video Multi-Plane Capture Buffer",
+	 	.type	= V4L2_BUF_TYPE_VIDEO_CAPTURE_MPLANE
+	},
+	{
+	 	.name	= "Video Multi-Plane Output Buffer",
+	 	.type	= V4L2_BUF_TYPE_VIDEO_OUTPUT_MPLANE
+	},
+	{
+	 	.name	= "SDR Capture Buffer",
+	 	.type	= V4L2_BUF_TYPE_SDR_CAPTURE
+	},
+	{
+	 	.name	= "SDR Output Buffer",
+	 	.type	= V4L2_BUF_TYPE_SDR_OUTPUT
+	},
+	{
+	 	.name	= "Meta Capture Buffer",
+	 	.type	= V4L2_BUF_TYPE_META_CAPTURE
+	}
+};
+
 struct format_description formats[] = {
 	{
 		.description		= "NV12 YUV",
