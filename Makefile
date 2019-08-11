@@ -37,7 +37,9 @@ DEPS = $(SOURCES:.c=.d)
 
 CFLAGS += -Wunused-variable -Iinclude
 CFLAGS += $(shell pkg-config --cflags libdrm)
+CFLAGS += $(shell pkg-config --cflags libudev)
 LDFLAGS = $(shell pkg-config --libs libdrm)
+LDFLAGS += $(shell pkg-config --libs libudev)
 
 # Produced files
 

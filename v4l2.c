@@ -140,8 +140,8 @@ static int try_format(int video_fd, unsigned int type, unsigned int width,
 
 	rc = ioctl(video_fd, VIDIOC_TRY_FMT, &format);
 	if (rc < 0) {
-		fprintf(stderr, "Unable to try format for type %d: %s\n", type,
-			strerror(errno));
+		fprintf(stderr, "Unable to try format for type %d: %s (%d)\n",
+			type, strerror(errno), errno);
 		return -1;
 	}
 
@@ -158,8 +158,8 @@ static int set_format(int video_fd, unsigned int type, unsigned int width,
 
 	rc = ioctl(video_fd, VIDIOC_S_FMT, &format);
 	if (rc < 0) {
-		fprintf(stderr, "Unable to set format for type %d: %s\n", type,
-			strerror(errno));
+		fprintf(stderr, "Unable to set format for type %d: %s (%d)\n",
+			type, strerror(errno), errno);
 		return -1;
 	}
 
@@ -180,8 +180,8 @@ static int get_format(int video_fd, unsigned int type, unsigned int *width,
 
 	rc = ioctl(video_fd, VIDIOC_G_FMT, &format);
 	if (rc < 0) {
-		fprintf(stderr, "Unable to get format for type %d: %s\n", type,
-			strerror(errno));
+		fprintf(stderr, "Unable to get format for type %d: %s (%d)\n",
+			type, strerror(errno), errno);
 		return -1;
 	}
 
@@ -242,15 +242,15 @@ static int create_buffers(int video_fd, unsigned int type,
 
 	rc = ioctl(video_fd, VIDIOC_G_FMT, &buffers.format);
 	if (rc < 0) {
-		fprintf(stderr, "Unable to get format for type %d: %s\n", type,
-			strerror(errno));
+		fprintf(stderr, "Unable to get format for type %d: %s (%d)\n", type,
+			strerror(errno), errno);
 		return -1;
 	}
 
 	rc = ioctl(video_fd, VIDIOC_CREATE_BUFS, &buffers);
 	if (rc < 0) {
-		fprintf(stderr, "Unable to create buffer for type %d: %s\n",
-			type, strerror(errno));
+		fprintf(stderr, "Unable to create buffer for type %d: %s (%d)\n",
+			type, strerror(errno), errno);
 		return -1;
 	}
 
@@ -280,8 +280,8 @@ static int query_buffer(int video_fd, unsigned int type, unsigned int index,
 
 	rc = ioctl(video_fd, VIDIOC_QUERYBUF, &buffer);
 	if (rc < 0) {
-		fprintf(stderr, "Unable to query buffer: %s\n",
-			strerror(errno));
+		fprintf(stderr, "Unable to query buffer: %s (%d)\n",
+			strerror(errno), errno);
 		return -1;
 	}
 
@@ -317,8 +317,8 @@ static int request_buffers(int video_fd, unsigned int type,
 
 	rc = ioctl(video_fd, VIDIOC_REQBUFS, &buffers);
 	if (rc < 0) {
-		fprintf(stderr, "Unable to request buffers: %s\n",
-			strerror(errno));
+		fprintf(stderr, "Unable to request buffers: %s (%d)\n",
+			strerror(errno), errno);
 		return -1;
 	}
 
@@ -359,8 +359,8 @@ static int queue_buffer(int video_fd, int request_fd, unsigned int type,
 
 	rc = ioctl(video_fd, VIDIOC_QBUF, &buffer);
 	if (rc < 0) {
-		fprintf(stderr, "Unable to queue buffer: %s\n",
-			strerror(errno));
+		fprintf(stderr, "Unable to queue buffer: %s (%d)\n",
+			strerror(errno), errno);
 		return -1;
 	}
 
@@ -391,8 +391,8 @@ static int dequeue_buffer(int video_fd, int request_fd, unsigned int type,
 
 	rc = ioctl(video_fd, VIDIOC_DQBUF, &buffer);
 	if (rc < 0) {
-		fprintf(stderr, "Unable to dequeue buffer: %s\n",
-			strerror(errno));
+		fprintf(stderr, "Unable to dequeue buffer: %s (%d)\n",
+			strerror(errno), errno);
 		return -1;
 	}
 
@@ -419,8 +419,8 @@ static int export_buffer(int video_fd, unsigned int type, unsigned int index,
 
 		rc = ioctl(video_fd, VIDIOC_EXPBUF, &exportbuffer);
 		if (rc < 0) {
-			fprintf(stderr, "Unable to export buffer: %s\n",
-				strerror(errno));
+			fprintf(stderr, "Unable to export buffer: %s (%d)\n",
+				strerror(errno), errno);
 			return -1;
 		}
 
@@ -454,7 +454,8 @@ static int set_control(int video_fd, int request_fd, unsigned int id,
 
 	rc = ioctl(video_fd, VIDIOC_S_EXT_CTRLS, &controls);
 	if (rc < 0) {
-		fprintf(stderr, "Unable to set control: %s\n", strerror(errno));
+		fprintf(stderr, "Unable to set control: %s (%d)\n",
+			strerror(errno), errno);
 		return -1;
 	}
 
@@ -469,8 +470,8 @@ static int set_stream(int video_fd, unsigned int type, bool enable)
 	rc = ioctl(video_fd, enable ? VIDIOC_STREAMON : VIDIOC_STREAMOFF,
 		   &buf_type);
 	if (rc < 0) {
-		fprintf(stderr, "Unable to %sable stream: %s\n",
-			enable ? "en" : "dis", strerror(errno));
+		fprintf(stderr, "Unable to %sable stream: %s (%d)\n",
+			enable ? "en" : "dis", strerror(errno), errno);
 		return -1;
 	}
 
@@ -571,8 +572,8 @@ bool video_engine_capabilities_test(int video_fd,
 
 	rc = query_capabilities(video_fd, &capabilities);
 	if (rc < 0) {
-		fprintf(stderr, "Unable to query video capabilities: %s\n",
-			strerror(errno));
+		fprintf(stderr, "Unable to query video capabilities: %s (%d)\n",
+			strerror(errno), errno);
 		return false;
 	}
 
@@ -790,8 +791,8 @@ int video_engine_start(int video_fd, int media_fd, unsigned int width,
 		rc = ioctl(media_fd, MEDIA_IOC_REQUEST_ALLOC, &request_fd);
 		if (rc < 0) {
 			fprintf(stderr,
-				"Unable to allocate media request: %s\n",
-				strerror(errno));
+				"Unable to allocate media request: %s (%d)\n",
+				strerror(errno), errno);
 			goto error;
 		}
 
@@ -905,8 +906,8 @@ int video_engine_decode(int video_fd, unsigned int index, union controls *frame,
 
 	rc = ioctl(request_fd, MEDIA_REQUEST_IOC_QUEUE, NULL);
 	if (rc < 0) {
-		fprintf(stderr, "Unable to queue media request: %s\n",
-			strerror(errno));
+		fprintf(stderr, "Unable to queue media request: %s (%d)\n",
+			strerror(errno), errno);
 		return -1;
 	}
 
@@ -918,8 +919,8 @@ int video_engine_decode(int video_fd, unsigned int index, union controls *frame,
 		fprintf(stderr, "Timeout when waiting for media request\n");
 		return -1;
 	} else if (rc < 0) {
-		fprintf(stderr, "Unable to select media request: %s\n",
-			strerror(errno));
+		fprintf(stderr, "Unable to select media request: %s (%d)\n",
+			strerror(errno), errno);
 		return -1;
 	}
 
@@ -945,8 +946,8 @@ int video_engine_decode(int video_fd, unsigned int index, union controls *frame,
 
 	rc = ioctl(request_fd, MEDIA_REQUEST_IOC_REINIT, NULL);
 	if (rc < 0) {
-		fprintf(stderr, "Unable to reinit media request: %s\n",
-			strerror(errno));
+		fprintf(stderr, "Unable to reinit media request: %s (%d)\n",
+			strerror(errno), errno);
 		return -1;
 	}
 

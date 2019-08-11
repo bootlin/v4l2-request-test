@@ -31,6 +31,8 @@
 #define TS_REF_INDEX(index) ((index) * 1000)
 #define INDEX_REF_TS(ts) ((ts) / 1000)
 
+#define V4L2_DRIVER_NAME  "cedrus"
+
 /*
  * Structures
  */
@@ -124,6 +126,16 @@ struct preset {
 	unsigned int display_count;
 };
 
+extern const struct codec {
+	char *name;
+	enum codec_type type;
+} codec[];
+
+extern const struct buffer_type {
+	char *name;
+	enum v4l2_buf_type type;
+} buffer_type[];
+
 /* V4L2 */
 
 struct video_setup {
@@ -202,6 +214,9 @@ struct display_setup {
  * Functions
  */
 
+//static void print_help(void);
+//static void print_summary(struct config *config, struct preset *preset);
+
 /* Presets */
 
 void presets_usage(void);
@@ -247,5 +262,9 @@ int display_engine_show(int drm_fd, unsigned int index,
 			struct video_buffer *video_buffers,
 			struct gem_buffer *buffers,
 			struct display_setup *setup);
+
+/* udev */
+
+//static int udev_scan_subsystem(char *subsystem, struct config *config);
 
 #endif

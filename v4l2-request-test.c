@@ -19,6 +19,7 @@
 #include <errno.h>
 #include <fcntl.h>
 #include <getopt.h>
+#include <libudev.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -27,6 +28,7 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <time.h>
+#include <dirent.h>
 #include <unistd.h>
 
 #include <drm_fourcc.h>
@@ -36,6 +38,78 @@
 #include <xf86drm.h>
 
 #include "v4l2-request-test.h"
+#include "v4l2-topology.h"
+#include "decoder_vector.h"
+
+const struct codec codec[] = {
+	{
+		.name	= "MPEG-2",
+		.type	= CODEC_TYPE_MPEG2
+	},
+	{
+		.name	= "H.264",
+		.type	= CODEC_TYPE_H264
+	},
+	{
+		.name	= "H.265",
+		.type	= CODEC_TYPE_H265
+	}
+};
+
+const struct buffer_type buffer_type[] = {
+	{
+		.name	= "Video Capture Buffer",
+		.type	= V4L2_BUF_TYPE_VIDEO_CAPTURE
+	},
+	{
+		.name	= "Video Output Buffer",
+		.type	= V4L2_BUF_TYPE_VIDEO_OUTPUT
+	},
+	{
+		.name	= "Video Overlay Buffer",
+		.type	= V4L2_BUF_TYPE_VIDEO_OVERLAY
+	},
+	{
+		.name	= "VBI Capture Buffer",
+		.type	= V4L2_BUF_TYPE_VBI_CAPTURE
+	},
+	{
+		.name	= "VBI Output Buffer",
+		.type	= V4L2_BUF_TYPE_VBI_OUTPUT
+	},
+	{
+		.name	= "Sliced VBI Capture Buffer",
+		.type	= V4L2_BUF_TYPE_SLICED_VBI_CAPTURE
+	},
+	{
+		.name	= "Sliced VBI Output Buffer",
+		.type	= V4L2_BUF_TYPE_SLICED_VBI_OUTPUT
+	},
+	{
+		.name	= "Video Output Overlay Buffer",
+		.type	= V4L2_BUF_TYPE_VIDEO_OUTPUT_OVERLAY
+	},
+	{
+		.name	= "Video Multi-Plane Capture Buffer",
+		.type	= V4L2_BUF_TYPE_VIDEO_CAPTURE_MPLANE
+	},
+	{
+		.name	= "Video Multi-Plane Output Buffer",
+		.type	= V4L2_BUF_TYPE_VIDEO_OUTPUT_MPLANE
+	},
+	{
+		.name	= "SDR Capture Buffer",
+		.type	= V4L2_BUF_TYPE_SDR_CAPTURE
+	},
+	{
+		.name	= "SDR Output Buffer",
+		.type	= V4L2_BUF_TYPE_SDR_OUTPUT
+	},
+	{
+		.name	= "Meta Capture Buffer",
+		.type	= V4L2_BUF_TYPE_META_CAPTURE
+	}
+};
 
 struct format_description formats[] = {
 	{
@@ -64,20 +138,22 @@ struct format_description formats[] = {
 
 static void print_help(void)
 {
-	printf("Usage: v4l2-request-test [OPTIONS] [SLICES PATH]\n\n"
-	       "Options:\n"
-	       " -v [video path]                path for the video node\n"
-	       " -m [media path]                path for the media node\n"
-	       " -d [DRM path]                  path for the DRM node\n"
-	       " -D [DRM driver]                DRM driver to use\n"
-	       " -s [slices filename format]    format for filenames in the slices path\n"
-	       " -f [fps]                       number of frames to display per second\n"
-	       " -P [video preset]              video preset to use\n"
-	       " -i                             enable interactive mode\n"
-	       " -l                             loop preset frames\n"
-	       " -q                             enable quiet mode\n"
-	       " -h                             help\n\n"
-	       "Video presets:\n");
+	printf("Usage: v4l2-request-test [OPTIONS]\n\n"
+		"Options:\n"
+		" -v  --video-device <dev>  Use device <dev> as the video device.\n"
+		"     --device\n"
+		" -m, --media-device <dev>  Use device <dev> as the media device.\n"
+		" -d, --drm-device <dev>    Use device <dev > as DRM device.\n"
+		" -D, --drm-driver <name>   Use given DRM driver.\n"
+		" -s, --slices-path <path>  Use <path> to find stored video slices.\n"
+		" -S, --slices-format <slices format>\n"
+		"                           Regex/format describing filenames stored in the slices path.\n"
+		" -f, --fps <fps>           Display given number of frames per seconds.\n"
+		" -P, --preset-name <name>  Use given preset-name for video decoding.\n"
+		" -i, --interactive         Enable interactive mode.\n"
+		" -l, --loop                Loop preset frames.\n"
+		" -q, --quiet               Enable quiet mode.\n"
+		" -h, --help                This help message.\n\n");
 
 	presets_usage();
 }
@@ -85,21 +161,21 @@ static void print_help(void)
 static void print_summary(struct config *config, struct preset *preset)
 {
 	printf("Config:\n");
-	printf(" Video path: %s\n", config->video_path);
-	printf(" Media path: %s\n", config->media_path);
-	printf(" DRM path: %s\n", config->drm_path);
-	printf(" DRM driver: %s\n", config->drm_driver);
-	printf(" Slices path: %s\n", config->slices_path);
-	printf(" Slices filename format: %s\n", config->slices_filename_format);
-	printf(" FPS: %d\n\n", config->fps);
+	printf(" Video device:  %s\n", config->video_path);
+	printf(" Media device:  %s\n", config->media_path);
+	printf(" DRM device:    %s\n", config->drm_path);
+	printf(" DRM driver:    %s\n", config->drm_driver);
+	printf(" Slices path:   %s\n", config->slices_path);
+	printf(" Slices format: %s\n", config->slices_filename_format);
+	printf(" FPS:           %d\n\n", config->fps);
 
 	printf("Preset:\n");
-	printf(" Name: %s\n", preset->name);
-	printf(" Description: %s\n", preset->description);
-	printf(" License: %s\n", preset->license);
-	printf(" Attribution: %s\n", preset->attribution);
-	printf(" Width: %d\n", preset->width);
-	printf(" Height: %d\n", preset->height);
+	printf(" Name:         %s\n", preset->name);
+	printf(" Description:  %s\n", preset->description);
+	printf(" License:      %s\n", preset->license);
+	printf(" Attribution:  %s\n", preset->attribution);
+	printf(" Width:        %d\n", preset->width);
+	printf(" Height:       %d\n", preset->height);
 	printf(" Frames count: %d\n", preset->frames_count);
 
 	printf(" Format: ");
@@ -120,6 +196,138 @@ static void print_summary(struct config *config, struct preset *preset)
 	}
 
 	printf("\n\n");
+}
+
+static int udev_scan_subsystem(char *subsystem, struct config *config)
+{
+	struct udev *udev;
+	struct udev_enumerate *enumerate;
+	struct udev_list_entry *devices, *dev_list_entry;
+	struct udev_device *dev;
+	struct v4l2_decoder *media_entity = NULL;
+	struct v4l2_decoder *decoders = NULL;
+	int rc = -1;
+	int i = 0;
+	int num_devices = 0;
+
+	/* Create the udev object */
+	udev = udev_new();
+	if (!udev) {
+		printf("Can’t create udev\n");
+		return -1;
+	}
+
+	/* Create a list of sys devices for given subsystem */
+	enumerate = udev_enumerate_new(udev);
+	rc = udev_enumerate_add_match_subsystem(enumerate, subsystem);
+	if (rc < 0) {
+		fprintf(stderr, " udev error: can't filter sysbsystem %s\n",
+			subsystem);
+		return rc;
+	}
+	rc = udev_enumerate_scan_devices(enumerate);
+	if (rc < 0) {
+		fprintf(stderr, " udev error: can't scan devices\n");
+		return rc;
+	}
+	devices = udev_enumerate_get_list_entry(enumerate);
+
+	/* Calulate available number of subsystem devices */
+	/*
+	  udev_list_entry_foreach(dev_list_entry, devices) {
+		num_devices++;
+	}
+	fprintf(stderr, " udev devices: %i\n", num_devices);
+	*/
+
+	/* declare and initialize a new decoder vector */
+	struct vector decoder_vector;
+	decoder_vector_init(&decoder_vector);
+
+	/* initilize structures and pointer */
+	media_entity = calloc(1, sizeof(struct v4l2_decoder));
+
+	/* For each item enumerated, print out its information.
+	   udev_list_entry_foreach is a macro which expands to
+	   a loop. The loop will be executed for each member in
+	   devices, setting dev_list_entry to a list entry
+	   which contains the device’s path in /sys.
+	*/
+	udev_list_entry_foreach(dev_list_entry, devices) {
+		const char *path;
+		const char *node_path;
+		const char *node_name;
+		const char *driver;
+
+		/* Get the filename of the /sys entry for the device
+		   and create a udev_device object (dev) representing it
+		*/
+		path = udev_list_entry_get_name(dev_list_entry);
+		dev = udev_device_new_from_syspath(udev, path);
+		node_path = udev_device_get_devnode(dev);
+		node_name = udev_device_get_sysname(dev);
+
+		/* From here, we can call get_sysattr_value() for each file
+		   in the device’s /sys entry. The strings passed into these
+		   functions (idProduct, idVendor, serial, etc.) correspond
+		   directly to the files in the directory which represents
+		   the device attributes. Strings returned from
+		   udev_device_get_sysattr_value() are UTF-8 encoded.
+		*/
+
+		if (strncmp(node_name, "video", 5) == 0) {
+			driver = udev_device_get_sysattr_value(dev, "name");
+			if (strcmp(driver, V4L2_DRIVER_NAME) == 0) {
+				asprintf(&config->video_path, "%s", node_path);
+				printf("Found video-driver %s: %s\n",
+					driver, config->video_path);
+				rc = 0;
+			}
+		}
+		else if (strncmp(node_name, "media", 5) == 0) {
+			asprintf(&media_entity->media_path, "%s", node_path);
+			udev_device_get_sysattr_value(dev, "model");
+
+			/* media device needs to support a capable video decoder */
+			rc = media_scan_topology(media_entity);
+			if (rc < 0)
+				fprintf(stderr, " model '%s' doesn't offer Video-Decoder\n",
+					udev_device_get_sysattr_value(dev, "model"));
+			else if (rc == 1) {
+				decoders = calloc(1, sizeof(struct v4l2_decoder));
+				*decoders = *media_entity;
+				decoder_vector_append(&decoder_vector, decoders);
+			}
+		}
+
+		udev_device_unref(dev);
+		i++;
+	}
+
+	/* result structure with suitable video decoder entities */
+	if (decoder_vector_num_entities(&decoder_vector) > 0) {
+		decoder_vector_print(&decoder_vector);
+		/*
+		 * assign first available decoder elements
+		 * to the corresponding config elements
+		 */
+		media_entity = decoder_vector_get(&decoder_vector, 0);
+		asprintf(&config->media_path, "%s", media_entity->media_path);
+		asprintf(&config->video_path, "%s", media_entity->video_path);
+	}
+
+	/* Free unnedded stuctures */
+	if (decoders)
+		free((void *)decoders);
+	if (media_entity)
+		free((void *)media_entity);
+
+	decoder_vector_free(&decoder_vector);
+
+	udev_enumerate_unref(enumerate);
+	udev_unref(udev);
+
+	return rc;
 }
 
 static long time_diff(struct timespec *before, struct timespec *after)
@@ -157,15 +365,15 @@ static int load_data(const char *path, void **data, unsigned int *size)
 
 	fd = open(path, O_RDONLY);
 	if (fd < 0) {
-		fprintf(stderr, "Unable to open file path: %s\n",
-			strerror(errno));
+		fprintf(stderr, "Unable to open file path: %s (%d)\n",
+			strerror(errno), errno);
 		goto error;
 	}
 
 	rc = read(fd, buffer, length);
 	if (rc < 0) {
-		fprintf(stderr, "Unable to read file data: %s\n",
-			strerror(errno));
+		fprintf(stderr, "Unable to read file data: %s (%d)\n",
+			strerror(errno), errno);
 		goto error;
 	}
 
@@ -235,6 +443,7 @@ int main(int argc, char *argv[])
 	void *slice_data = NULL;
 	char *slice_filename = NULL;
 	char *slice_path = NULL;
+	char subsystem[16];
 	unsigned int slice_size;
 	unsigned int width;
 	unsigned int height;
@@ -256,8 +465,42 @@ int main(int argc, char *argv[])
 
 	setup_config(&config);
 
+	fprintf(stderr, "Scanning for suitable v4l2 Video-Decoder ...\n");
+	strcpy(subsystem, "media");
+	rc = udev_scan_subsystem(subsystem, &config);
+	if (rc < 0)
+		fprintf(stderr, "Unable to autoscan suitable Media device in subsystem '%s'\n", subsystem);
+
+	/*
+	strcpy(subsystem, "video4linux");
+	fprintf(stderr, "Scanning devices in subsystem '%s' ...\n", subsystem);
+	rc = udev_scan_subsystem(subsystem, &config);
+	if (rc < 0)
+		fprintf(stderr, "Unable to autoscan suitable Video device in subsystem '%s'\n", subsystem);
+	*/
+
 	while (1) {
-		opt = getopt(argc, argv, "v:m:d:D:s:f:P:ilqh");
+		int option_index = 0;
+		static struct option long_options[] = {
+			{ "device",        required_argument, 0, 'v' },
+			{ "video-device",  required_argument, 0, 'v' },
+			{ "media-device",  required_argument, 0, 'm' },
+			{ "drm-device",    required_argument, 0, 'd' },
+			{ "drm-driver",    required_argument, 0, 'D' },
+			{ "slices-path",   required_argument, 0, 's' },
+			{ "slices-format", required_argument, 0, 'S' },
+			{ "fps",           required_argument, 0, 'f' },
+			{ "preset-name",   required_argument, 0, 'P' },
+			{ "interactive",   no_argument,       0, 'i' },
+			{ "loop",          no_argument,       0, 'l' },
+			{ "quiet",         no_argument,       0, 'q' },
+			{ "help",          no_argument,       0, 'h' },
+			{ 0,               0,                 0,  0  }
+		};
+
+		opt = getopt_long(argc, argv, "v:m:d:D:s:S:f:P:ilqh",
+				  long_options, &option_index);
+
 		if (opt == -1)
 			break;
 
@@ -279,6 +522,9 @@ int main(int argc, char *argv[])
 			config.drm_driver = strdup(optarg);
 			break;
 		case 's':
+			config.slices_path = strdup(optarg);
+			break;
+		case 'S':
 			free(config.slices_filename_format);
 			config.slices_filename_format = strdup(optarg);
 			break;
@@ -320,31 +566,29 @@ int main(int argc, char *argv[])
 
 	width = preset->width;
 	height = preset->height;
-	if (optind < argc)
-		config.slices_path = strdup(argv[optind]);
-	else
+	if (config.slices_path == NULL)
 		asprintf(&config.slices_path, "data/%s", config.preset_name);
 
 	print_summary(&config, preset);
 
 	video_fd = open(config.video_path, O_RDWR | O_NONBLOCK, 0);
 	if (video_fd < 0) {
-		fprintf(stderr, "Unable to open video node: %s\n",
-			strerror(errno));
+		fprintf(stderr, "Unable to open video node: %s (%d)\n",
+			strerror(errno), errno);
 		goto error;
 	}
 
 	media_fd = open(config.media_path, O_RDWR | O_NONBLOCK, 0);
 	if (media_fd < 0) {
-		fprintf(stderr, "Unable to open media node: %s\n",
-			strerror(errno));
+		fprintf(stderr, "Unable to open media node: %s (%d)\n",
+			strerror(errno), errno);
 		goto error;
 	}
 
 	rc = ioctl(media_fd, MEDIA_IOC_DEVICE_INFO, &device_info);
 	if (rc < 0) {
-		fprintf(stderr, "Unable to get media device info: %s\n",
-			strerror(errno));
+		fprintf(stderr, "Unable to get media device info: %s (%d)\n",
+			strerror(errno), errno);
 		goto error;
 	}
 
@@ -352,8 +596,8 @@ int main(int argc, char *argv[])
 
 	drm_fd = drmOpen(config.drm_driver, config.drm_path);
 	if (drm_fd < 0) {
-		fprintf(stderr, "Unable to open DRM node: %s\n",
-			strerror(errno));
+		fprintf(stderr, "Unable to open DRM node: %s (%d)\n",
+			strerror(errno), errno);
 		goto error;
 	}
 

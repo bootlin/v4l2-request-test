@@ -1,3 +1,5 @@
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wmissing-braces"
 	{
 		.index = 0,
 		.frame.h265 = {
@@ -8198,3 +8200,4 @@
 			},
 		},
 	},
+#pragma clang diagnostic pop
