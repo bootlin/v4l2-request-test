@@ -649,7 +649,8 @@ int display_engine_start(int drm_fd, unsigned int width, unsigned int height,
 			 struct format_description *format,
 			 struct video_buffer *video_buffers, unsigned int count,
 			 struct gem_buffer **buffers,
-			 struct display_setup *setup)
+			 struct display_setup *setup,
+			 bool quiet)
 {
 	struct video_buffer *video_buffer;
 	struct gem_buffer *buffer;
@@ -824,7 +825,8 @@ int display_engine_start(int drm_fd, unsigned int width, unsigned int height,
 }
 
 int display_engine_stop(int drm_fd, struct gem_buffer *buffers,
-			struct display_setup *setup)
+			struct display_setup *setup,
+			bool quiet)
 {
 	struct gem_buffer *buffer;
 	unsigned int i;
@@ -862,7 +864,8 @@ int display_engine_stop(int drm_fd, struct gem_buffer *buffers,
 
 int display_engine_show(int drm_fd, unsigned int index,
 			struct video_buffer *video_buffers,
-			struct gem_buffer *buffers, struct display_setup *setup)
+			struct gem_buffer *buffers, struct display_setup *setup,
+			bool quiet)
 {
 	struct video_buffer *video_buffer;
 	struct gem_buffer *buffer;
