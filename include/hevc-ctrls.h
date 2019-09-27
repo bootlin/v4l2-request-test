@@ -19,11 +19,23 @@
 #define V4L2_CID_MPEG_VIDEO_HEVC_SPS		(V4L2_CID_MPEG_BASE + 1008)
 #define V4L2_CID_MPEG_VIDEO_HEVC_PPS		(V4L2_CID_MPEG_BASE + 1009)
 #define V4L2_CID_MPEG_VIDEO_HEVC_SLICE_PARAMS	(V4L2_CID_MPEG_BASE + 1010)
+#define V4L2_CID_MPEG_VIDEO_HEVC_DECODE_MODE	(V4L2_CID_MPEG_BASE + 1015)
+#define V4L2_CID_MPEG_VIDEO_HEVC_START_CODE	(V4L2_CID_MPEG_BASE + 1016)
 
 /* enum v4l2_ctrl_type type values */
 #define V4L2_CTRL_TYPE_HEVC_SPS 0x0120
 #define V4L2_CTRL_TYPE_HEVC_PPS 0x0121
 #define V4L2_CTRL_TYPE_HEVC_SLICE_PARAMS 0x0122
+
+enum v4l2_mpeg_video_hevc_decode_mode {
+	V4L2_MPEG_VIDEO_HEVC_DECODE_MODE_SLICE_BASED,
+	V4L2_MPEG_VIDEO_HEVC_DECODE_MODE_FRAME_BASED,
+};
+
+enum v4l2_mpeg_video_hevc_start_code {
+	V4L2_MPEG_VIDEO_HEVC_START_CODE_NONE,
+	V4L2_MPEG_VIDEO_HEVC_START_CODE_ANNEX_B,
+};
 
 #define V4L2_HEVC_SLICE_TYPE_B	0
 #define V4L2_HEVC_SLICE_TYPE_P	1
@@ -63,6 +75,8 @@ struct v4l2_ctrl_hevc_sps {
 	__u8	num_short_term_ref_pic_sets;
 	__u8	num_long_term_ref_pics_sps;
 	__u8	chroma_format_idc;
+
+	__u8	padding;
 
 	__u64	flags;
 };
@@ -121,9 +135,6 @@ struct v4l2_hevc_dpb_entry {
 };
 
 struct v4l2_hevc_pred_weight_table {
-	__u8	luma_log2_weight_denom;
-	__s8	delta_chroma_log2_weight_denom;
-
 	__s8	delta_luma_weight_l0[V4L2_HEVC_DPB_ENTRIES_NUM_MAX];
 	__s8	luma_offset_l0[V4L2_HEVC_DPB_ENTRIES_NUM_MAX];
 	__s8	delta_chroma_weight_l0[V4L2_HEVC_DPB_ENTRIES_NUM_MAX][2];
@@ -135,6 +146,9 @@ struct v4l2_hevc_pred_weight_table {
 	__s8	chroma_offset_l1[V4L2_HEVC_DPB_ENTRIES_NUM_MAX][2];
 
 	__u8	padding[6];
+
+	__u8	luma_log2_weight_denom;
+	__s8	delta_chroma_log2_weight_denom;
 };
 
 #define V4L2_HEVC_SLICE_PARAMS_FLAG_SLICE_SAO_LUMA		(1 << 0)
@@ -184,7 +198,7 @@ struct v4l2_ctrl_hevc_slice_params {
 	__u8	num_rps_poc_st_curr_after;
 	__u8	num_rps_poc_lt_curr;
 
-	__u8	padding[7];
+	__u8	padding;
 
 	/* ISO/IEC 23008-2, ITU-T Rec. H.265: General slice segment header */
 	struct v4l2_hevc_dpb_entry dpb[V4L2_HEVC_DPB_ENTRIES_NUM_MAX];
