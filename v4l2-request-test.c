@@ -64,20 +64,22 @@ struct format_description formats[] = {
 
 static void print_help(void)
 {
-	printf("Usage: v4l2-request-test [OPTIONS] [SLICES PATH]\n\n"
-	       "Options:\n"
-	       " -v [video path]                path for the video node\n"
-	       " -m [media path]                path for the media node\n"
-	       " -d [DRM path]                  path for the DRM node\n"
-	       " -D [DRM driver]                DRM driver to use\n"
-	       " -s [slices filename format]    format for filenames in the slices path\n"
-	       " -f [fps]                       number of frames to display per second\n"
-	       " -P [video preset]              video preset to use\n"
-	       " -i                             enable interactive mode\n"
-	       " -l                             loop preset frames\n"
-	       " -q                             enable quiet mode\n"
-	       " -h                             help\n\n"
-	       "Video presets:\n");
+	printf("Usage: v4l2-request-test [OPTIONS]\n\n"
+		"Options:\n"
+		" -v  --video-device <dev>  Use device <dev> as the video device.\n"
+		"     --device\n"
+		" -m, --media-device <dev>  Use device <dev> as the media device.\n"
+		" -d, --drm-device <dev>    Use device <dev > as DRM device.\n"
+		" -D, --drm-driver <name>   Use given DRM driver.\n"
+		" -s, --slices-path <path>  Use <path> to find stored video slices.\n"
+		" -S, --slices-format <slices format>\n"
+		"                           Regex/format describing filenames stored in the slices path.\n"
+		" -f, --fps <fps>           Display given number of frames per seconds.\n"
+		" -P, --preset-name <name>  Use given preset-name for video decoding.\n"
+		" -i, --interactive         Enable interactive mode.\n"
+		" -l, --loop                Loop preset frames.\n"
+		" -q, --quiet               Enable quiet mode.\n"
+		" -h, --help                This help message.\n\n");
 
 	presets_usage();
 }
@@ -85,21 +87,21 @@ static void print_help(void)
 static void print_summary(struct config *config, struct preset *preset)
 {
 	printf("Config:\n");
-	printf(" Video path: %s\n", config->video_path);
-	printf(" Media path: %s\n", config->media_path);
-	printf(" DRM path: %s\n", config->drm_path);
-	printf(" DRM driver: %s\n", config->drm_driver);
-	printf(" Slices path: %s\n", config->slices_path);
-	printf(" Slices filename format: %s\n", config->slices_filename_format);
-	printf(" FPS: %d\n\n", config->fps);
+	printf(" Video device:  %s\n", config->video_path);
+	printf(" Media device:  %s\n", config->media_path);
+	printf(" DRM device:    %s\n", config->drm_path);
+	printf(" DRM driver:    %s\n", config->drm_driver);
+	printf(" Slices path:   %s\n", config->slices_path);
+	printf(" Slices format: %s\n", config->slices_filename_format);
+	printf(" FPS:           %d\n\n", config->fps);
 
 	printf("Preset:\n");
-	printf(" Name: %s\n", preset->name);
-	printf(" Description: %s\n", preset->description);
-	printf(" License: %s\n", preset->license);
-	printf(" Attribution: %s\n", preset->attribution);
-	printf(" Width: %d\n", preset->width);
-	printf(" Height: %d\n", preset->height);
+	printf(" Name:         %s\n", preset->name);
+	printf(" Description:  %s\n", preset->description);
+	printf(" License:      %s\n", preset->license);
+	printf(" Attribution:  %s\n", preset->attribution);
+	printf(" Width:        %d\n", preset->width);
+	printf(" Height:       %d\n", preset->height);
 	printf(" Frames count: %d\n", preset->frames_count);
 
 	printf(" Format: ");
@@ -257,7 +259,26 @@ int main(int argc, char *argv[])
 	setup_config(&config);
 
 	while (1) {
-		opt = getopt(argc, argv, "v:m:d:D:s:f:P:ilqh");
+	        int option_index = 0;
+		static struct option long_options[] = {
+			{ "device",        required_argument, 0, 'v' },
+			{ "video-device",  required_argument, 0, 'v' },
+			{ "media-device",  required_argument, 0, 'm' },
+			{ "drm-device",    required_argument, 0, 'd' },
+			{ "drm-driver",    required_argument, 0, 'D' },
+			{ "slices-path",   required_argument, 0, 's' },
+			{ "slices-format", required_argument, 0, 'S' },
+			{ "fps",           required_argument, 0, 'f' },
+			{ "preset-name",   required_argument, 0, 'P' },
+			{ "interactive",   no_argument,       0, 'i' },
+			{ "loop",          no_argument,       0, 'l' },
+			{ "quiet",         no_argument,       0, 'q' },
+			{ "help",          no_argument,       0, 'h' },
+			{ 0,               0,                 0,  0  }
+		};
+
+		opt = getopt_long(argc, argv, "v:m:d:D:s:S:f:P:ilqh",
+			     long_options, &option_index);
 		if (opt == -1)
 			break;
 
@@ -279,6 +300,9 @@ int main(int argc, char *argv[])
 			config.drm_driver = strdup(optarg);
 			break;
 		case 's':
+			config.slices_path = strdup(optarg);
+			break;
+		case 'S':
 			free(config.slices_filename_format);
 			config.slices_filename_format = strdup(optarg);
 			break;
@@ -320,9 +344,7 @@ int main(int argc, char *argv[])
 
 	width = preset->width;
 	height = preset->height;
-	if (optind < argc)
-		config.slices_path = strdup(argv[optind]);
-	else
+	if (config.slices_path == NULL)
 		asprintf(&config.slices_path, "data/%s", config.preset_name);
 
 	print_summary(&config, preset);
