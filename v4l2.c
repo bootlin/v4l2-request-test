@@ -532,6 +532,10 @@ static int set_format_controls(int video_fd, int request_fd,
 	unsigned int i;
 	int rc;
 
+	if (type == CODEC_TYPE_H264) {
+		frame->h264.slice_params.size += 3;
+	}
+
 	for (i = 0; i < ARRAY_SIZE(glue); i++) {
 		if (glue[i].type != type)
 			continue;
