@@ -873,7 +873,7 @@ int video_engine_decode(int video_fd, unsigned int index, union controls *frame,
 			unsigned int source_size, struct video_buffer *buffers,
 			struct video_setup *setup)
 {
-	uint8_t start_code_prefix[] = { 0x00, 0x00, 0x00, 0x01 };
+	uint8_t start_code_prefix[] = { 0x00, 0x00, 0x01 };
 	struct timeval tv = { 0, 300000 };
 	int request_fd = -1;
 	fd_set except_fds;
