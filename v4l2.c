@@ -878,6 +878,7 @@ int video_engine_decode(int video_fd, unsigned int index, union controls *frame,
 	int request_fd = -1;
 	fd_set except_fds;
 	bool source_error, destination_error;
+	unsigned int size = 0;
 	void *data;
 	int rc;
 
@@ -886,7 +887,10 @@ int video_engine_decode(int video_fd, unsigned int index, union controls *frame,
 	data = buffers[index].source_data;
 	memcpy(data, start_code_prefix, sizeof(start_code_prefix));
 	data += sizeof(start_code_prefix);
+	size += sizeof(start_code_prefix);
+
 	memcpy(data, source_data, source_size);
+	size += source_size;
 
 	rc = set_format_controls(video_fd, request_fd, type, frame);
 	if (rc < 0) {
@@ -895,7 +899,7 @@ int video_engine_decode(int video_fd, unsigned int index, union controls *frame,
 	}
 
 	rc = queue_buffer(video_fd, request_fd, setup->output_type, ts, index,
-			  source_size, 1);
+			  size, 1);
 	if (rc < 0) {
 		fprintf(stderr, "Unable to queue source buffer\n");
 		return -1;
