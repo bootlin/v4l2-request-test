@@ -873,15 +873,20 @@ int video_engine_decode(int video_fd, unsigned int index, union controls *frame,
 			unsigned int source_size, struct video_buffer *buffers,
 			struct video_setup *setup)
 {
+	uint8_t start_code_prefix[] = { 0x00, 0x00, 0x00, 0x01 };
 	struct timeval tv = { 0, 300000 };
 	int request_fd = -1;
 	fd_set except_fds;
 	bool source_error, destination_error;
+	void *data;
 	int rc;
 
 	request_fd = buffers[index].request_fd;
 
-	memcpy(buffers[index].source_data, source_data, source_size);
+	data = buffers[index].source_data;
+	memcpy(data, start_code_prefix, sizeof(start_code_prefix));
+	data += sizeof(start_code_prefix);
+	memcpy(data, source_data, source_size);
 
 	rc = set_format_controls(video_fd, request_fd, type, frame);
 	if (rc < 0) {
