@@ -16,7 +16,8 @@
 
 # Tools
 
-CC = gcc
+CC ?= gcc
+PKG_CONFIG ?= pkg-config
 
 # Project
 
@@ -36,8 +37,8 @@ DEPS = $(SOURCES:.c=.d)
 # Compiler
 
 CFLAGS += -Wunused-variable -Iinclude
-CFLAGS += $(shell pkg-config --cflags libdrm)
-LDFLAGS = $(shell pkg-config --libs libdrm)
+CFLAGS += $(shell $(PKG_CONFIG) --cflags libdrm)
+LDFLAGS = $(shell $(PKG_CONFIG) --libs libdrm)
 
 # Produced files
 
