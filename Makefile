@@ -16,7 +16,7 @@
 
 # Tools
 
-CC = gcc
+CC ?= gcc
 
 # Project
 
